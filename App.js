@@ -7,6 +7,9 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
+import RemoveClasses from "./App/RemoveClasses/";
+
+
 
 function Feed({ navigation }) {
   return (
@@ -17,22 +20,7 @@ function Feed({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    width: '100%'
-  },
-});
-
 function AddClass() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Notifications Screen</Text>
-    </View>
-  );
-}
-
-function DropClass() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Notifications Screen</Text>
@@ -62,9 +50,9 @@ function MyDrawer() {
   return (
     <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)}>
       <Drawer.Screen name="Zach's Schedule" component={Feed} />
-      <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Add Class" component={AddClass} />
-      <Drawer.Screen name="Drop Class" component={DropClass} />
+      <Drawer.Screen name="Drop Class" component={RemoveClasses} />
+      <Drawer.Screen name="Profile" component={Profile} />
     </Drawer.Navigator>
   );
 }
@@ -76,3 +64,10 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%'
+  },
+});
