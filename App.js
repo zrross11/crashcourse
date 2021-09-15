@@ -11,8 +11,7 @@ import {
 function Feed({ navigation }) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ImageBackground source={require('./assets/images/background.jpg')} style={styles.backgroundImage} resizeMode="cover">
-            <Text>Hello there, this is some text so the background image fills the page</Text> 
+          <ImageBackground source={require('./assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
           </ImageBackground>
     </View>
   );
@@ -21,7 +20,7 @@ function Feed({ navigation }) {
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode:'stretch'
+    width: '100%'
   },
 });
 
