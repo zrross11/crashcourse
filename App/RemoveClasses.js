@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
 	},
 	cs4720MobileAppDevelopmentText: {
 		color: "rgb(53, 71, 233)",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
 	},
 	cancelText: {
 		color: "white",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
 	addText: {
 		backgroundColor: "transparent",
 		color: "white",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
 	},
 	daysMWFText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
 	danielGrahamText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
 	},
 	cs4720MobileAppDevelopmentTwoText: {
 		color: "rgb(53, 71, 233)",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
 	},
 	gpa36Text: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
 	},
 	daysMWFTwoText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
 	danielGrahamTwoText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
 	cs4720MobileAppDevelopmentThreeText: {
 		backgroundColor: "transparent",
 		color: "rgb(53, 71, 233)",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -441,7 +441,7 @@ const styles = StyleSheet.create({
 	},
 	gpa36TwoText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
 	daysMWFThreeText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
 	time200Pm250pmThreeText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
 	},
 	danielGrahamThreeText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
 	cs4720MobileAppDevelopmentFourText: {
 		backgroundColor: "transparent",
 		color: "rgb(53, 71, 233)",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
 	},
 	gpa36ThreeText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
 	daysMWFFourText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
 	},
 	time200Pm250pmFourText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
 	},
 	danielGrahamFourText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -544,7 +544,7 @@ const styles = StyleSheet.create({
 	gpa36FourText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
 	},
 	cs4720MobileAppDevelopmentFiveText: {
 		color: "rgb(53, 71, 233)",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -571,7 +571,7 @@ const styles = StyleSheet.create({
 	},
 	daysMWFFiveText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -583,7 +583,7 @@ const styles = StyleSheet.create({
 	danielGrahamFiveText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -594,7 +594,7 @@ const styles = StyleSheet.create({
 	cs4720MobileAppDevelopmentSixText: {
 		backgroundColor: "transparent",
 		color: "rgb(53, 71, 233)",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 20,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -604,7 +604,7 @@ const styles = StyleSheet.create({
 	},
 	gpa36FiveText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -616,7 +616,7 @@ const styles = StyleSheet.create({
 	daysMWFSixText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
 	},
 	danielGrahamSixText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -637,7 +637,7 @@ const styles = StyleSheet.create({
 	},
 	gpa36SixText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -651,7 +651,7 @@ const styles = StyleSheet.create({
 	},
 	time200Pm250pmSixText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -662,7 +662,7 @@ const styles = StyleSheet.create({
 	},
 	time200Pm250pmFiveText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -675,7 +675,7 @@ const styles = StyleSheet.create({
 	time200Pm250pmTwoText: {
 		backgroundColor: "transparent",
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
@@ -686,7 +686,7 @@ const styles = StyleSheet.create({
 	},
 	time200Pm250pmText: {
 		color: "black",
-		fontFamily: ".AppleSystemUIFont",
+		//fontFamily: ".AppleSystemUIFont",
 		fontSize: 10,
 		fontStyle: "normal",
 		fontWeight: "normal",
