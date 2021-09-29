@@ -9,8 +9,10 @@ import {
 } from '@react-navigation/drawer';
 import RemoveClasses from "./App/RemoveClasses/";
 import Filters from "./App/Filters/";
+import SearchResults from "./App/SearchResults/"
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
+import { createStackNavigator } from '@react-navigation/stack';
 
 
 
@@ -123,6 +125,17 @@ function Profile() {
   );
 }
 
+const Stack = createStackNavigator()
+
+function AddClasses() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Feed" component={Filters} />
+      <Stack.Screen name="RemoveClasses" component={SearchResults} />
+    </Stack.Navigator>
+  );
+}
+
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
@@ -137,7 +150,7 @@ function MyDrawer() {
   return (
     <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)}>
       <Drawer.Screen name="Zach's Schedule" component={Feed} />
-      <Drawer.Screen name="Add Class" component={Filters} />
+      <Drawer.Screen name="Add Class" component={AddClasses} options={{headerShown: false}} />
       <Drawer.Screen name="Drop Class" component={RemoveClasses} />
       <Drawer.Screen name="Profile" component={Profile} />
     </Drawer.Navigator>
