@@ -13,27 +13,35 @@ import SearchResults from "./App/SearchResults/"
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Parse from 'parse/react-native';
+var url = 'https://api.devhub.virginia.edu/v1/courses/';
 
-
-
-let { width } = Dimensions.get('window')
-
-const url = 'https://api.devhub.virginia.edu/v1/courses/';
-
-// console.log(datad)
-async function api_call(){
-  var datad = await fetch(url)
-	.then((resp) => resp.json())
-  .catch(function(error) {
-		console.log('Fetch failed!');
-	});
-  console.log("headers", datad.class_schedules.columns)
+async function getCourses(){
+  // var datad = await fetch(url)
+	// .then((resp) => resp.json())
+  // .catch(function(error) {
+	// 	console.log('Fetch failed!');
+	// });
+  var datad = require('./api.json')
+  // console.log("headers", datad.class_schedules.columns)
   var map = {}
-  console.log("headers", datad.class_schedules.records[0])
-  console.log("headers", datad.class_schedules.records[1])
-  console.log("headers", datad.class_schedules.records[2])
+  console.log(JSON.parse(JSON.stringify(datad.class_schedules.records))[3000])
 
-  for(var course of datad.class_schedules.records){
+  // console.log("DATA!!!",datad)
+  // console.log("headers", datad.class_schedules.records[0])
+  // console.log("headers", datad.class_schedules.records[1])
+  // console.log("headers", datad.class_schedules.records[2])
+  console.log("100!!!\n\n", JSON.stringify(datad.class_schedules.records[100]));
+  console.log("200!!!\n\n", JSON.stringify(datad.class_schedules.records[200]));
+  console.log("400!!!\n\n", JSON.stringify(datad.class_schedules.records[400]));
+  console.log("1000!!!\n\n", JSON.stringify(datad.class_schedules.records[1000]));
+  console.log("3000!!!\n\n", JSON.stringify(datad.class_schedules.records[3000]));
+  console.log("Size of all records.", datad.class_schedules.records.length)
+
+  for(var courseRecord = 0 ; courseRecord < datad.class_schedules.records.length; courseRecord++){
+    var course = JSON.parse(JSON.stringify(datad.class_schedules.records))[courseRecord];
+    // console.log(course)
     var classObject = {
       subject: course[0],
       mnemonic: course[1],
@@ -48,7 +56,7 @@ async function api_call(){
       end: course[10], // 'HH:MM:SS' 24hr
       term: course[11], // '1216
       termdesc: course[12], // '2021 Summer'
-    }
+    };
     if( `${course[0]}${course[1]}` in map){
       var sectionArray = map[`${course[1]}${course[2]}`]
       // await sectionArray.push(classObject)
@@ -59,38 +67,78 @@ async function api_call(){
     }
   }
   // var k = datad.class_schedules.records)
-  console.log(map)
+  // console.log(map)
+  return map;
+};
+// console.log("CourseList",courseList)
+// var courseList = await getCourses();
+// getCourses();
+
+async function saveCourse(course){
+  var obj = new Parse.Object("Class");
+  // console.log(courses);
+  // for(var course of courses){
+    // if(course !== undefined){  
+      // console.log(course)
+      obj.set("subject", course.subject)
+      obj.set("mnemonic", course.mnemonic)
+      obj.set("section", course.section)
+      obj.set("number", course.number)
+      obj.set("title", course.title)
+      obj.set("desc", course.desc)
+      obj.set("instructor", course.instructor)
+      obj.set("capacity", course.capacity)
+      obj.set("days", course.days) // 'MTWRF'
+      obj.set("start", course.start)
+      obj.set("end", course.end) // 'HH:MM:SS' 24hr
+      obj.set("term", course.term) // '1216
+      obj.set("termdesc", course.termdesc)
+    
+      try{
+        let result = await obj.save();
+        // alert(`Class ${course.subject}${course.mnemonic} created. `)
+      }
+      catch(error){
+        // alert(`Failed to create Class ${course.subject}${course.mnemonic}`)
+        console.log(error)
+      }
+    // }
+  // }
 
 }
+//Before using the SDK...
+Parse.setAsyncStorage(AsyncStorage);
 
-api_call();
+Parse.initialize("qQmbI9viEPskRUGExxKPYz228jjZPSiDTtbIWE7Z","hBHFZOryVQndv55vmvMArFBPLqjXLz6RGgp4GKiE"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
+Parse.serverURL = 'https://parseapi.back4app.com/';
 
-const events = {
-  '2021-09-21': [],
-  '2021-09-22': [{ start: '2017-09-07 00:30:00', end: '2017-09-07 01:30:00', title: 'Cloud Computing', gpa: '4.2' },{ start: '2017-09-07 01:30:00', end: '2017-09-07 02:20:00', title: 'Mobile App Development', gpa: '2.8' },{ start: '2017-09-07 01:30:00', end: '2017-09-07 02:20:00', title: 'Database Systems', gpa: '3.4' }],
-  '2021-09-23': [{ start: '2017-09-07 04:10:00', end: '2017-09-07 04:40:00', title: 'Sun Tzu', gpa: '3.45' },{ start: '2017-09-07 01:05:00', end: '2017-09-07 01:45:00', title: 'Sociology of the Family', gpa: '1.6' }],
-  '2021-09-24': [{ start: '2017-09-07 14:30:00', end: '2017-09-07 16:30:00', title: 'Robotics', gpa: '3.8' }],
-  '2021-09-25': [{ start: '2017-09-08 01:20:00', end: '2017-09-08 02:20:00', title: 'Cell Biology', gpa: '3.7' }],
-  '2021-09-26': [{ start: '2017-09-08 04:10:00', end: '2017-09-08 04:40:00', title: 'Physics II', gpa: '2.4' }],
-  '2021-09-27': [{ start: '2017-09-08 00:45:00', end: '2017-09-08 01:45:00', title: 'Software Development Methods', gpa: '3.9' }],
-  '2021-09-27': [{ start: '2017-09-08 11:30:00', end: '2017-09-08 12:30:00', title: 'Capstone Technical Report', gpa: '3.2' }],
-  '2021-09-28': [{ start: '2017-09-09 01:30:00', end: '2017-09-09 02:00:00', title: 'Thermodynamics', gpa: '2.6' }],
-  '2021-09-29': [{ start: '2017-09-09 03:10:00', end: '2017-09-09 03:40:00', title: 'ENGR Lab', gpa: '2.1' }],
-  '2021-09-30': [{ start: '2017-09-09 00:10:00', end: '2017-09-09 01:45:00', title: 'ENGR Lecture', gpa: '3.8' }]
-}
 
 var testEvents = {}
-
-for (var d = new Date(2021, 8, 1); d <= (new Date(2021,9,30)); d.setDate(d.getDate() + 1)) {
-  var keys = `${d.getFullYear()}-${("0" + (d.getMonth())).slice(-2)}-${("0" + d.getDate()).slice(-2)}`.toString()
-  // console.log(keys)
-  testEvents[`${keys}`] = [{title: "Cloud Comp d", gpa: '4.5'}]
-  // testEvents["2021-09-23"] = {title: "Boom Baby", gpa: "3.5"}
+var count = 0;
+async function doThis(){
+  var courseList = await getCourses();
+  let keysList = [];
+  console.log("COURSE LIST 3000!",courseList)
+  for (let key in courseList)
+    keysList.push(key);
+  // console.log(keysList);
+  for (var d = new Date(2021, 9, 1); d <= (new Date(2022,1,30)); d.setDate(d.getDate() + 1)) {
+    var keys = `${d.getFullYear()}-${("0" + (d.getMonth())).slice(-2)}-${("0" + d.getDate()).slice(-2)}`.toString();
+    if(courseList[`${keysList[count]}`] !== undefined){
+      testEvents[`${keys}`] = courseList[`${keysList[count]}`]
+      saveCourse(testEvents[`${keys}`])
+    }
+    count += 1
+    // testEvents["2021-09-23"] = {title: "Boom Baby", gpa: "3.5"}
+  }
+  // console.log(JSON.stringify(testEvents))
+  // console.log(testEvents);
 }
+doThis();
 // console.log("testEvent",testEvents,testEvents.length)
 // useState
+
 function Feed({ navigation }) {
-  
 
 
   return (
@@ -103,7 +151,25 @@ function Feed({ navigation }) {
             // items={events}
             items={testEvents}
             // onDayPress={(day)=>{console.log(`day pressed: ${day.month}/${day.day}/${day.year}`)}}
-            renderItem={(item, firstItemInDay) => {return (<Card><Text>{item.title}</Text><View style={{flexDirection: "row"}}><Text style={{fontSize: 10}}> Avg GPA: {item.gpa}</Text></View></Card>);}}
+            renderItem={(item, firstItemInDay) => {return (<Card>
+            <View style={{flexDirection: "row"}}>
+              <View style={{flexDirection: "column", margin: "0"}}>
+                <Text>{item.subject}{item.mnemonic}: {item.title}</Text>
+              </View>
+
+            </View>  
+            <View style={{flexDirection: "row"}}>
+              <Text style ={{fontSize:10}}> Professor: {item.instructor}</Text>
+              <View style={{flexDirection: "column", marginLeft: "15%"}}>
+                <Text style={{fontSize: 10}}> Avg GPA: {item.gpa? item.gpa : 0}</Text>
+              </View>
+            </View>
+            <View style={{flexDirection: "row"}}>
+              <View style={{flexDirection: "column"}}>
+                <Text style={{fontSize: 10}}> Days: {item.days}</Text>
+              </View>
+            </View>
+            </Card>);}}
             renderEmptyDate={() => {return (<View />);}}
             // minDate={'2021-09-22'}
             firstDay={1}
