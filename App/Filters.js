@@ -1,16 +1,8 @@
-//
-//  MainScreenTwo
-//  CrashCoursesep13
-//
-//  Created by [Author].
-//  Copyright © 2018 [Company]. All rights reserved.
-//
-
-import React from "react"
-import { Image, StyleSheet, Text, View, Button } from "react-native"
-import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
-import RemoveClasses from "./RemoveClasses/";
+import React from "react";
+import { Image, StyleSheet, Text, View, Button, TextInput } from "react-native"
+import SelectDropdown from 'react-native-select-dropdown'
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+const countries = ["CS", "ECE", "ECON"]
 
 
 export default class MainScreenTwo extends React.Component {
@@ -34,7 +26,6 @@ export default class MainScreenTwo extends React.Component {
 	}
 
 	render() {
-
 		return <View
 			style={styles.mainScreenView}>
 			<View
@@ -48,39 +39,131 @@ export default class MainScreenTwo extends React.Component {
 					justifyContent: "center",
 				}}>
 				<Image
-					source={require("./../assets/images/filters.png")}
+					source={require("./../assets/images/background.jpg")}
 					style={styles.mainScreenBackgroundMaskImage} />
 			</View>
 			<View
 				pointerEvents="box-none"
 				style={{
 					position: "absolute",
-					left: 15,
-					width: 314,
-					top: 37,
-					bottom: 152,
+					left: "10%",
+					width: "80%",
+					top: "5%",
+					bottom: "5%",
 					alignItems: "flex-start",
 				}}>
-				<Text
-					style={styles.whatTypeOfClassText}>What type of Class?</Text>
-				<Text
-					style={styles.departmentText}>Department</Text>
-				<Text
-					style={styles.professorText}>Professor</Text>
-				<Text
-					style={styles.meetingDaysText}>Meeting Days</Text>
-				<Text
-					style={styles.locationText}>Location</Text>
+				<Text style={styles.titleText}>What type of class?</Text>
+				<SelectDropdown
+					data={countries}
+					defaultButtonText={"Department"}
+					dropdownStyle="arrow"
+					buttonStyle={styles.dropdown1BtnStyle}
+					renderDropdownIcon={() => {
+						return (
+							<FontAwesome name="chevron-down" color={"#444"} size={18} />
+						);
+					}}
+					onSelect={(selectedItem, index) => {
+						console.log(selectedItem, index)
+					}}
+					buttonTextAfterSelection={(selectedItem, index) => {
+						return selectedItem
+					}}
+					rowTextForSelection={(item, index) => {
+						return item
+					}}
+				/>
 				<View
 					style={{
-						flex: 1,
+						flex: 0.1,
 					}} />
-				<Text
-					style={styles.searchByClassNameText}>SEARCH BY CLASS NAME:</Text>
-				<Button
-					title="Show classes"
-					onPress={() => this.props.navigation.navigate(RemoveClasses)}
+				<SelectDropdown
+					data={countries}
+					defaultButtonText={"Professor"}
+					dropdownStyle="arrow"
+					buttonStyle={styles.dropdown1BtnStyle}
+					renderDropdownIcon={() => {
+						return (
+							<FontAwesome name="chevron-down" color={"#444"} size={18} />
+						);
+					}}
+					onSelect={(selectedItem, index) => {
+						console.log(selectedItem, index)
+					}}
+					buttonTextAfterSelection={(selectedItem, index) => {
+						return selectedItem
+					}}
+					rowTextForSelection={(item, index) => {
+						return item
+					}}
 				/>
+				<View
+					style={{
+						flex: 0.1,
+					}} />
+				<SelectDropdown
+					data={countries}
+					defaultButtonText={"Meeting Days"}
+					dropdownStyle="arrow"
+					buttonStyle={styles.dropdown1BtnStyle}
+					renderDropdownIcon={() => {
+						return (
+							<FontAwesome name="chevron-down" color={"#444"} size={18} />
+						);
+					}}
+					onSelect={(selectedItem, index) => {
+						console.log(selectedItem, index)
+					}}
+					buttonTextAfterSelection={(selectedItem, index) => {
+						return selectedItem
+					}}
+					rowTextForSelection={(item, index) => {
+						return item
+					}}
+				/>
+				<View
+					style={{
+						flex: 0.1,
+					}} />
+				<SelectDropdown
+					data={countries}
+					defaultButtonText={"Location"}
+					dropdownStyle="arrow"
+					buttonStyle={styles.dropdown1BtnStyle}
+					renderDropdownIcon={() => {
+						return (
+							<FontAwesome name="chevron-down" color={"#444"} size={18} />
+						);
+					}}
+					onSelect={(selectedItem, index) => {
+						console.log(selectedItem, index)
+					}}
+					buttonTextAfterSelection={(selectedItem, index) => {
+						return selectedItem
+					}}
+					rowTextForSelection={(item, index) => {
+						return item
+					}}
+				/>
+				<View
+					style={{
+						flex: 0.3,
+					}} />
+					<Text style={styles.titleText2}>Search By Class Name:</Text>
+					<TextInput style={styles.input} placeholder="Type here..."/>
+
+				<View
+					style={{
+						flex: 0.1,
+					}} />
+				<View style={{ backgroundColor: "black", left: "60%" }}>
+					<Button
+						type="clear"
+						title="Show classes"
+						color="#FFFF"
+						onPress={() => this.props.navigation.navigate("Available")}
+					/>
+				</View>
 			</View>
 		</View>
 	}
@@ -97,63 +180,26 @@ const styles = StyleSheet.create({
 		width: null,
 		height: 814,
 	},
-	whatTypeOfClassText: {
-		color: "black",
-		fontSize: 40,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		backgroundColor: "transparent",
-		width: 304,
+	dropdown1BtnStyle: {
+		width: "100%",
+		height: "10%",
+		backgroundColor: "#FFF",
+		borderRadius: 8,
+		borderWidth: 1,
+		borderColor: "#444",
 	},
-	departmentText: {
-		backgroundColor: "transparent",
-		color: "white",
-		fontSize: 40,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		marginLeft: 31,
-		marginTop: 1,
+	titleText: {
+		fontSize: 34,
+		fontWeight: "bold",
 	},
-	professorText: {
-		color: "white",
-		fontSize: 40,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		backgroundColor: "transparent",
-		marginLeft: 31,
-		marginTop: 44,
+	titleText2: {
+		fontSize: 29,
+		fontWeight: "bold",
+		color: "white"
 	},
-	meetingDaysText: {
-		color: "white",
-		fontSize: 40,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		backgroundColor: "transparent",
-		marginLeft: 31,
-		marginTop: 44,
-	},
-	locationText: {
-		backgroundColor: "transparent",
-		color: "white",
-		fontSize: 40,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		marginLeft: 31,
-		marginTop: 43,
-	},
-	searchByClassNameText: {
-		color: "white",
-		fontSize: 30,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		backgroundColor: "transparent",
-		alignSelf: "center",
-		width: 284,
-	},
+	input: {
+		backgroundColor: "white",
+		height: "5%",
+		width: "100%",
+	  },
 })
