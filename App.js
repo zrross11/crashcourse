@@ -130,8 +130,8 @@ const Stack = createStackNavigator()
 function AddClasses() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Feed" component={Filters} />
-      <Stack.Screen name="RemoveClasses" component={SearchResults} />
+      <Stack.Screen name="Add Classes" component={Filters} options={{headerShown: false}}/>
+      <Stack.Screen name="Available" component={SearchResults} options={{headerShown: false}}/>
     </Stack.Navigator>
   );
 }
@@ -150,7 +150,7 @@ function MyDrawer() {
   return (
     <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)}>
       <Drawer.Screen name="Zach's Schedule" component={Feed} />
-      <Drawer.Screen name="Add Class" component={AddClasses} options={{headerShown: false}} />
+      <Drawer.Screen name="Add Class" component={AddClasses} />
       <Drawer.Screen name="Drop Class" component={RemoveClasses} />
       <Drawer.Screen name="Profile" component={Profile} />
     </Drawer.Navigator>
