@@ -13,100 +13,12 @@ import SearchResults from "./App/SearchResults/"
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
 import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Parse from 'parse/react-native';
-var url = 'https://api.devhub.virginia.edu/v1/courses/';
+import './App/CourseRoster'
+import { classExtractor } from './App/CourseRoster';
+import SemesterMapper from './App/Semester';
 
-async function getCourses(){
-  // var datad = await fetch(url)
-	// .then((resp) => resp.json())
-  // .catch(function(error) {
-	// 	console.log('Fetch failed!');
-	// });
-  var datad = require('./api.json')
-  // console.log("headers", datad.class_schedules.columns)
-  var map = {}
-  console.log(JSON.parse(JSON.stringify(datad.class_schedules.records))[3000])
-
-  // console.log("DATA!!!",datad)
-  // console.log("headers", datad.class_schedules.records[0])
-  // console.log("headers", datad.class_schedules.records[1])
-  // console.log("headers", datad.class_schedules.records[2])
-  console.log("100!!!\n\n", JSON.stringify(datad.class_schedules.records[100]));
-  console.log("200!!!\n\n", JSON.stringify(datad.class_schedules.records[200]));
-  console.log("400!!!\n\n", JSON.stringify(datad.class_schedules.records[400]));
-  console.log("1000!!!\n\n", JSON.stringify(datad.class_schedules.records[1000]));
-  console.log("3000!!!\n\n", JSON.stringify(datad.class_schedules.records[3000]));
-  console.log("Size of all records.", datad.class_schedules.records.length)
-
-  for(var courseRecord = 0 ; courseRecord < datad.class_schedules.records.length; courseRecord++){
-    var course = JSON.parse(JSON.stringify(datad.class_schedules.records))[courseRecord];
-    // console.log(course)
-    var classObject = {
-      subject: course[0],
-      mnemonic: course[1],
-      section: course[2],
-      number: course[3],
-      title: course[4],
-      desc: course[5],
-      instructor: course[6],
-      capacity: course[7],
-      days: course[8], // 'MTWRF'
-      start: course[9],
-      end: course[10], // 'HH:MM:SS' 24hr
-      term: course[11], // '1216
-      termdesc: course[12], // '2021 Summer'
-    };
-    if( `${course[0]}${course[1]}` in map){
-      var sectionArray = map[`${course[1]}${course[2]}`]
-      // await sectionArray.push(classObject)
-      map[`${course[0]}${course[1]}`] = sectionArray
-    }
-    else{
-      map[`${course[0]}${course[1]}`] = [classObject]
-    }
-  }
-  // var k = datad.class_schedules.records)
-  // console.log(map)
-  return map;
-};
-// console.log("CourseList",courseList)
-// var courseList = await getCourses();
-// getCourses();
-
-async function saveCourse(course){
-  var obj = new Parse.Object("Class");
-  // console.log(courses);
-  // for(var course of courses){
-    // if(course !== undefined){  
-      // console.log(course)
-      obj.set("subject", course.subject)
-      obj.set("mnemonic", course.mnemonic)
-      obj.set("section", course.section)
-      obj.set("number", course.number)
-      obj.set("title", course.title)
-      obj.set("desc", course.desc)
-      obj.set("instructor", course.instructor)
-      obj.set("capacity", course.capacity)
-      obj.set("days", course.days) // 'MTWRF'
-      obj.set("start", course.start)
-      obj.set("end", course.end) // 'HH:MM:SS' 24hr
-      obj.set("term", course.term) // '1216
-      obj.set("termdesc", course.termdesc)
-    
-      try{
-        let result = await obj.save();
-        // alert(`Class ${course.subject}${course.mnemonic} created. `)
-      }
-      catch(error){
-        // alert(`Failed to create Class ${course.subject}${course.mnemonic}`)
-        console.log(error)
-      }
-    // }
-  // }
-
-}
-//Before using the SDK...
 Parse.setAsyncStorage(AsyncStorage);
 
 Parse.initialize("qQmbI9viEPskRUGExxKPYz228jjZPSiDTtbIWE7Z","hBHFZOryVQndv55vmvMArFBPLqjXLz6RGgp4GKiE"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
@@ -114,29 +26,109 @@ Parse.serverURL = 'https://parseapi.back4app.com/';
 
 
 var testEvents = {}
-var count = 0;
-async function doThis(){
-  var courseList = await getCourses();
-  let keysList = [];
-  console.log("COURSE LIST 3000!",courseList)
-  for (let key in courseList)
-    keysList.push(key);
-  // console.log(keysList);
-  for (var d = new Date(2021, 9, 1); d <= (new Date(2022,1,30)); d.setDate(d.getDate() + 1)) {
-    var keys = `${d.getFullYear()}-${("0" + (d.getMonth())).slice(-2)}-${("0" + d.getDate()).slice(-2)}`.toString();
-    if(courseList[`${keysList[count]}`] !== undefined){
-      testEvents[`${keys}`] = courseList[`${keysList[count]}`]
-      saveCourse(testEvents[`${keys}`])
-    }
-    count += 1
-    // testEvents["2021-09-23"] = {title: "Boom Baby", gpa: "3.5"}
-  }
-  // console.log(JSON.stringify(testEvents))
-  // console.log(testEvents);
+var courses = {}
+async function doStuff(){
+ courses = await classExtractor();
+const semester = await SemesterMapper(new Date(2021,7,24),new Date(2021,12,7));
+
+var list = []
+for(var key of Object.keys(courses)){
+  list.push(key)
 }
-doThis();
-// console.log("testEvent",testEvents,testEvents.length)
-// useState
+
+var count = 0;
+
+populateClass(courses['CS4740'][0],semester)
+populateClass(courses['STS4500'][0],semester)
+populateClass(courses['APMA3080'][4],semester)
+// populateClass(courses[''][0],semester)
+}
+
+doStuff()
+
+async function populateClass(course,semesterMap){
+  // Each letter in course.days corresponds to another day
+  console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
+  for(var ind of course.days){
+    console.log("Day of the week", ind)
+    switch(ind){
+      case 'M': // Monday
+        for(var date of semesterMap['M']){
+          // console.log("Monday dates",date)
+          if(testEvents[`${date}`]){
+            var temp = testEvents[`${date}`]
+            temp.push(course)
+            testEvents[`${date}`] = temp
+            // console.log(testEvents[`${date}`])
+          }
+          else{
+            testEvents[`${date}`] = [course]
+            // console.log(testEvents[`${date}`])
+          }
+        }
+        break
+      case 'T': // Tuesday
+        for(var date of semesterMap['T']){
+          // console.log("Tuesday dates",date)
+          if(testEvents[`${date}`]){
+            var temp = testEvents[`${date}`]
+            temp.push(course)
+            testEvents[`${date}`] = temp
+            console.log(testEvents[`${date}`])
+          }
+          else{
+            testEvents[`${date}`] = [course]
+            console.log(testEvents[`${date}`])
+
+          }
+        }
+        break            
+      case 'W': // Wednesday
+        for(var date of semesterMap['W']){
+          // console.log("Wed dates",date)
+          if(testEvents[`${date}`]){
+            var temp = testEvents[`${date}`]
+            temp.push(course)
+            testEvents[`${date}`] = temp
+          }
+          else{
+            testEvents[`${date}`] = [course]
+
+          }      
+        }
+        break
+      case 'R': // Thursday
+        for(var date of semesterMap['R']){
+          // console.log("Thursday dates",date)
+          if(testEvents[`${date}`]){
+            var temp = testEvents[`${date}`]
+            temp.push(course)
+            testEvents[`${date}`] = temp
+          }
+          else{
+            testEvents[`${date}`] = [course]
+
+          }       
+        }
+        break
+      case 'F': // Friday
+        for(var date of semesterMap['F']){
+          // console.log("Friday dates",date)
+          if(testEvents[`${date}`]){
+            var temp = testEvents[`${date}`]
+            temp.push(course)
+            testEvents[`${date}`] = temp
+          }
+          else{
+            testEvents[`${date}`] = [course]
+
+          }       
+        }
+        break
+    }
+  }
+}
+
 
 function Feed({ navigation }) {
 
@@ -150,34 +142,51 @@ function Feed({ navigation }) {
             // considered that the date in question is not yet loaded
             // items={events}
             items={testEvents}
+            // items={{
+            //   '2021-08-24': [courses['APMA3080'][4]],
+            //   '2021-12-03': [courses['CS4740'][0]],
+            //   '2021-11-31': [courses['AAS150'][0]],
+            //   '2021-10-01': [courses['APMA3080'][4]],
+            // }}
+            minDate={'2021-08-24'}
+            // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+            maxDate={'2021-12-07'}
+            // Max amount of months allowed to scroll to the past. Default = 50
+            pastScrollRange={12}
+            // Max amount of months allowed to scroll to the future. Default = 50
+            futureScrollRange={5}
             // onDayPress={(day)=>{console.log(`day pressed: ${day.month}/${day.day}/${day.year}`)}}
-            renderItem={(item, firstItemInDay) => {return (<Card>
-            <View style={{flexDirection: "row"}}>
-              <View style={{flexDirection: "column", margin: "0"}}>
-                <Text>{item.subject}{item.mnemonic}: {item.title}</Text>
-              </View>
-
-            </View>  
-            <View style={{flexDirection: "row"}}>
-              <Text style ={{fontSize:10}}> Professor: {item.instructor}</Text>
-              <View style={{flexDirection: "column", marginLeft: "15%"}}>
-                <Text style={{fontSize: 10}}> Avg GPA: {item.gpa? item.gpa : 0}</Text>
-              </View>
-            </View>
-            <View style={{flexDirection: "row"}}>
-              <View style={{flexDirection: "column"}}>
-                <Text style={{fontSize: 10}}> Days: {item.days}</Text>
-              </View>
-            </View>
-            </Card>);}}
-            renderEmptyDate={() => {return (<View />);}}
+            renderItem={(item, firstItemInDay) => { return (
+              // courses.map((item) => {
+                // console.log("List of classes?",obj)
+                // return (
+                  <Card>
+                    <View style={{ flexDirection: "row" }}>
+                      <View style={{ flexDirection: "column", margin: "1%" }}>
+                        <Text>{item.subject}{item.mnemonic}: {item.title}</Text>
+                      </View>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={{ fontSize: "10%" }}> Professor: {item.instructor}</Text>
+                      <View style={{ flexDirection: "column", marginLeft: "15%" }}>
+                        <Text style={{ fontSize: "10%" }}> Avg GPA: {item.gpa ? item.gpa : 0}</Text>
+                      </View>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <View style={{ flexDirection: "column" }}>
+                        <Text style={{ fontSize: "10%" }}> Days: {item.days}</Text>
+                      </View>
+                    </View>
+                  </Card>                      
+                // );
+              // })
+            )}}
+            renderEmptyDate={() => {return (<View/>);}}
             // minDate={'2021-09-22'}
             firstDay={1}
             style={{width: 400}}
-
             />
     </View>
-    
     </ImageBackground>
 
   );
@@ -190,7 +199,12 @@ function Profile() {
     </View>
   );
 }
+function AddItem(item) {
+  item.map(obj => {
 
+  })
+
+}
 const Stack = createStackNavigator()
 
 function AddClasses() {
