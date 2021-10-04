@@ -46,6 +46,7 @@ export async function classExtractor(){
       term: course[11], // '1216
       termdesc: course[12], // '2021 Summer'
     }
+    // await saveCourse(classObject)
     if( name in map){
       var sectionArray = map[name]
       sectionArray.push(classObject)
@@ -57,6 +58,39 @@ export async function classExtractor(){
   }
 
   return map;
+
+}
+
+async function saveCourse(course){
+  var obj = new Parse.Object("Class");
+  // console.log(courses);
+  // for(var course of courses){
+    // if(course !== undefined){  
+      // console.log(course)
+      obj.set("subject", course.subject)
+      obj.set("mnemonic", course.mnemonic)
+      obj.set("section", course.section)
+      obj.set("number", course.number)
+      obj.set("title", course.title)
+      obj.set("desc", course.desc)
+      obj.set("instructor", course.instructor)
+      obj.set("capacity", course.capacity)
+      obj.set("days", course.days) // 'MTWRF'
+      obj.set("start", course.start)
+      obj.set("end", course.end) // 'HH:MM:SS' 24hr
+      obj.set("term", course.term) // '1216
+      obj.set("termdesc", course.termdesc)
+
+      try{
+        let result = await obj.save();
+        // alert(`Class ${course.subject}${course.mnemonic} created. `)
+      }
+      catch(error){
+        // alert(`Failed to create Class ${course.subject}${course.mnemonic}`)
+        console.log("Saving the class failed",error)
+      }
+    // }
+  // }
 
 }
 
