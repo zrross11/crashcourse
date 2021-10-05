@@ -14,6 +14,8 @@ import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+// import AsyncStorage from '@react-native-community/async-storage'
+
 import Parse from 'parse/react-native';
 import './App/CourseRoster'
 import { classExtractor } from './App/CourseRoster';
@@ -344,7 +346,9 @@ function MyDrawer() {
 // }
 
 const  InitialDrawer = (props) => {
-console.log("Drawer props",props);
+// console.log("Drawer props",props);
+  // SecureStore.deleteItemAsync('token')
+
   // setLogIn(true);
   const handleUser = (data) => {
     console.log("About to change our shit.")
@@ -370,19 +374,28 @@ export default function App() {
   const [isLoggedIn, setLogIn] = React.useState(false)
   const [schedule, setSchedule] = React.useState({})
   const [user, setUser] = React.useState({})
+  var count = 0;
+
 
   async function getUser(){
     let token = await SecureStore.getItemAsync('token')
     console.log(token);
-    if(token !== null){
+    if(token != null){
       setLogIn(true);
       setUser(JSON.parse(token).user);
     }
     // setSchedule()
   }
 
+
   React.useEffect(() => {
-    getUser();
+    // if(count === 0){
+    //   count += 1
+    //   SecureStore.setItemAsync('token', JSON.stringify(null));
+    // }
+    // else{
+      getUser();
+    // }
   })
   
 

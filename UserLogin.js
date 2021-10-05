@@ -8,10 +8,13 @@ import {
   TouchableHighlight,
   View,
   StyleSheet,
-  Button
+  Button,
+  AsyncStorage
 } from 'react-native';
 import Parse from 'parse/react-native';
 import * as SecureStore from 'expo-secure-store';
+// import AsyncStorage from '@react-native-community/async-storage'
+
 
 // import Styles from './Styles';
 
@@ -21,9 +24,10 @@ export const UserLogInPage = (props) => {
   const [UserAccount, setUser] = useState('');
   const [sendBack,setSendBack] = useState('')
 
+  // SecureStore.deleteItemAsync('token')
   
 
-  console.log("Login??",props)
+  // console.log("Login??",props)
   const doUserLogIn = async function () {
     // Note that these values come from state variables that we've declared before
     const usernameValue = username;
@@ -53,8 +57,11 @@ export const UserLogInPage = (props) => {
       }
     // props.onChange(sendBack);
     // setSendBack(sendBack);
+    // console.log("Current User", currentUser)
     let token = await SecureStore.setItemAsync('token', JSON.stringify(currentUser))
-    console.log("Login has saved the token",token)
+    // let k = await AsyncStorage.setItem('token', JSON.stringify(currentUser))
+    // console.log("Login has saved the token",token)
+    // console.log("Login has saved the token",k)
     return token;
   };
 
