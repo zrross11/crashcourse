@@ -46,6 +46,8 @@ populateClass(courses['APMA3080'][4],semester)
 
 doStuff()
 
+export {courses}
+
 async function populateClass(course,semesterMap){
   // Each letter in course.days corresponds to another day
   console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
