@@ -7,7 +7,7 @@
 //
 
 import React from "react"
-import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView } from "react-native"
+import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
 import { courses } from './../App'
 import { selectedDepartment } from './Filters'
 
@@ -16,7 +16,9 @@ function getResults() {
 	classes = []
 	for (var key of Object.values(courses)) {
 		if (key[0].subject == selectedDepartment) {
-			classes.push(key[0].title);
+			for (var j = 0; j < key.length; j++) {
+				classes.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
+			}
 		}
 	}
 	classes.sort()
@@ -44,7 +46,6 @@ export default class SearchResults extends React.Component {
 
 	render() {
 		getResults();
-		console.log(classes)
 		return <View
 			style={styles.searchResultsView}>
 			<View
@@ -68,25 +69,63 @@ export default class SearchResults extends React.Component {
 					left: "10%",
 					width: "80%",
 					top: "5%",
-					bottom: "5%",
+					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
-				<ScrollView>
-					{classes.map((item) => (
-						<Text>{item}</Text>)
+				<ScrollView
+					style={{
+						backgroundColor: "white",
+						width: "100%",
+						borderRadius: 6,
+					}}>
+					{classes.map((item, key) => (
+						<View>
+							<Text style={styles.className}>{item[0]}</Text>
+							<Text style={styles.details}>{item[1]}</Text>
+							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+								<Button
+									type="clear"
+									title="Add"
+									color="#FFFF"
+									onPress={() => console.log("test")}
+								/>
+							</View>
+							<Text style={styles.details}>{item[2]}</Text>
+							<Text style={styles.details}>{item[3]}</Text>
+							<View
+								style={{
+									borderBottomColor: 'black',
+									borderBottomWidth: 2,
+									width: "90%",
+									left: "5%",
+								}}
+							/>
+						</View>
+					)
 					)}
 				</ScrollView>
+			</View>
+			<View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>
 				<Button
 					type="clear"
 					title="Go back"
 					color="#FFFF"
 					onPress={() => this.props.navigation.navigate("Add Classes")}
 				/>
-
 			</View>
+
+			<View style={{ backgroundColor: "black", width: "30%", right: "10%", top: "88%", position: "absolute" }}>
+				<Button
+					type="clear"
+					title="Confirm"
+					color="#FFFF"
+					onPress={() => this.props.navigation.navigate("Zach's Schedule")}
+				/></View>
+
 		</View>
 	}
 }
+
 
 const styles = StyleSheet.create({
 	searchResultsView: {
@@ -99,4 +138,11 @@ const styles = StyleSheet.create({
 		width: null,
 		height: 814,
 	},
+	className: {
+		fontSize: 15,
+		fontWeight: "bold"
+	},
+	details: {
+		fontSize: 13,
+	}
 })

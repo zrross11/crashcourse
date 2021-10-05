@@ -20,8 +20,16 @@ async function getFilters() {
 		if (!departments.includes(key[0].subject)) {
 			departments.push(key[0].subject)
 		}
+		if (!professors.includes(key[0].instructor)) {
+			professors.push(key[0].instructor)
+		}
+		if (!meetingdays.includes(key[0].days)) {
+			meetingdays.push(key[0].days)
+		}
 	}
 	departments.sort()
+	professors.sort()
+	meetingdays.sort()
 }
 getFilters()
 
@@ -99,7 +107,7 @@ export default class MainScreenTwo extends React.Component {
 						flex: 0.1,
 					}} />
 				<SelectDropdown
-					data={departments}
+					data={professors}
 					defaultButtonText={"Professor"}
 					dropdownStyle="arrow"
 					buttonStyle={styles.dropdown1BtnStyle}
@@ -123,7 +131,7 @@ export default class MainScreenTwo extends React.Component {
 						flex: 0.1,
 					}} />
 				<SelectDropdown
-					data={departments}
+					data={meetingdays}
 					defaultButtonText={"Meeting Days"}
 					dropdownStyle="arrow"
 					buttonStyle={styles.dropdown1BtnStyle}
