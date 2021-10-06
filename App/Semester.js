@@ -15,6 +15,7 @@ export async function SemesterMapper(startDate,endDate){
         "Sunday": [],
     }
 
+    var SemesterDays = {}
 
     for (var date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
         var currDate = `${date.getFullYear()}-${("0" + (date.getMonth()+ 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`.toString()
@@ -23,6 +24,7 @@ export async function SemesterMapper(startDate,endDate){
             console.log('Dec 7? Year', date.getYear())
             console.log('Dec 7? Date', date.getDate())
         }
+        SemesterDays[`${currDate}`] = [] // Creates empty list for each day in the semester for the calendar generator
         // console.log(currDate)
         var temp = [];
         switch(date.getDay()){
@@ -68,12 +70,8 @@ export async function SemesterMapper(startDate,endDate){
                 break
         }
       }
-    //   console.log("Semester! ",Semester['M'])
-    //   console.log("Semester! ",Semester['T'])
-    //   console.log("Semester! ",Semester['W'])
-    //   console.log("Semester! ",Semester['R'])
-    //   console.log("Semester! ",Semester['F'])
-      return Semester;
+    //   console.log("Semester Mapper list of all days", SemesterDays)
+      return {Semester, SemesterDays};
 }
 
 export default SemesterMapper;
