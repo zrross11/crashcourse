@@ -58,7 +58,9 @@ export default class MainScreenTwo extends React.Component {
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
 			courses: this.props.courses,
-			show: this.props.show,
+			show: this.props.show,			
+			classes: []
+
 		}
 		this.filterCourses = this.filterCourses.bind(this)
 	}

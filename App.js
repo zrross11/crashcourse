@@ -59,18 +59,6 @@ function Profile() {
   );
 }
 
-const Stack = createStackNavigator()
-
-function AddClasses() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Add Classes" component={Filters} options={{ headerShown: false }} />
-      <Stack.Screen name="Available" component={SearchResults} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  );
-}
-
-
 
 function CustomDrawerContent(props) {
   // console.log("Custom props",props);
