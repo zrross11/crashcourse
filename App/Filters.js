@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Image, StyleSheet, Text, View, Button, TextInput } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -17,12 +17,41 @@ export default class MainScreenTwo extends React.Component {
 		}
 	}
 
+
 	constructor(props) {
 		super(props)
+		this.state = {
+			username: this.props.username,
+			password: this.props.password,
+			email: this.props.email,
+			firstName: this.props.firstName,
+			lastName: this.props.lastName,
+			loggedIn: this.props.loggedIn,
+			schedule: this.props.schedule,
+			retrievedSchedule: this.props.retrievedSchedule,
+			courses: this.props.courses,
+			show: this.props.show,
+		}
+		this.filterCourses = this.filterCourses.bind(this)
 	}
+
 
 	componentDidMount() {
 
+	}
+
+
+	filterCourses(){
+		// Filter results based on the filter query
+
+		// Set the list of courses that fit the constraints in state 
+
+		// Courses are being filtered
+		this.setState({show: 1})
+		this.props.updateUser(this.state)
+		console.log("Checking for navigation props",this.props.show)
+		console.log("Checking for navigation state",this.state.show)
+		// this.props.navigation.navigate("Available")
 	}
 
 	render() {
@@ -161,7 +190,7 @@ export default class MainScreenTwo extends React.Component {
 						type="clear"
 						title="Show classes"
 						color="#FFFF"
-						onPress={() => this.props.navigation.navigate("Available")}
+						onPress={this.filterCourses}
 					/>
 				</View>
 			</View>

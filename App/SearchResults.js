@@ -7,7 +7,7 @@
 //
 
 import React from "react"
-import { Image, StyleSheet, Text, View, Button } from "react-native"
+import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
 
 
 export default class SearchResults extends React.Component {
@@ -24,14 +24,50 @@ export default class SearchResults extends React.Component {
 
 	constructor(props) {
 		super(props)
+		this.state = {
+            username: this.props.username,
+            password: this.props.password,
+            email: this.props.email,
+            firstName: this.props.firstName,
+            lastName: this.props.lastName,
+            loggedIn: this.props.loggedIn,
+            schedule: this.props.schedule,
+            retrievedSchedule: this.props.retrievedSchedule,
+            courses: this.props.courses
+        }
 	}
 
 	componentDidMount() {
 
+
 	}
 
-	render() {
+	render(){
+		return (
+			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
+			<ScrollView>
+				<SafeAreaView >
+					<View style={styles.searchResultsBackgroundMaskImage}>
+					{/* <View
+				pointerEvents="box-none"
+				style={{
+					// position: "absolute",
+					// left: 0,
+					// right: -2,
+					// top: 0,
+					// bottom: -2,
+				}}> */}
+					<Text>Hi!</Text>
+					{/* </View> */}
+					</View>
+				</SafeAreaView>
+			</ScrollView>
+			</ImageBackground>
+		)
+	}
 
+	render2() {
+		console.log("SearchResults displayed")
 		return <View
 			style={styles.searchResultsView}>
 			<View
@@ -251,7 +287,7 @@ export default class SearchResults extends React.Component {
 					<Text
 						style={styles.danielGrahamFiveText}>Daniel Graham</Text>
 				</View>
-				<View
+				{/* <View
 					pointerEvents="box-none"
 					style={{
 						position: "absolute",
@@ -285,7 +321,7 @@ export default class SearchResults extends React.Component {
 						}} />
 					<Text
 						style={styles.danielGrahamSixText}>Daniel Graham</Text>
-				</View>
+				</View> */}
 				<Text
 					style={styles.gpa36SixText}>GPA: 3.6</Text>
 			</View>
@@ -313,6 +349,10 @@ export default class SearchResults extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	backgroundImage: {
+		flex: 1,
+		width: '100%',
+	  },
 	searchResultsView: {
 		backgroundColor: "white",
 		flex: 1,
