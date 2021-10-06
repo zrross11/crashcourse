@@ -22,7 +22,7 @@ export async function classExtractor(){
   datad = datad.class_schedules.records
   // console.log("headers", datad.class_schedules.columns)
   var map = {}
-  //console.log(datad[0])
+  console.log(datad[0])
   // console.log(datad);
   var course;
   for(var index = 0; index < datad.length; index++){
