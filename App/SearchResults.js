@@ -7,8 +7,27 @@
 //
 
 import React from "react"
+<<<<<<< HEAD
 import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
 
+=======
+import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
+import { courses } from './../App'
+import { selectedDepartment } from './Filters'
+
+var classes = []
+function getResults() {
+	classes = []
+	for (var key of Object.values(courses)) {
+		if (key[0].subject == selectedDepartment) {
+			for (var j = 0; j < key.length; j++) {
+				classes.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
+			}
+		}
+	}
+	classes.sort()
+}
+>>>>>>> da2879df394fbcfd4a428b679c0c77dca1d5857e
 
 export default class SearchResults extends React.Component {
 
@@ -42,6 +61,7 @@ export default class SearchResults extends React.Component {
 
 	}
 
+<<<<<<< HEAD
 	render(){
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
@@ -68,6 +88,10 @@ export default class SearchResults extends React.Component {
 
 	render2() {
 		console.log("SearchResults displayed")
+=======
+	render() {
+		getResults();
+>>>>>>> da2879df394fbcfd4a428b679c0c77dca1d5857e
 		return <View
 			style={styles.searchResultsView}>
 			<View
@@ -75,10 +99,12 @@ export default class SearchResults extends React.Component {
 				style={{
 					position: "absolute",
 					left: 0,
-					right: -2,
+					right: 0,
 					top: 0,
-					bottom: -2,
+					bottom: 0,
+					justifyContent: "center",
 				}}>
+<<<<<<< HEAD
 				<View
 					pointerEvents="box-none"
 					style={{
@@ -324,29 +350,76 @@ export default class SearchResults extends React.Component {
 				</View> */}
 				<Text
 					style={styles.gpa36SixText}>GPA: 3.6</Text>
+=======
+				<Image
+					source={require("./../assets/images/background.jpg")}
+					style={styles.searchResultsBackgroundMaskImage} />
+>>>>>>> da2879df394fbcfd4a428b679c0c77dca1d5857e
 			</View>
 			<View
 				pointerEvents="box-none"
 				style={{
 					position: "absolute",
-					alignSelf: "center",
-					width: 88,
-					top: 152,
-					height: 461,
-					alignItems: "center",
+					left: "10%",
+					width: "80%",
+					top: "5%",
+					bottom: "15%",
+					alignItems: "flex-start",
 				}}>
-				<Text
-					style={styles.time200Pm250pmSixText}>Time: 2:00 PM - 2:50PM</Text>
-				<Text
-					style={styles.time200Pm250pmFiveText}>Time: 2:00 PM - 2:50PM</Text>
-				<Text
-					style={styles.time200Pm250pmTwoText}>Time: 2:00 PM - 2:50PM</Text>
-				<Text
-					style={styles.time200Pm250pmText}>Time: 2:00 PM - 2:50PM</Text>
+				<ScrollView
+					style={{
+						backgroundColor: "white",
+						width: "100%",
+						borderRadius: 6,
+					}}>
+					{classes.map((item, key) => (
+						<View>
+							<Text style={styles.className}>{item[0]}</Text>
+							<Text style={styles.details}>{item[1]}</Text>
+							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+								<Button
+									type="clear"
+									title="Add"
+									color="#FFFF"
+									onPress={() => console.log("test")}
+								/>
+							</View>
+							<Text style={styles.details}>{item[2]}</Text>
+							<Text style={styles.details}>{item[3]}</Text>
+							<View
+								style={{
+									borderBottomColor: 'black',
+									borderBottomWidth: 2,
+									width: "90%",
+									left: "5%",
+								}}
+							/>
+						</View>
+					)
+					)}
+				</ScrollView>
 			</View>
+			<View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>
+				<Button
+					type="clear"
+					title="Go back"
+					color="#FFFF"
+					onPress={() => this.props.navigation.navigate("Add Classes")}
+				/>
+			</View>
+
+			<View style={{ backgroundColor: "black", width: "30%", right: "10%", top: "88%", position: "absolute" }}>
+				<Button
+					type="clear"
+					title="Confirm"
+					color="#FFFF"
+					onPress={() => this.props.navigation.navigate("Zach's Schedule")}
+				/></View>
+
 		</View>
 	}
 }
+
 
 const styles = StyleSheet.create({
 	backgroundImage: {
@@ -363,366 +436,11 @@ const styles = StyleSheet.create({
 		width: null,
 		height: 814,
 	},
-	csText: {
-		color: "black",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		marginLeft: 37,
+	className: {
+		fontSize: 15,
+		fontWeight: "bold"
 	},
-	cs4720MobileAppDevelopmentText: {
-		color: "rgb(53, 71, 233)",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-		marginBottom: 56,
-	},
-	cancelText: {
-		color: "white",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-	},
-	addText: {
-		color: "white",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		marginBottom: 26,
-	},
-	daysMWFText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	danielGrahamText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	cs4720MobileAppDevelopmentTwoText: {
-		color: "rgb(53, 71, 233)",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-	},
-	gpa36Text: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 31,
-	},
-	daysMWFTwoText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	danielGrahamTwoText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	cs4720MobileAppDevelopmentThreeText: {
-		color: "rgb(53, 71, 233)",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-	},
-	gpa36TwoText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 31,
-		marginLeft: 1,
-	},
-	daysMWFThreeText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	time200Pm250pmThreeText: {
-		backgroundColor: "transparent",
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		width: 88,
-		marginLeft: 43,
-	},
-	danielGrahamThreeText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	cs4720MobileAppDevelopmentFourText: {
-		color: "rgb(53, 71, 233)",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-	},
-	gpa36ThreeText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 31,
-	},
-	daysMWFFourText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	time200Pm250pmFourText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-		marginLeft: 43,
-	},
-	danielGrahamFourText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	gpa36FourText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		position: "absolute",
-		left: 48,
-		width: 31,
-		top: 322,
-	},
-	cs4720MobileAppDevelopmentFiveText: {
-		color: "rgb(53, 71, 233)",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		position: "absolute",
-		left: 49,
-		width: 255,
-		top: 281,
-	},
-	daysMWFFiveText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	danielGrahamFiveText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	cs4720MobileAppDevelopmentSixText: {
-		color: "rgb(53, 71, 233)",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-	},
-	gpa36FiveText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 31,
-	},
-	daysMWFSixText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	danielGrahamSixText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	gpa36SixText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		position: "absolute",
-		left: 49,
-		width: 31,
-		top: 165,
-	},
-	time200Pm250pmSixText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-	},
-	time200Pm250pmFiveText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-		marginTop: 32,
-	},
-	time200Pm250pmTwoText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-		marginTop: 189,
-	},
-	time200Pm250pmText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-		marginTop: 32,
-	},
+	details: {
+		fontSize: 13,
+	}
 })

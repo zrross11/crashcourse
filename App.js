@@ -10,7 +10,7 @@ import {
 import RemoveClasses from "./App/RemoveClasses/";
 import Filters from "./App/Filters/";
 import SearchResults from "./App/SearchResults/"
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -36,14 +36,17 @@ Parse.serverURL = 'https://parseapi.back4app.com/';
 
 var testEvents = {}
 var courses = {}
-async function doStuff(){
-//  courses = await classExtractor();
-const {semester, semesterDays} = await SemesterMapper(new Date(2021,7,24),new Date(2021,12,7));
 
-var list = []
-for(var key of Object.keys(courses)){
-  list.push(key)
-}
+async function doStuff() {
+  courses = await classExtractor();
+  semester = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7));
+
+  var list = []
+  for (var key of Object.keys(courses)) {
+    list.push(key)
+  }
+
+  var count = 0;
 
 var count = 0;
 }

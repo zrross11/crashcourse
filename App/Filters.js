@@ -2,8 +2,36 @@ import * as React from "react";
 import { Image, StyleSheet, Text, View, Button, TextInput } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-const countries = ["CS", "ECE", "ECON"]
+import { classExtractor } from './CourseRoster';
 
+
+var departments = []
+var professors = []
+var meetingdays = []
+var locations = []
+
+var selectedDepartment = ""
+
+var courses = {}
+async function getFilters() {
+	courses = await classExtractor();
+
+	for (var key of Object.values(courses)) {
+		if (!departments.includes(key[0].subject)) {
+			departments.push(key[0].subject)
+		}
+		if (!professors.includes(key[0].instructor)) {
+			professors.push(key[0].instructor)
+		}
+		if (!meetingdays.includes(key[0].days)) {
+			meetingdays.push(key[0].days)
+		}
+	}
+	departments.sort()
+	professors.sort()
+	meetingdays.sort()
+}
+getFilters()
 
 export default class MainScreenTwo extends React.Component {
 
@@ -83,7 +111,7 @@ export default class MainScreenTwo extends React.Component {
 				}}>
 				<Text style={styles.titleText}>What type of class?</Text>
 				<SelectDropdown
-					data={countries}
+					data={departments}
 					defaultButtonText={"Department"}
 					dropdownStyle="arrow"
 					buttonStyle={styles.dropdown1BtnStyle}
@@ -94,6 +122,7 @@ export default class MainScreenTwo extends React.Component {
 					}}
 					onSelect={(selectedItem, index) => {
 						console.log(selectedItem, index)
+						selectedDepartment = selectedItem 
 					}}
 					buttonTextAfterSelection={(selectedItem, index) => {
 						return selectedItem
@@ -107,7 +136,7 @@ export default class MainScreenTwo extends React.Component {
 						flex: 0.1,
 					}} />
 				<SelectDropdown
-					data={countries}
+					data={professors}
 					defaultButtonText={"Professor"}
 					dropdownStyle="arrow"
 					buttonStyle={styles.dropdown1BtnStyle}
@@ -131,7 +160,7 @@ export default class MainScreenTwo extends React.Component {
 						flex: 0.1,
 					}} />
 				<SelectDropdown
-					data={countries}
+					data={meetingdays}
 					defaultButtonText={"Meeting Days"}
 					dropdownStyle="arrow"
 					buttonStyle={styles.dropdown1BtnStyle}
@@ -155,7 +184,7 @@ export default class MainScreenTwo extends React.Component {
 						flex: 0.1,
 					}} />
 				<SelectDropdown
-					data={countries}
+					data={departments}
 					defaultButtonText={"Location"}
 					dropdownStyle="arrow"
 					buttonStyle={styles.dropdown1BtnStyle}
@@ -178,8 +207,8 @@ export default class MainScreenTwo extends React.Component {
 					style={{
 						flex: 0.3,
 					}} />
-					<Text style={styles.titleText2}>Search By Class Name:</Text>
-					<TextInput style={styles.input} placeholder="Type here..."/>
+				<Text style={styles.titleText2}>Search By Class Name:</Text>
+				<TextInput style={styles.input} placeholder="Type here..." />
 
 				<View
 					style={{
@@ -197,6 +226,8 @@ export default class MainScreenTwo extends React.Component {
 		</View>
 	}
 }
+
+export {selectedDepartment};
 
 const styles = StyleSheet.create({
 	mainScreenView: {
@@ -230,5 +261,5 @@ const styles = StyleSheet.create({
 		backgroundColor: "white",
 		height: "5%",
 		width: "100%",
-	  },
+	},
 })
