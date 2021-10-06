@@ -26,7 +26,7 @@ import HomeScreen from './Screens/HomeScreen';
 import AddScreen from './Screens/AddScreen';
 // import { Provider } from 'react-redux'
 // import { createStore} from 'redux'
-import * as SecureStore from 'expo-secure-store';
+// import * as SecureStore from 'expo-secure-store';
 
 Parse.setAsyncStorage(AsyncStorage);
 
@@ -109,6 +109,8 @@ const Drawer = createDrawerNavigator();
         loggedIn: false,
         schedule: {}, 
         retrievedSchedule: {},
+        classes: [],
+
     }
     this.handler = this.handler.bind(this)
 	}
@@ -122,12 +124,16 @@ const Drawer = createDrawerNavigator();
     this.setState({loggedIn: childState.loggedIn})
     this.setState({schedule: childState.schedule})
     this.setState({retrievedSchedule: childState.retrievedSchedule})
+    this.setState({courses: childState.courses})
+    this.setState({show: childState.show})
+    this.setState({classes: childState.classes})
+    this.setState({selectedDepartment: childState.selectedDepartment})
     // console.log("App handler just got called", this.state)
   }
 
   render(){
     if(this.state.loggedIn){
-    console.log("This just logged in",this.state)
+    // console.log("This just logged in")
     return (
       <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)} >
       <Drawer.Screen name={`${this.state.firstName}'s Schedule`} children={() => (<HomeScreen {...this.state} updateUser={this.handler} />)} />
