@@ -8,35 +8,15 @@
 
 import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
+// import { courses } from './../App'
 import { selectedDepartment } from './Filters'
-import { classExtractor } from './../App/CourseRoster';
+import { classExtractor } from './CourseRoster';
 
-// var classes2 = []
-// async function getResults() {
-// 	classes2 = []
-// 	console.log(selectedDepartment)
-// 	var courses = await classExtractor();
-// 	for (var key of Object.values(courses)) {
-// 		if (key[0].subject == selectedDepartment) {
-// 			for (var j = 0; j < key.length; j++) {
-// 				classes2.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
-// 			}
-// 		}
-// 	}
-// 	return classes2.sort()
-// }
+
+var classes = []
+
 
 export default class SearchResults extends React.Component {
-
-	static navigationOptions = ({ navigation }) => {
-
-		const { params = {} } = navigation.state
-		return {
-			header: null,
-			headerLeft: null,
-			headerRight: null,
-		}
-	}
 
 	constructor(props) {
 		super(props)
@@ -50,43 +30,83 @@ export default class SearchResults extends React.Component {
             schedule: this.props.schedule,
             retrievedSchedule: this.props.retrievedSchedule,
             courses: this.props.courses,
+			classes: this.props.classes,
 			show: this.props.show,
-			classes: []
+			selectedDepartment: this.props.selectedDepartment,
         }
-		this.flip = this.flip.bind(this)
 		this.getResults = this.getResults.bind(this)
+		this.flip = this.flip.bind(this)
+		this.mapClasses = this.mapClasses.bind(this)
 	}
 
-	componentDidMount() {
+	// componentDidMount() {
+	// 	this.getResults;
 
+	// }
 
-	}
+	mapClasses(){
+		// console.log("mapClasses sate",this.state)
+		var grab = this.state.classes
+		console.log("MapClasses selectedDepartment", this.state.classes)
+		return (
+			<ScrollView>
+			{grab.map((item, key) => {
+				return(
+				<View>
+					<Text style={styles.className}>{item[0]}</Text>
+					<Text style={styles.details}>{item[1]}</Text>
+					<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+						<Button
+							type="clear"
+							title="Add"
+							color="#FFFF"
+							onPress={() => console.log("test")}
+						/>
+					</View>
+					<Text style={styles.details}>{item[2]}</Text>
+					<Text style={styles.details}>{item[3]}</Text>
+					<View
+						style={{
+							borderBottomColor: 'black',
+							borderBottomWidth: 2,
+							width: "90%",
+							left: "5%",
+						}}
+					/>
+				</View>					
+				)
+			})}
+			</ScrollView>
 
-	async getResults() {
-		var classes2 = []
-		console.log(selectedDepartment)
-		var courses = await classExtractor();
-		for (var key of Object.values(courses)) {
-			if (key[0].subject == selectedDepartment) {
-				for (var j = 0; j < key.length; j++) {
-					classes2.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
-				}
-			}
-		}
-		this.setState({classes: classes2.sort()})
-		console.log("checking for classes",this.state.classes)
-		return classes2.sort()
+			)
 	}
 
 	flip(){
-		this.setState({show: !this.state.show})
+		// this.setState({classes: []}) // resets the search Inquiry list
+		// this.setState({show: !this.state.show})
+		// this.props.updateUser(this.state)
+		this.props.flipScreen();
+	}
+
+    async getResults() {
+		var courses = await classExtractor();
+
+		var k = this.state.classes
+		for (var key of Object.values(courses)) {
+			if (key[0].subject == this.state.selectedDepartment) {
+				for (var j = 0; j < key.length; j++) {
+					k.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
+				}
+			}
+		}
+		k.sort()
+		this.setState({classes: k})
 		this.props.updateUser(this.state)
 	}
 
 	render() {
-		this.getResults;
-		// console.log(classes)
-		return <View
+		// this.getResults;
+		return (<View
 			style={styles.searchResultsView}>
 			<View
 				pointerEvents="box-none"
@@ -118,31 +138,7 @@ export default class SearchResults extends React.Component {
 						width: "100%",
 						borderRadius: 6,
 					}}>
-					{this.state.classes.map((item, key) => (
-						<View>
-							<Text style={styles.className}>{item[0]}</Text>
-							<Text style={styles.details}>{item[1]}</Text>
-							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
-								<Button
-									type="clear"
-									title="Add"
-									color="#FFFF"
-									onPress={() => console.log("test")}
-								/>
-							</View>
-							<Text style={styles.details}>{item[2]}</Text>
-							<Text style={styles.details}>{item[3]}</Text>
-							<View
-								style={{
-									borderBottomColor: 'black',
-									borderBottomWidth: 2,
-									width: "90%",
-									left: "5%",
-								}}
-							/>
-						</View>
-					)
-					)}
+					<View>{this.mapClasses()}</View>
 				</ScrollView>
 			</View>
 			<View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>
@@ -153,7 +149,6 @@ export default class SearchResults extends React.Component {
 					onPress={this.flip}
 				/>
 			</View>
-
 			<View style={{ backgroundColor: "black", width: "30%", right: "10%", top: "88%", position: "absolute" }}>
 				<Button
 					type="clear"
@@ -163,6 +158,7 @@ export default class SearchResults extends React.Component {
 				/></View>
 
 		</View>
+		)
 	}
 }
 
@@ -184,9 +180,11 @@ const styles = StyleSheet.create({
 	},
 	className: {
 		fontSize: 15,
-		fontWeight: "bold"
+		fontWeight: "bold",
+		marginLeft: "2%"
 	},
 	details: {
 		fontSize: 13,
+		marginLeft: "2%"
 	}
 })

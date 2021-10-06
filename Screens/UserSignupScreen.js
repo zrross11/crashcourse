@@ -4,7 +4,7 @@ import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, 
 import Parse from 'parse/react-native';
 import '../App/CourseRoster'
 import SemesterMapper from '../App/Semester'
-import populateClass from   '../ExtraCode'
+// import populateClass from   '../ExtraCode'
 import { classExtractor } from '../App/CourseRoster';
 
 // Parse.setAsyncStorage(AsyncStorage);
@@ -56,7 +56,7 @@ export default class SignUpScreen extends React.Component {
         }).catch(function(error){
             console.log("Error: " + error.code + " " + error.message);
         });
-        populateClass()
+        // populateClass()
         this.setState({retrievedSchedule: semesterDays})
         this.setState({loggedIn: true})
         this.setState({schedule: result.id})
