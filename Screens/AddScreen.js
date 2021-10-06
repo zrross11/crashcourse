@@ -23,12 +23,37 @@ export default class SignUpScreen extends React.Component {
             retrievedSchedule: this.props.retrievedSchedule,
             courses: [],
             show: 0,
+            classes: [],
+            selectedDepartment: '',
         }
         this.handler = this.handler.bind(this)
+        this.flip = this.flip.bind(this)
+        // this.getResults = this.getResults.bind(this)
 
     }
 
-    handler(childState){
+    // var classes = []
+    // getResults() {
+    // console.log("AddScreen state in getResults", this.state)
+	// var k = this.state.classes
+	// for (var key of Object.values(courses)) {
+	// 	if (key[0].subject == selectedDepartment) {
+	// 		for (var j = 0; j < key.length; j++) {
+	// 			k.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
+	// 		}
+	// 	}
+	// }
+	// k.sort()
+    // this.setState({classes: k})
+    // this.updateUser(this.state)
+    // }
+
+    componentDidMount(){
+        // this.getResults
+    }
+
+    async handler(childState){
+        console.log("AddScreen handler was called");
         this.setState({username: childState.username})
         this.setState({password: childState.password})
         this.setState({email: childState.email})
@@ -39,18 +64,26 @@ export default class SignUpScreen extends React.Component {
         this.setState({retrievedSchedule: childState.retrievedSchedule})
         this.setState({courses: childState.courses})
         this.setState({show: childState.show})
+        this.setState({classes: childState.classes})
+        this.setState({selectedDepartment: childState.selectedDepartment})
         // console.log("App handler just got called", this.state)
+        this.props.updateUser(this.state)
+      }
+
+      flip(){
+          this.setState({show: !this.state.show})
+          this.setState({classes: []})
       }
 
     render(){
         if(!this.state.show){
             return(
-                <Filters {...this.state} updateUser={this.handler}/>
+                <Filters {...this.state} updateUser={this.handler}  />
             )
         }
         else{
             return (
-            <SearchResults {...this.state} updateUser={this.handler}/>
+            <SearchResults {...this.state} updateUser={this.handler} flipScreen={this.flip} />
             )
         }
         // return (

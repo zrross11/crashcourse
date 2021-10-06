@@ -17,7 +17,7 @@ import Parse from 'parse/react-native';
 import '../App/CourseRoster'
 // import { Provider } from 'react-redux'
 // import { createStore} from 'redux'
-import * as SecureStore from 'expo-secure-store';
+// import * as SecureStore from 'expo-secure-store';
 import populateClass from   '../ExtraCode'
 import { classExtractor } from '../App/CourseRoster';
 import SemesterMapper from '../App/Semester';
@@ -110,7 +110,7 @@ async updateSchedule(){
 
       const usernameValue = this.state.username;
       const passwordValue = this.state.password;
-      console.log("Inside of doUserLogIn")
+      // console.log("Inside of doUserLogIn")
       const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue)
         .then(async (loggedInUser) => {
           // logIn returns the corresponding ParseUser object
@@ -123,7 +123,7 @@ async updateSchedule(){
           if(currentUser === loggedInUser){
             // console.log("just firstname",currentUser.firstname);
             var k = JSON.parse(JSON.stringify(currentUser))
-            console.log("k value",k)
+            // console.log("k value",k)
             // console.log("2",currentUser.get);
             // console.log("json parse",JSON.parse(currentUser));
             
@@ -138,7 +138,7 @@ async updateSchedule(){
               
               // var sched = this.getSchedule;
               // updateSchedule();
-              console.log("after updateSchedule", this.state.retrievedSchedule);
+              // console.log("after updateSchedule", this.state.retrievedSchedule);
               // this.setState({retrievedSchedule: sched})
               this.props.updateUser(this.state);
               // console.log("The props", this.props)
