@@ -10,7 +10,7 @@ import {
 import RemoveClasses from "./App/RemoveClasses/";
 import Filters from "./App/Filters/";
 import SearchResults from "./App/SearchResults/"
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -28,22 +28,26 @@ import * as SecureStore from 'expo-secure-store';
 
 Parse.setAsyncStorage(AsyncStorage);
 
+
 Parse.initialize("mACzMiXlQTl8YbFXSMB7MCyhlXQinlAyS4FVg0k1","VS0yWbPQcLuBK8EgKRfBr6LiRoMdpSU2ZQjzIqvV"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
 
 var testEvents = {}
 var courses = {}
-async function doStuff(){
- courses = await classExtractor();
-const semester = await SemesterMapper(new Date(2021,7,24),new Date(2021,12,7));
+var semester;
 
-var list = []
-for(var key of Object.keys(courses)){
-  list.push(key)
-}
+async function doStuff() {
+  courses = await classExtractor();
+  semester = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7));
 
-var count = 0;
+  var list = []
+  for (var key of Object.keys(courses)) {
+    list.push(key)
+  }
+
+  var count = 0;
+
 
 const initialState = {
   counter: 0
@@ -84,89 +88,90 @@ populateClass(courses['APMA3080'][4],semester)
 
 doStuff()
 
-async function populateClass(course,semesterMap){
+export { courses }
+
+async function populateClass(course, semesterMap) {
   // Each letter in course.days corresponds to another day
   // console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
   for(var ind of course.days){
     // console.log("Day of the week", ind)
     switch(ind){
       case 'M': // Monday
-        for(var date of semesterMap['M']){
+        for (var date of semesterMap['M']) {
           // console.log("Monday dates",date)
-          if(testEvents[`${date}`]){
+          if (testEvents[`${date}`]) {
             var temp = testEvents[`${date}`]
             temp.push(course)
             testEvents[`${date}`] = temp
             // console.log(testEvents[`${date}`])
           }
-          else{
+          else {
             testEvents[`${date}`] = [course]
             // console.log(testEvents[`${date}`])
           }
         }
         break
       case 'T': // Tuesday
-        for(var date of semesterMap['T']){
+        for (var date of semesterMap['T']) {
           // console.log("Tuesday dates",date)
-          if(testEvents[`${date}`]){
+          if (testEvents[`${date}`]) {
             var temp = testEvents[`${date}`]
             temp.push(course)
             testEvents[`${date}`] = temp
             // console.log(testEvents[`${date}`])
           }
-          else{
+          else {
             testEvents[`${date}`] = [course]
             // console.log(testEvents[`${date}`])
 
           }
         }
-        break            
+        break
       case 'W': // Wednesday
-        for(var date of semesterMap['W']){
+        for (var date of semesterMap['W']) {
           // console.log("Wed dates",date)
-          if(testEvents[`${date}`]){
+          if (testEvents[`${date}`]) {
             var temp = testEvents[`${date}`]
             temp.push(course)
             testEvents[`${date}`] = temp
           }
-          else{
+          else {
             testEvents[`${date}`] = [course]
 
-          }      
+          }
         }
         break
       case 'R': // Thursday
-        for(var date of semesterMap['R']){
+        for (var date of semesterMap['R']) {
           // console.log("Thursday dates",date)
-          if(testEvents[`${date}`]){
+          if (testEvents[`${date}`]) {
             var temp = testEvents[`${date}`]
             temp.push(course)
             testEvents[`${date}`] = temp
           }
-          else{
+          else {
             testEvents[`${date}`] = [course]
 
-          }       
+          }
         }
         break
       case 'F': // Friday
-        for(var date of semesterMap['F']){
+        for (var date of semesterMap['F']) {
           // console.log("Friday dates",date)
-          if(testEvents[`${date}`]){
+          if (testEvents[`${date}`]) {
             var temp = testEvents[`${date}`]
             temp.push(course)
             testEvents[`${date}`] = temp
           }
-          else{
+          else {
             testEvents[`${date}`] = [course]
 
-          }       
+          }
         }
         break
     }
   }
 }
-
 
 function Feed({ navigation }) {
   return (
@@ -210,13 +215,14 @@ function Feed({ navigation }) {
                   </Card>                      
                 // );
               // })
-            )}}
-            renderEmptyDate={() => {return (<View/>);}}
-            // minDate={'2021-09-22'}
-            firstDay={1}
-            style={{width: 400}}
-            />
-    </View>
+            )
+          }}
+          renderEmptyDate={() => { return (<View />); }}
+          // minDate={'2021-09-22'}
+          firstDay={1}
+          style={{ width: 400 }}
+        />
+      </View>
     </ImageBackground>
 
   );
@@ -240,8 +246,8 @@ const Stack = createStackNavigator()
 function AddClasses() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Add Classes" component={Filters} options={{headerShown: false}}/>
-      <Stack.Screen name="Available" component={SearchResults} options={{headerShown: false}}/>
+      <Stack.Screen name="Add Classes" component={Filters} options={{ headerShown: false }} />
+      <Stack.Screen name="Available" component={SearchResults} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -323,6 +329,7 @@ function MyDrawer() {
     </Drawer.Navigator>
   );
 }
+
 
 // const MainStackNavigator = ({login}) => {
 //   return (

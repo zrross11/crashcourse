@@ -7,8 +7,22 @@
 //
 
 import React from "react"
-import { Image, StyleSheet, Text, View, Button } from "react-native"
+import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
+import { courses } from './../App'
+import { selectedDepartment } from './Filters'
 
+var classes = []
+function getResults() {
+	classes = []
+	for (var key of Object.values(courses)) {
+		if (key[0].subject == selectedDepartment) {
+			for (var j = 0; j < key.length; j++) {
+				classes.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
+			}
+		}
+	}
+	classes.sort()
+}
 
 export default class SearchResults extends React.Component {
 
@@ -31,7 +45,7 @@ export default class SearchResults extends React.Component {
 	}
 
 	render() {
-
+		getResults();
 		return <View
 			style={styles.searchResultsView}>
 			<View
@@ -39,278 +53,79 @@ export default class SearchResults extends React.Component {
 				style={{
 					position: "absolute",
 					left: 0,
-					right: -2,
+					right: 0,
 					top: 0,
-					bottom: -2,
+					bottom: 0,
+					justifyContent: "center",
 				}}>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 0,
-						right: 0,
-						top: 0,
-						bottom: 0,
-						justifyContent: "center",
-					}}>
-					<Image
-						source={require("./../assets/images/results.png")}
-						style={styles.searchResultsBackgroundMaskImage} />
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 49,
-						right: 63,
-						top: 57,
-						bottom: 48,
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.csText}>CS</Text>
-					<View
-						style={{
-							flex: 1,
-						}} />
-					<Text
-						style={styles.cs4720MobileAppDevelopmentText}>CS 4720: Mobile App Development</Text>
-					<View
-						pointerEvents="box-none"
-						style={{
-							alignSelf: "stretch",
-							height: 52,
-							marginLeft: 11,
-							flexDirection: "row",
-							alignItems: "flex-end",
-						}}>
-						<Text
-							style={styles.cancelText}>Cancel{"\n"}</Text>
-						<View
-							style={{
-								flex: 1,
-							}} />
-						<Text
-							style={styles.addText}>Add (1)</Text>
-						<Button
-							title="Cancel"
-							onPress={() => this.props.navigation.navigate("Add Classes")}
-						/>
-					</View>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 49,
-						right: 45,
-						top: 561,
-						height: 52,
-						flexDirection: "row",
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.daysMWFText}>Days: M, W, F</Text>
-					<View
-						style={{
-							flex: 1,
-						}} />
-					<Text
-						style={styles.danielGrahamText}>Daniel Graham</Text>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 49,
-						width: 255,
-						top: 522,
-						height: 104,
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.cs4720MobileAppDevelopmentTwoText}>CS 4720: Mobile App Development</Text>
-					<Text
-						style={styles.gpa36Text}>GPA: 3.6</Text>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 49,
-						right: 45,
-						top: 477,
-						height: 52,
-						flexDirection: "row",
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.daysMWFTwoText}>Days: M, W, F</Text>
-					<View
-						style={{
-							flex: 1,
-						}} />
-					<Text
-						style={styles.danielGrahamTwoText}>Daniel Graham</Text>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 48,
-						width: 255,
-						top: 438,
-						height: 104,
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.cs4720MobileAppDevelopmentThreeText}>CS 4720: Mobile App Development</Text>
-					<Text
-						style={styles.gpa36TwoText}>GPA: 3.6</Text>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 48,
-						right: 46,
-						top: 393,
-						height: 52,
-						flexDirection: "row",
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.daysMWFThreeText}>Days: M, W, F</Text>
-					<Text
-						style={styles.time200Pm250pmThreeText}>Time: 2:00 PM - 2:50PM</Text>
-					<View
-						style={{
-							flex: 1,
-						}} />
-					<Text
-						style={styles.danielGrahamThreeText}>Daniel Graham</Text>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 48,
-						width: 255,
-						top: 354,
-						height: 104,
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.cs4720MobileAppDevelopmentFourText}>CS 4720: Mobile App Development</Text>
-					<Text
-						style={styles.gpa36ThreeText}>GPA: 3.6</Text>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 48,
-						right: 46,
-						top: 309,
-						height: 52,
-						flexDirection: "row",
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.daysMWFFourText}>Days: M, W, F</Text>
-					<Text
-						style={styles.time200Pm250pmFourText}>Time: 2:00 PM - 2:50PM</Text>
-					<View
-						style={{
-							flex: 1,
-						}} />
-					<Text
-						style={styles.danielGrahamFourText}>Daniel Graham</Text>
-				</View>
-				<Text
-					style={styles.gpa36FourText}>GPA: 3.6</Text>
-				<Text
-					style={styles.cs4720MobileAppDevelopmentFiveText}>CS 4720: Mobile App Development</Text>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 49,
-						right: 45,
-						top: 236,
-						height: 52,
-						flexDirection: "row",
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.daysMWFFiveText}>Days: M, W, F</Text>
-					<View
-						style={{
-							flex: 1,
-						}} />
-					<Text
-						style={styles.danielGrahamFiveText}>Daniel Graham</Text>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 49,
-						width: 255,
-						top: 197,
-						height: 104,
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.cs4720MobileAppDevelopmentSixText}>CS 4720: Mobile App Development</Text>
-					<Text
-						style={styles.gpa36FiveText}>GPA: 3.6</Text>
-				</View>
-				<View
-					pointerEvents="box-none"
-					style={{
-						position: "absolute",
-						left: 49,
-						right: 45,
-						top: 152,
-						height: 52,
-						flexDirection: "row",
-						alignItems: "flex-start",
-					}}>
-					<Text
-						style={styles.daysMWFSixText}>Days: M, W, F</Text>
-					<View
-						style={{
-							flex: 1,
-						}} />
-					<Text
-						style={styles.danielGrahamSixText}>Daniel Graham</Text>
-				</View>
-				<Text
-					style={styles.gpa36SixText}>GPA: 3.6</Text>
+				<Image
+					source={require("./../assets/images/background.jpg")}
+					style={styles.searchResultsBackgroundMaskImage} />
 			</View>
 			<View
 				pointerEvents="box-none"
 				style={{
 					position: "absolute",
-					alignSelf: "center",
-					width: 88,
-					top: 152,
-					height: 461,
-					alignItems: "center",
+					left: "10%",
+					width: "80%",
+					top: "5%",
+					bottom: "15%",
+					alignItems: "flex-start",
 				}}>
-				<Text
-					style={styles.time200Pm250pmSixText}>Time: 2:00 PM - 2:50PM</Text>
-				<Text
-					style={styles.time200Pm250pmFiveText}>Time: 2:00 PM - 2:50PM</Text>
-				<Text
-					style={styles.time200Pm250pmTwoText}>Time: 2:00 PM - 2:50PM</Text>
-				<Text
-					style={styles.time200Pm250pmText}>Time: 2:00 PM - 2:50PM</Text>
+				<ScrollView
+					style={{
+						backgroundColor: "white",
+						width: "100%",
+						borderRadius: 6,
+					}}>
+					{classes.map((item, key) => (
+						<View>
+							<Text style={styles.className}>{item[0]}</Text>
+							<Text style={styles.details}>{item[1]}</Text>
+							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+								<Button
+									type="clear"
+									title="Add"
+									color="#FFFF"
+									onPress={() => console.log("test")}
+								/>
+							</View>
+							<Text style={styles.details}>{item[2]}</Text>
+							<Text style={styles.details}>{item[3]}</Text>
+							<View
+								style={{
+									borderBottomColor: 'black',
+									borderBottomWidth: 2,
+									width: "90%",
+									left: "5%",
+								}}
+							/>
+						</View>
+					)
+					)}
+				</ScrollView>
 			</View>
+			<View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>
+				<Button
+					type="clear"
+					title="Go back"
+					color="#FFFF"
+					onPress={() => this.props.navigation.navigate("Add Classes")}
+				/>
+			</View>
+
+			<View style={{ backgroundColor: "black", width: "30%", right: "10%", top: "88%", position: "absolute" }}>
+				<Button
+					type="clear"
+					title="Confirm"
+					color="#FFFF"
+					onPress={() => this.props.navigation.navigate("Zach's Schedule")}
+				/></View>
+
 		</View>
 	}
 }
+
 
 const styles = StyleSheet.create({
 	searchResultsView: {
@@ -323,366 +138,11 @@ const styles = StyleSheet.create({
 		width: null,
 		height: 814,
 	},
-	csText: {
-		color: "black",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		marginLeft: 37,
+	className: {
+		fontSize: 15,
+		fontWeight: "bold"
 	},
-	cs4720MobileAppDevelopmentText: {
-		color: "rgb(53, 71, 233)",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-		marginBottom: 56,
-	},
-	cancelText: {
-		color: "white",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-	},
-	addText: {
-		color: "white",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		marginBottom: 26,
-	},
-	daysMWFText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	danielGrahamText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	cs4720MobileAppDevelopmentTwoText: {
-		color: "rgb(53, 71, 233)",
-
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-	},
-	gpa36Text: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 31,
-	},
-	daysMWFTwoText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	danielGrahamTwoText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	cs4720MobileAppDevelopmentThreeText: {
-		color: "rgb(53, 71, 233)",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-	},
-	gpa36TwoText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 31,
-		marginLeft: 1,
-	},
-	daysMWFThreeText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	time200Pm250pmThreeText: {
-		backgroundColor: "transparent",
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		width: 88,
-		marginLeft: 43,
-	},
-	danielGrahamThreeText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	cs4720MobileAppDevelopmentFourText: {
-		color: "rgb(53, 71, 233)",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-	},
-	gpa36ThreeText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 31,
-	},
-	daysMWFFourText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	time200Pm250pmFourText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-		marginLeft: 43,
-	},
-	danielGrahamFourText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	gpa36FourText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		position: "absolute",
-		left: 48,
-		width: 31,
-		top: 322,
-	},
-	cs4720MobileAppDevelopmentFiveText: {
-		color: "rgb(53, 71, 233)",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		position: "absolute",
-		left: 49,
-		width: 255,
-		top: 281,
-	},
-	daysMWFFiveText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	danielGrahamFiveText: {
-		color: "black",
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	cs4720MobileAppDevelopmentSixText: {
-		color: "rgb(53, 71, 233)",
-		fontSize: 20,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "center",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 255,
-	},
-	gpa36FiveText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 31,
-	},
-	daysMWFSixText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 50,
-	},
-	danielGrahamSixText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 56,
-	},
-	gpa36SixText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		position: "absolute",
-		left: 49,
-		width: 31,
-		top: 165,
-	},
-	time200Pm250pmSixText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-	},
-	time200Pm250pmFiveText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-		marginTop: 32,
-	},
-	time200Pm250pmTwoText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-		marginTop: 189,
-	},
-	time200Pm250pmText: {
-		color: "black",
-
-		fontSize: 10,
-		fontStyle: "normal",
-		fontWeight: "normal",
-		textAlign: "left",
-		lineHeight: 26,
-		backgroundColor: "transparent",
-		width: 88,
-		marginTop: 32,
-	},
+	details: {
+		fontSize: 13,
+	}
 })
