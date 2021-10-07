@@ -7,9 +7,7 @@ import {
 import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
   import * as React from 'react'
-  import RemoveClasses from "../App/RemoveClasses/";
-  import Filters from "../App/Filters/";
-  import SearchResults from "../App/SearchResults/"
+  import RemoveScreen from "../Screens/RemoveScreen";
   import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
   import { Card, Icon } from 'react-native-elements'
   import { createStackNavigator } from '@react-navigation/stack';

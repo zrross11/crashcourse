@@ -7,11 +7,9 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import RemoveClasses from "./App/RemoveClasses/";
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import Parse from 'parse/react-native';
 import './App/CourseRoster'
 import { classExtractor } from './App/CourseRoster';
@@ -20,6 +18,8 @@ import LoginScreen from './Screens/UserLoginScreen';
 import SignUpScreen from './Screens/UserSignupScreen';
 import HomeScreen from './Screens/HomeScreen';
 import AddScreen from './Screens/AddScreen';
+import RemoveScreen from "./Screens/RemoveScreen";
+import ProfileScreen from './Screens/ProfileScreen'
 
 Parse.setAsyncStorage(AsyncStorage);
 
@@ -115,8 +115,8 @@ class MyDrawer extends React.Component {
         <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)} >
           <Drawer.Screen name={`${this.state.firstName}'s Schedule`} children={() => (<HomeScreen {...this.state} updateUser={this.handler} />)} />
           <Drawer.Screen name="Add Class" children={() => (<AddScreen {...this.state} updateUser={this.handler} />)} />
-          <Drawer.Screen name="Drop Class" component={RemoveClasses} />
-          <Drawer.Screen name="Profile" component={Profile} />
+          <Drawer.Screen name="Drop Class" children={() => (<RemoveScreen {...this.state} updateUser={this.handler} />)} />
+          <Drawer.Screen name="Profile" children={() => (<ProfileScreen {...this.state} updateUser={this.handler} />)} />
         </Drawer.Navigator>
       )
     }
