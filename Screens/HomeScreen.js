@@ -7,9 +7,7 @@ import {
 import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
   import * as React from 'react'
-  import RemoveClasses from "../App/RemoveClasses/";
-  import Filters from "../App/Filters/";
-  import SearchResults from "../App/SearchResults/"
+  import RemoveScreen from "../Screens/RemoveScreen";
   import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
   import { Card, Icon } from 'react-native-elements'
   import { createStackNavigator } from '@react-navigation/stack';
@@ -53,8 +51,6 @@ export default class HomeScreen extends React.Component {
     render(){
         // console.log("home Screen sched", this.state)
         // console.log("home Screen sched props", this.props)
-
-
         return (
             <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
             <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center'}}>
@@ -119,7 +115,6 @@ const styles = StyleSheet.create({
       margin: 12,
       borderWidth: 1,
       padding: 10,
-    //   color: "white",
       backgroundColor: "white",
     },
   });

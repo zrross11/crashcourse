@@ -1,11 +1,7 @@
-import RemoveClasses from "../App/RemoveClasses/";
 import Filters from "../App/Filters/";
 import SearchResults from "../App/SearchResults/"
 import * as React from 'react'
 import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-
-const Stack = createStackNavigator()
 
 export default class SignUpScreen extends React.Component {
 
@@ -28,25 +24,9 @@ export default class SignUpScreen extends React.Component {
         }
         this.handler = this.handler.bind(this)
         this.flip = this.flip.bind(this)
-        // this.getResults = this.getResults.bind(this)
-
     }
 
-    // var classes = []
-    // getResults() {
-    // console.log("AddScreen state in getResults", this.state)
-	// var k = this.state.classes
-	// for (var key of Object.values(courses)) {
-	// 	if (key[0].subject == selectedDepartment) {
-	// 		for (var j = 0; j < key.length; j++) {
-	// 			k.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
-	// 		}
-	// 	}
-	// }
-	// k.sort()
-    // this.setState({classes: k})
-    // this.updateUser(this.state)
-    // }
+
 
     componentDidMount(){
         // this.getResults
@@ -86,11 +66,5 @@ export default class SignUpScreen extends React.Component {
             <SearchResults {...this.state} updateUser={this.handler} flipScreen={this.flip} />
             )
         }
-        // return (
-        //     <Stack.Navigator>
-        //       <Stack.Screen name="Add Classes" children={() => <Filters {...this.state} updateUser={this.handler}/>}  options={{ headerShown: false }} />
-        //       <Stack.Screen name="Available" children={() => <SearchResults {...this.state} updateUser={this.handler}/>} options={{ headerShown: false }} />
-        //     </Stack.Navigator>
-        //   );
     }
 }

@@ -2,7 +2,7 @@ import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
 
 
-export default class SearchResults extends React.Component {
+export default class RemoveClasses extends React.Component {
 
 	constructor(props) {
 		super(props)
@@ -16,46 +16,36 @@ export default class SearchResults extends React.Component {
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
 			courses: this.props.courses,
-			classes: this.props.classes,
-			show: this.props.show,
-			selectedDepartment: this.props.selectedDepartment,
 		}
-		this.flip = this.flip.bind(this)
-		this.mapClasses = this.mapClasses.bind(this)
+		this.RemoveClasses = this.RemoveClasses.bind(this)
 	}
 
 
-	mapClasses() {
-		var grab = this.state.classes
-		//Sconsole.log("MapClasses selectedDepartment", this.state.classes)
+	RemoveClasses() {
 		return (
 			<ScrollView>
-				{grab.map((item, key) => {
-					return (
-						<View>
-							<Text style={styles.className}>{item.title}</Text>
-							<Text style={styles.details}>{item.instructor}</Text>
-							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
-								<Button
-									type="clear"
-									title="Add"
-									color="#FFFF"
-									onPress={() => this.state.retrievedSchedule}
-								/>
-							</View>
-							<Text style={styles.details}>{item.days}</Text>
-							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
-							<View
-								style={{
-									borderBottomColor: 'black',
-									borderBottomWidth: 2,
-									width: "90%",
-									left: "5%",
-								}}
-							/>
-						</View>
-					)
-				})}
+				<View>
+					<Text style={styles.className}>Placeholder text</Text>
+					<Text style={styles.details}>Placeholder text</Text>
+					<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+						<Button
+							type="clear"
+							title="Drop"
+							color="#FFFF"
+							onPress={() => console.log("test")}
+						/>
+					</View>
+					<Text style={styles.details}>Placeholder text</Text>
+					<Text style={styles.details}>Placeholder text</Text>
+					<View
+						style={{
+							borderBottomColor: 'black',
+							borderBottomWidth: 2,
+							width: "90%",
+							left: "5%",
+						}}
+					/>
+				</View>
 			</ScrollView>
 		)
 	}
@@ -68,7 +58,7 @@ export default class SearchResults extends React.Component {
 
 	render() {
 		return (<View
-			style={styles.searchResultsView}>
+			style={styles.DropView}>
 			<View
 				pointerEvents="box-none"
 				style={{
@@ -81,7 +71,7 @@ export default class SearchResults extends React.Component {
 				}}>
 				<Image
 					source={require("./../assets/images/background.jpg")}
-					style={styles.searchResultsBackgroundMaskImage} />
+					style={styles.DropBackgroundMaskImage} />
 			</View>
 			<View
 				pointerEvents="box-none"
@@ -99,10 +89,10 @@ export default class SearchResults extends React.Component {
 						width: "100%",
 						borderRadius: 6,
 					}}>
-					<View>{this.mapClasses()}</View>
+					<View>{this.RemoveClasses()}</View>
 				</ScrollView>
 			</View>
-			<View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>
+			{/* <View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>
 				<Button
 					type="clear"
 					title="Go back"
@@ -116,7 +106,7 @@ export default class SearchResults extends React.Component {
 					title="Confirm"
 					color="#FFFF"
 				onPress={() => this.props.navigation.navigate("Drop Class")}
-				/></View>
+				/></View> */}
 
 		</View>
 		)
@@ -129,11 +119,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: '100%',
 	},
-	searchResultsView: {
+	DropView: {
 		backgroundColor: "white",
 		flex: 1,
 	},
-	searchResultsBackgroundMaskImage: {
+	DropBackgroundMaskImage: {
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
