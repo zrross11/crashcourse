@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } fro
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { classExtractor } from './CourseRoster';
-
+import populateClass from '../ExtraCode'
 
 var departments = []
 var professors = []
@@ -81,12 +81,13 @@ export default class MainScreenTwo extends React.Component {
 		}
 		k = k.sort()
 		this.setState({classes: k})
-		console.log("filterCourses state and then k",this.state.classes,k)
+		console.log(`filterCourses ${this.state.selectedDepartment} and ${k}`)
 		console.log("Classes length", this.state.classes.length)
 		// this.updateUser(this.state)
 
 		this.setState({show: 1})
-		
+		this.setState({classes: k})
+
 		this.props.updateUser(this.state)
 		// console.log("Checking for navigation props",this.props.show)
 		// console.log("Checking for navigation state",this.state.show)
@@ -135,7 +136,6 @@ export default class MainScreenTwo extends React.Component {
 							}}
 							onSelect={(selectedItem, index) => {
 								console.log(selectedItem, index)
-								this.setState({selectedDepartment: selectedItem})
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -160,6 +160,7 @@ export default class MainScreenTwo extends React.Component {
 							}}
 							onSelect={(selectedItem, index) => {
 								console.log(selectedItem, index)
+								// this.setState({professor: selectedItem})
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem

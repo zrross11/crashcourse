@@ -11,6 +11,7 @@ import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, Sectio
 // import { courses } from './../App'
 import { selectedDepartment } from './Filters'
 import { classExtractor } from './CourseRoster';
+import populateClass from '../ExtraCode'
 
 
 var classes = []
@@ -37,6 +38,7 @@ export default class SearchResults extends React.Component {
 		this.getResults = this.getResults.bind(this)
 		this.flip = this.flip.bind(this)
 		this.mapClasses = this.mapClasses.bind(this)
+		this.addClass = this.addClass.bind(this)
 	}
 
 	// componentDidMount() {
@@ -44,6 +46,9 @@ export default class SearchResults extends React.Component {
 
 	// }
 
+
+
+	// 0 is className, 1 is professor, 2 either start or end time, 3 days of week, 4 mnemonic+number, 5 size?
 	mapClasses(){
 		// console.log("mapClasses sate",this.state)
 		var grab = this.state.classes
@@ -52,15 +57,15 @@ export default class SearchResults extends React.Component {
 			<ScrollView>
 			{grab.map((item, key) => {
 				return(
-				<View>
+				<View key={key}>
 					<Text style={styles.className}>{item[0]}</Text>
-					<Text style={styles.details}>{item[1]}</Text>
+					<Text style={styles.details}>{item[1]}</Text> 
 					<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
 						<Button
 							type="clear"
 							title="Add"
 							color="#FFFF"
-							onPress={() => console.log("test")}
+							onPress={(key) => this.addClass(key)}
 						/>
 					</View>
 					<Text style={styles.details}>{item[2]}</Text>
@@ -88,6 +93,10 @@ export default class SearchResults extends React.Component {
 		this.props.flipScreen();
 	}
 
+
+	addClass(key){
+		console.log("Clicked key",key)
+	}
     async getResults() {
 		var courses = await classExtractor();
 
@@ -106,7 +115,8 @@ export default class SearchResults extends React.Component {
 
 	render() {
 		// this.getResults;
-		return (<View
+		return (
+		<View
 			style={styles.searchResultsView}>
 			<View
 				pointerEvents="box-none"
