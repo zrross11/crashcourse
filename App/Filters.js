@@ -10,7 +10,6 @@ var professors = []
 var meetingdays = []
 var locations = []
 
-var selectedDepartment = ""
 
 var courses = {}
 async function getFilters() {
@@ -56,46 +55,40 @@ export default class MainScreenTwo extends React.Component {
 	}
 
 
-	componentDidMount() {
+	componentDidMount() { }
 
-	}
-
-	async filterCourses(){
+	async filterCourses() {
 		// Filter results based on the filter query
-
 		// Set the list of courses that fit the constraints in state 
-
 		// Courses are being filtered
 		var courses = await classExtractor();
 
-		// var k = []
 		var k = this.props.classes
 
 		// console.log("Filter k on filter courses", k, this.state)
 		for (var key of Object.values(courses)) {
 			if (key[0].subject == this.state.selectedDepartment) {
 				for (var j = 0; j < key.length; j++) {
-					k.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
+					k.push(key[j]);
 				}
 			}
 		}
 		k = k.sort()
-		this.setState({classes: k})
-		console.log("filterCourses state and then k",this.state.classes,k)
-		console.log("Classes length", this.state.classes.length)
+		this.setState({ classes: k })
+		//console.log("filterCourses state and then k",this.state.classes,k)
+		//console.log("Classes length", this.state.classes.length)
 		// this.updateUser(this.state)
 
-		this.setState({show: 1})
-		
+		this.setState({ show: 1 })
+
 		this.props.updateUser(this.state)
 		// console.log("Checking for navigation props",this.props.show)
 		// console.log("Checking for navigation state",this.state.show)
-		// this.props.navigation.navigate("Available")
 	}
 
 	render() {
 		return (
-			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
+			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View
 					style={styles.mainScreenView}>
 					<View
@@ -135,7 +128,7 @@ export default class MainScreenTwo extends React.Component {
 							}}
 							onSelect={(selectedItem, index) => {
 								console.log(selectedItem, index)
-								this.setState({selectedDepartment: selectedItem})
+								this.setState({ selectedDepartment: selectedItem })
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -239,11 +232,9 @@ export default class MainScreenTwo extends React.Component {
 				</View>
 			</ImageBackground>
 		)
-		
+
 	}
 }
-
-export {selectedDepartment};
 
 const styles = StyleSheet.create({
 	mainScreenView: {
@@ -281,5 +272,5 @@ const styles = StyleSheet.create({
 	backgroundImage: {
 		flex: 1,
 		width: '100%',
-	  },
+	},
 })

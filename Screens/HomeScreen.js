@@ -53,8 +53,6 @@ export default class HomeScreen extends React.Component {
     render(){
         // console.log("home Screen sched", this.state)
         // console.log("home Screen sched props", this.props)
-
-
         return (
             <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
             <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center'}}>
@@ -119,7 +117,6 @@ const styles = StyleSheet.create({
       margin: 12,
       borderWidth: 1,
       padding: 10,
-    //   color: "white",
       backgroundColor: "white",
     },
   });
