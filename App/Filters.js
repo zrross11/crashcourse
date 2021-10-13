@@ -3,83 +3,114 @@ import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } fro
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { classExtractor } from './CourseRoster';
+import populateClass from '../ExtraCode'
 
-
-var departments = []
+var departments = ['APMA','CS','ETC']
 var professors = []
 var meetingdays = []
 var locations = []
 
 
 var courses = {}
-async function getFilters() {
-	courses = await classExtractor();
 
-	for (var key of Object.values(courses)) {
-		if (!departments.includes(key[0].subject)) {
-			departments.push(key[0].subject)
-		}
-		if (!professors.includes(key[0].instructor)) {
-			professors.push(key[0].instructor)
-		}
-		if (!meetingdays.includes(key[0].days)) {
-			meetingdays.push(key[0].days)
-		}
-	}
-	departments.sort()
-	professors.sort()
-	meetingdays.sort()
-}
-getFilters()
+
 
 export default class MainScreenTwo extends React.Component {
 
 	constructor(props) {
 		super(props)
+		// console.log("Filter.js: Constructor params", this.props.route.params.username)
 		this.state = {
-			username: this.props.username,
-			password: this.props.password,
-			email: this.props.email,
-			firstName: this.props.firstName,
-			lastName: this.props.lastName,
-			loggedIn: this.props.loggedIn,
-			schedule: this.props.schedule,
-			retrievedSchedule: this.props.retrievedSchedule,
-			courses: this.props.courses,
-			show: this.props.show,
-			selectedDepartment: this.props.selectedDepartment,
-			classes: this.props.classes,
-
+			username: this.props.route.params.username,
+			password: this.props.route.params.password,
+			email: this.props.route.params.email,
+			firstName: this.props.route.params.firstName,
+			lastName: this.props.route.params.lastName,
+			loggedIn: this.props.route.params.loggedIn,
+			schedule: this.props.route.params.schedule,
+			retrievedSchedule: this.props.route.params.retrievedSchedule,
+			courses: this.props.route.params.courses,
+			show: this.props.route.params.show,
+			selectedDepartment: this.props.route.params.selectedDepartment,
+			classes: this.props.route.params.classes,
+			classPool: this.props.route.params.classPool,
+			departments: this.props.route.params.departments,
 		}
+		// console.log("Department in the filter object", this.state.departments)
+		// departments = this.props.departments
+		// console.log("Departments variable in filters", departments)
+		// console.log("Departments props in filters", this.props.departments)
 		this.filterCourses = this.filterCourses.bind(this)
+		// this.getFilters = this.getFilters.bind(this)
+		// this.getFilters();
 	}
 
 
-	componentDidMount() { }
+	// componentDidMount() {
+	// 	console.log("Filters didmount being called")
+	// 	this.getFilters();
+	//  }
 
-	async filterCourses() {
+	//  async getFilters() {
+	// async componentDidMount(){
+	// 	console.log("getFilters was called and is about to populate")
+	// 	// courses = await classExtractor();
+	// 	console.log("getFilters was called and just populated")
+	// 	// console.log("courses!",courses)
+	// 	for (var key of Object.values(this.props.classPool)) {
+	// 		if (!departments.includes(key[0].subject)) {
+	// 			departments.push(key[0].subject)
+	// 		}
+	// 		if (!professors.includes(key[0].instructor)) {
+	// 			professors.push(key[0].instructor)
+	// 		}
+	// 		if (!meetingdays.includes(key[0].days)) {
+	// 			meetingdays.push(key[0].days)
+	// 		}
+	// 	}
+	// 	departments.sort()
+	// 	professors.sort()
+	// 	meetingdays.sort()
+	// }
+
+	filterCourses() {
 		// Filter results based on the filter query
 		// Set the list of courses that fit the constraints in state 
 		// Courses are being filtered
-		var courses = await classExtractor();
-
-		var k = this.props.classes
+		// console.log("filter courses was called")
+		// var courses = await classExtractor();
+		// courses = await classExtractor();
+		// console.log("courses finished.",this.state)
+		var k = []
 
 		// console.log("Filter k on filter courses", k, this.state)
-		for (var key of Object.values(courses)) {
+		for (var key of Object.values(this.state.classPool)) {
+			// console.log("What is key", key)
 			if (key[0].subject == this.state.selectedDepartment) {
 				for (var j = 0; j < key.length; j++) {
 					k.push(key[j]);
+					// console.log("What is key", key)
+
 				}
 			}
 		}
 		k = k.sort()
-		this.setState({ classes: k })
-		this.setState({ show: 1 })
-		this.props.updateUser(this.state)
+		// console.log("Fiter.js: Just sorted and stuff",k)
+		// this.setState({classes: k})
+		// this.setState({show: 1})
+		this.setState((state, props) => ({
+			...state, show: 1, classes: k
+		 }));
 	}
 
 	render() {
+		console.log("Filter.js: state of filter courses -- just pressed show classes",this.props.route.params.classes)
+		if(this.state.show)
+			this.props.navigation.push('Results', {
+				...this.state
+			})
+
+		// this.props.updateUser(this.state)
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View
@@ -110,7 +141,7 @@ export default class MainScreenTwo extends React.Component {
 						}}>
 						<Text style={styles.titleText}>What type of class?</Text>
 						<SelectDropdown
-							data={departments}
+							data={this.state.departments}
 							defaultButtonText={"Department"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -120,7 +151,7 @@ export default class MainScreenTwo extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								console.log(selectedItem, index)
+								// console.log(selectedItem, index)
 								this.setState({ selectedDepartment: selectedItem })
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
@@ -146,6 +177,7 @@ export default class MainScreenTwo extends React.Component {
 							}}
 							onSelect={(selectedItem, index) => {
 								console.log(selectedItem, index)
+								// this.setState({professor: selectedItem})
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem

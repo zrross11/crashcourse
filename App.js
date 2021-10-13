@@ -84,12 +84,15 @@ class MyDrawer extends React.Component {
       firstName: '',
       lastName: '',
       loggedIn: false,
+      departments: [], // Holds the list of searchable departments
       schedule: {},
       retrievedSchedule: {},
       classes: [],
+      classPool: [],
 
     }
     this.handler = this.handler.bind(this)
+    this.buildClasses = this.buildClasses.bind(this);
   }
 
   handler(childState) {
@@ -105,10 +108,108 @@ class MyDrawer extends React.Component {
     this.setState({ show: childState.show })
     this.setState({ classes: childState.classes })
     this.setState({ selectedDepartment: childState.selectedDepartment })
-    // console.log("App handler just got called", this.state)
+    console.log("App.js: handler just got called", this.state.classes)
+  }
+
+  componentDidMount(){  
+  var datad = require('./api.json')
+  datad = datad.class_schedules.records
+  // console.log("headers", datad.class_schedules.columns)
+  var map = {}
+  var customMap = {} // only tracks some choice classes
+  //console.log(datad[0])
+  // console.log(datad);
+  var course;
+
+  // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
+  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL']
+
+  for(var index = 0; index < datad.length; index++){
+    course = datad[index];
+    var name = `${course[0]}${course[1]}`
+    // if(index === 15000)
+    //   console.log("Checking parse length",  name)
+    // console.log(course)
+    var classObject = {
+      subject: course[0],
+      mnemonic: course[1],
+      section: course[2],
+      number: course[3],
+      title: course[4],
+      desc: course[5],
+      instructor: course[6],
+      capacity: course[7],
+      days: course[8], // 'MTWRF'
+      start: course[9],
+      end: course[10], // 'HH:MM:SS' 24hr
+      term: course[11], // '1216
+      termdesc: course[12], // '2021 Summer'
+    }
+    // await saveCourse(classObject)
+
+// ----   UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
+    // console.log(`Name: ${classObject.subject}`)
+    if (free.includes(`${classObject.subject}`)){
+      // console.log("e school course!",classObject)
+      if( name in customMap){
+        var sectionArray = customMap[name]
+        sectionArray.push(classObject)
+        customMap[name] = sectionArray
+      }
+      else{
+        // console.log("E school new course found") // It does find all the e school courses
+        customMap[name] = [classObject]
+      }
+    }
+  }
+    var classList = customMap ;
+    var dept = []
+    this.setState({classPool: classList})
+    console.log("Classes were just populated into the pool")
+    		for (var key of Object.values(classList)) {
+			if (!dept.includes(key[0].subject)) {
+				dept.push(key[0].subject)
+			}
+			// if (!professors.includes(key[0].instructor)) {
+			// 	professors.push(key[0].instructor)
+			// }
+			// if (!meetingdays.includes(key[0].days)) {
+			// 	meetingdays.push(key[0].days)
+			// }
+		}
+		dept.sort()
+    // console.log("Dept after its sorted", dept)
+    this.setState({departments: dept})
+    // console.log("Department shouldve just been set", this.state.departments)
+  }
+
+  // Populates the total list of classes after the user logs in
+  buildClasses(){
+    // var classList = classExtractor() ;
+    // var dept = []
+    // this.setState({classPool: classList})
+    // console.log("Classes were just populated into the pool")
+    // 		for (var key of Object.values(this.state.classPool)) {
+		// 	if (!dept.includes(key[0].subject)) {
+		// 		dept.push(key[0].subject)
+		// 	}
+		// 	// if (!professors.includes(key[0].instructor)) {
+		// 	// 	professors.push(key[0].instructor)
+		// 	// }
+		// 	// if (!meetingdays.includes(key[0].days)) {
+		// 	// 	meetingdays.push(key[0].days)
+		// 	// }
+		// }
+		// dept.sort()
+    // console.log("Dept after its sorted", dept)
+    // this.setState({departments: dept})
+    // console.log("Department shouldve just been called", this.state.departments)
+		// // professors.sort()
+		// // meetingdays.sort()
   }
 
   render() {
+
     if (this.state.loggedIn) {
       // console.log("This just logged in")
       return (
@@ -123,7 +224,7 @@ class MyDrawer extends React.Component {
     else {
       return (
         <Drawer.Navigator >
-          <Drawer.Screen name="Login Page" children={() => (<LoginScreen {...this.state} updateUser={this.handler} />)} />
+          <Drawer.Screen name="Login Page" children={() => (<LoginScreen {...this.state} updateUser={this.handler} buildClasses={this.buildClasses}/>)} />
           <Drawer.Screen name="Sign Up" children={() => (<SignUpScreen {...this.state} updateUser={this.handler} />)} />
         </Drawer.Navigator>
       )

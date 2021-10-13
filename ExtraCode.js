@@ -37,7 +37,7 @@ const initialState = {
   
 //   doStuff()
   
-  async function populateClass(course,semesterMap, testEvents){
+  export default async function populateClass(course,semesterMap, testEvents){
     // var testDates = {}
     // Each letter in course.days corresponds to another day
     // console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
