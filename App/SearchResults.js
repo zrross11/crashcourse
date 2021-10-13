@@ -32,7 +32,7 @@ export default class SearchResults extends React.Component {
 			<ScrollView>
 				{grab.map((item, key) => {
 					return (
-						<View>
+						<View key={item.subject + item.mnemonic + item.section + item.term}>
 							<Text style={styles.className}>{item.title}</Text>
 							<Text style={styles.details}>{item.instructor}</Text>
 							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
@@ -40,7 +40,7 @@ export default class SearchResults extends React.Component {
 									type="clear"
 									title="Add"
 									color="#FFFF"
-									onPress={() => this.state.retrievedSchedule}
+									onPress={() => this.state.retrievedSchedule = item}
 								/>
 							</View>
 							<Text style={styles.details}>{item.days}</Text>
@@ -115,7 +115,7 @@ export default class SearchResults extends React.Component {
 					type="clear"
 					title="Confirm"
 					color="#FFFF"
-				onPress={() => this.props.navigation.navigate("Drop Class")}
+				onPress={() => this.props.updateUser(this.state)}
 				/></View>
 
 		</View>

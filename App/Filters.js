@@ -75,15 +75,8 @@ export default class MainScreenTwo extends React.Component {
 		}
 		k = k.sort()
 		this.setState({ classes: k })
-		//console.log("filterCourses state and then k",this.state.classes,k)
-		//console.log("Classes length", this.state.classes.length)
-		// this.updateUser(this.state)
-
 		this.setState({ show: 1 })
-
 		this.props.updateUser(this.state)
-		// console.log("Checking for navigation props",this.props.show)
-		// console.log("Checking for navigation state",this.state.show)
 	}
 
 	render() {

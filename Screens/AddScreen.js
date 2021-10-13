@@ -33,7 +33,7 @@ export default class SignUpScreen extends React.Component {
     }
 
     async handler(childState){
-        console.log("AddScreen handler was called");
+        console.log("AddScreen handler was called", childState.retrievedSchedule);
         this.setState({username: childState.username})
         this.setState({password: childState.password})
         this.setState({email: childState.email})
