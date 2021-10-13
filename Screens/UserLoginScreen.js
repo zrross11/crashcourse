@@ -140,6 +140,7 @@ async updateSchedule(){
               // updateSchedule();
               // console.log("after updateSchedule", this.state.retrievedSchedule);
               // this.setState({retrievedSchedule: sched})
+              // this.props.buildClasses();
               this.props.updateUser(this.state);
               // console.log("The props", this.props)
           }

@@ -45,8 +45,14 @@ export default class HomeScreen extends React.Component {
         // this.doUserLogIn = this.doUserLogIn.bind(this)
 	}
 
+    // componentDidMount(){
+    //    // Call the class population method and update retrievedSchedule 
 
+    // }
 
+    // componentDidUpdate(){
+
+    // }
 
     render(){
         // console.log("home Screen sched", this.state)

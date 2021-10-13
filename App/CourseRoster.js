@@ -12,19 +12,25 @@ const url = 'https://api.devhub.virginia.edu/v1/courses/';
  * This method parses through a json object that was pulled from the UVA course list API and places all classes into a map
  * @returns A hashmap with keys representing the class subject and mnemonic and values containing the sections and information for the class
  */
-export async function classExtractor(){
+export function classExtractor(){
   // var datad = await fetch(url)
 	// .then((resp) => resp.json())
   // .catch(function(error) {
 	// 	console.log('Fetch failed!');
 	// });
+  // var datad = require('../api.json')
   var datad = require('../api.json')
   datad = datad.class_schedules.records
   // console.log("headers", datad.class_schedules.columns)
   var map = {}
+  var customMap = {} // only tracks some choice classes
   //console.log(datad[0])
   // console.log(datad);
   var course;
+
+  // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
+  var free = ['APMA', 'CS', 'BME', 'CHEM']
+
   for(var index = 0; index < datad.length; index++){
     course = datad[index];
     var name = `${course[0]}${course[1]}`
@@ -47,17 +53,37 @@ export async function classExtractor(){
       termdesc: course[12], // '2021 Summer'
     }
     // await saveCourse(classObject)
-    if( name in map){
-      var sectionArray = map[name]
-      sectionArray.push(classObject)
-      map[name] = sectionArray
+
+// ----   UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
+    // console.log(`Name: ${classObject.subject}`)
+    if (free.includes(`${classObject.subject}`)){
+      // console.log("e school course!",classObject)
+      if( name in customMap){
+        var sectionArray = customMap[name]
+        sectionArray.push(classObject)
+        customMap[name] = sectionArray
+      }
+      else{
+        // console.log("E school new course found") // It does find all the e school courses
+        customMap[name] = [classObject]
+      }
     }
-    else{
-      map[name] = [classObject]
-    }
+
+// ----  UNCOMMENT THIS FOR REAL TEST  -----
+    // if( name in map){
+    //   var sectionArray = map[name]
+    //   sectionArray.push(classObject)
+    //   map[name] = sectionArray
+    // }
+    // else{
+    //   map[name] = [classObject]
+    // }
+
   }
 
-  return map;
+  // return map;
+
+  return customMap;
 
 }
 
