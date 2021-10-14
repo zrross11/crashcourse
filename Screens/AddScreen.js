@@ -2,8 +2,14 @@ import Filters from "../App/Filters/";
 import SearchResults from "../App/SearchResults/"
 import * as React from 'react'
 import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
+import { classExtractor } from '../App/CourseRoster';
+import SemesterMapper from '../App/Semester';
+import populateClass from '../ExtraCode'
+import { StackRouter } from "react-navigation";
+import { createStackNavigator } from "@react-navigation/stack";
 
-export default class SignUpScreen extends React.Component {
+const Stack = createStackNavigator();
+export default class AddScreen extends React.Component {
 
     constructor(props) {
 		super(props)
@@ -16,24 +22,53 @@ export default class SignUpScreen extends React.Component {
             lastName: this.props.lastName,
             loggedIn: this.props.loggedIn,
             schedule: this.props.schedule,
+            departments: this.props.departments,
+            classPool: this.props.classPool,
             retrievedSchedule: this.props.retrievedSchedule,
             courses: [],
             show: 0,
             classes: [],
             selectedDepartment: '',
+            filterResults: [],
+
         }
         this.handler = this.handler.bind(this)
-        this.flip = this.flip.bind(this)
+        this.addClass = this.addClass.bind(this)
     }
 
 
+	async addClass(key){
+		console.log("Clicked class ",key)
+		// Call the populate class method on the course
+		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
+		console.log("Sched", sched)
+		var {semester, semesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
+		console.log("Semester",semester)
+		populateClass(key, semester, sched)
 
-    componentDidMount(){
-        // this.getResults
-    }
+		this.setState({retrievedSchedule: sched});
+		this.props.updateUser(this.state)
 
-    async handler(childState){
-        console.log("AddScreen handler was called");
+		// Update the schedule mapper for the agenda 
+
+	}
+    handler(childState){
+        // console.log("AddScreen.js:  handler was called. class array",childState.classes);
+        // console.log("AddScreen.js:  handler was called. show",childState.show);
+ 
+        if(childState.classes.length > 0){
+
+        
+        // this.setState(prevState => ({
+        //     formData: {
+        //       ...prevState.formData,
+        //       ...childState
+        //     }
+        //   }));
+        //   console.log("Entered",this.state)
+                //   console.log("AddScreen handler just got called test", childState.classes)
+
+        }
         this.setState({username: childState.username})
         this.setState({password: childState.password})
         this.setState({email: childState.email})
@@ -46,25 +81,18 @@ export default class SignUpScreen extends React.Component {
         this.setState({show: childState.show})
         this.setState({classes: childState.classes})
         this.setState({selectedDepartment: childState.selectedDepartment})
-        // console.log("App handler just got called", this.state)
-        this.props.updateUser(this.state)
+        this.setState({classPool: childState.classPool})
+        console.log("AddScreen handler just got called: ", this.state.show)
+        // this.props.updateUser(this.state)
       }
 
-      flip(){
-          this.setState({show: !this.state.show})
-          this.setState({classes: []})
-      }
 
     render(){
-        if(!this.state.show){
-            return(
-                <Filters {...this.state} updateUser={this.handler}  />
-            )
-        }
-        else{
-            return (
-            <SearchResults {...this.state} updateUser={this.handler} flipScreen={this.flip} />
-            )
-        }
+        return (
+            <Stack.Navigator>
+                <Stack.Screen name="Filters" component={Filters} initialParams={{...this.state}} options={{headerShown: false}}/>
+                <Stack.Screen name="Results" component={SearchResults} options={{headerShown: false}}/>                
+            </Stack.Navigator>
+        )
     }
 }

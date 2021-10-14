@@ -1,6 +1,7 @@
 import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
-
+import {depopulateClass} from '../ExtraCode';
+import SemesterMapper from './../App/Semester';
 
 export default class RemoveClasses extends React.Component {
 
@@ -18,34 +19,59 @@ export default class RemoveClasses extends React.Component {
 			courses: this.props.courses,
 		}
 		this.RemoveClasses = this.RemoveClasses.bind(this)
+		this.removeAClass = this.removeAClass.bind(this)
 	}
 
+	async removeAClass(item){
+		// Call the populate class method on the course
+		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
+		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
+		var newSched = depopulateClass(item, Semester, sched)
+		this.setState((state, props) => ({
+			...state, retrievedSchedule: newSched
+		 }));
+		// this.props.updateUser(this.state)
+    }
 
 	RemoveClasses() {
+		var grab = this.state.retrievedSchedule;
+		var classes = []
+		for (let i = 0; i < 7; i++) {
+			if (Object.values(grab)[i].length > 0)
+				for (let j = 0; j < Object.values(grab)[i].length; j++) {
+					if (!classes.includes(Object.values(grab)[i][j])) {
+						classes.push(Object.values(grab)[i][j])
+					}
+				}
+		}
 		return (
 			<ScrollView>
-				<View>
-					<Text style={styles.className}>Placeholder text</Text>
-					<Text style={styles.details}>Placeholder text</Text>
-					<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
-						<Button
-							type="clear"
-							title="Drop"
-							color="#FFFF"
-							onPress={() => console.log("test")}
+				{classes.map((item, key) => {
+					return (
+					<View key={key}>
+						<Text style={styles.className}>{item.title}</Text>
+						<Text style={styles.details}>{item.instructor}</Text>
+						<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+							<Button
+								type="clear"
+								title="Drop"
+								color="#FFFF"
+								onPress={() => this.removeAClass(item)}
+							/>
+						</View>
+						<Text style={styles.details}>{item.days}</Text>
+						<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
+						<View
+							style={{
+								borderBottomColor: 'black',
+								borderBottomWidth: 2,
+								width: "90%",
+								left: "5%",
+							}}
 						/>
 					</View>
-					<Text style={styles.details}>Placeholder text</Text>
-					<Text style={styles.details}>Placeholder text</Text>
-					<View
-						style={{
-							borderBottomColor: 'black',
-							borderBottomWidth: 2,
-							width: "90%",
-							left: "5%",
-						}}
-					/>
-				</View>
+					)				
+				})}
 			</ScrollView>
 		)
 	}
