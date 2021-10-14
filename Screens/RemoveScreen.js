@@ -22,30 +22,45 @@ export default class RemoveClasses extends React.Component {
 
 
 	RemoveClasses() {
+		var grab = this.state.retrievedSchedule;
+		var classes = []
+		for (let i = 0; i < 7; i++) {
+			if (Object.values(grab)[i].length > 0)
+				for (let j = 0; j < Object.values(grab)[i].length; j++) {
+					if (!classes.includes(Object.values(grab)[i][j])) {
+						classes.push(Object.values(grab)[i][j])
+					}
+				}
+		}
+		console.log(classes)
 		return (
 			<ScrollView>
-				<View>
-					<Text style={styles.className}>Placeholder text</Text>
-					<Text style={styles.details}>Placeholder text</Text>
-					<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
-						<Button
-							type="clear"
-							title="Drop"
-							color="#FFFF"
-							onPress={() => console.log("test")}
+				{classes.map((item, key) => {
+					return (
+					<View key={key}>
+						<Text style={styles.className}>{item.title}</Text>
+						<Text style={styles.details}>{item.instructor}</Text>
+						<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+							<Button
+								type="clear"
+								title="Drop"
+								color="#FFFF"
+								onPress={() => console.log("tester")}
+							/>
+						</View>
+						<Text style={styles.details}>{item.days}</Text>
+						<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
+						<View
+							style={{
+								borderBottomColor: 'black',
+								borderBottomWidth: 2,
+								width: "90%",
+								left: "5%",
+							}}
 						/>
 					</View>
-					<Text style={styles.details}>Placeholder text</Text>
-					<Text style={styles.details}>Placeholder text</Text>
-					<View
-						style={{
-							borderBottomColor: 'black',
-							borderBottomWidth: 2,
-							width: "90%",
-							left: "5%",
-						}}
-					/>
-				</View>
+					)				
+				})}
 			</ScrollView>
 		)
 	}
