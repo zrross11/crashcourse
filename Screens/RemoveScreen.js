@@ -1,6 +1,7 @@
 import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
-
+import {depopulateClass} from '../ExtraCode';
+import SemesterMapper from './../App/Semester';
 
 export default class RemoveClasses extends React.Component {
 
@@ -18,8 +19,19 @@ export default class RemoveClasses extends React.Component {
 			courses: this.props.courses,
 		}
 		this.RemoveClasses = this.RemoveClasses.bind(this)
+		this.removeAClass = this.removeAClass.bind(this)
 	}
 
+	async removeAClass(item){
+		// Call the populate class method on the course
+		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
+		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
+		var newSched = depopulateClass(item, Semester, sched)
+		this.setState((state, props) => ({
+			...state, retrievedSchedule: newSched
+		 }));
+		// this.props.updateUser(this.state)
+    }
 
 	RemoveClasses() {
 		var grab = this.state.retrievedSchedule;
@@ -32,7 +44,6 @@ export default class RemoveClasses extends React.Component {
 					}
 				}
 		}
-		console.log(classes)
 		return (
 			<ScrollView>
 				{classes.map((item, key) => {
@@ -45,7 +56,7 @@ export default class RemoveClasses extends React.Component {
 								type="clear"
 								title="Drop"
 								color="#FFFF"
-								onPress={() => console.log("tester")}
+								onPress={() => this.removeAClass(item)}
 							/>
 						</View>
 						<Text style={styles.details}>{item.days}</Text>
