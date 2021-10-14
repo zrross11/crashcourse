@@ -24,18 +24,20 @@ export default class AddScreen extends React.Component {
             schedule: this.props.schedule,
             departments: this.props.departments,
             classPool: this.props.classPool,
+            // classPool: [],
             retrievedSchedule: this.props.retrievedSchedule,
             courses: [],
             show: 0,
             classes: [],
             selectedDepartment: '',
             filterResults: [],
+            addClass: this.addClasses,
 
         }
         this.handler = this.handler.bind(this)
         this.flip = this.flip.bind(this)
         this.flipFilter = this.flipFilter.bind(this)
-        this.addClass = this.addClass.bind(this)
+        this.addClasses = this.addClasses.bind(this)
     }
 
 
@@ -48,19 +50,18 @@ export default class AddScreen extends React.Component {
 		// Call the populate class method on the course
 		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
 		console.log("Sched", sched)
-		var {semester, semesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
+		var {semester, semesterDays } = SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		console.log("Semester",semester)
 		populateClass(key, semester, sched)
 
 		this.setState({retrievedSchedule: sched});
 		this.props.updateUser(this.state)
-
 		// Update the schedule mapper for the agenda 
 
 	}
     handler(childState){
-        console.log("AddScreen.js:  handler was called. class array",childState.classes);
-        console.log("AddScreen.js:  handler was called. show",childState.show);
+        // console.log("AddScreen.js:  handler was called. class array",childState.classes);
+        // console.log("AddScreen.js:  handler was called. show",childState.show);
  
         if(childState.classes.length > 0){
 
@@ -104,23 +105,28 @@ export default class AddScreen extends React.Component {
         this.setState({show: !this.state.show})
     }
 
+    async addClasses(item){
+        console.log("AddScreen.js: addClasses was hit and called", item)
+		// Call the populate class method on the course
+		var sched = {} // map holding each date in the semester and the array of clases on it 
+		console.log("Sched", sched)
+		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
+		// console.log("Semester",Semester)
+		var newSched = populateClass(item, Semester, sched)
+		this.setState((state, props) => ({
+			...state, retrievedSchedule: newSched
+		 }));
+		// this.props.updateUser(this.state)
+    }
+
     render(){
+        if(this.state.retrievedSchedule)
+        console.log("Add Screen retrieved Sched", this.state.retrievedSchedule)
         return (
             <Stack.Navigator>
                 <Stack.Screen name="Filters" component={Filters} initialParams={{...this.state}}/>
-                <Stack.Screen name="Results" component={SearchResults}  />                
+                <Stack.Screen name="Results" component={SearchResults} />                
             </Stack.Navigator>
         )
-
-        // if(!this.state.show){
-        //     return(
-        //         <Filters {...this.state} updateUser={this.handler} flipScreen={this.flipFilter}  addClasses={this.addClass}/>
-        //     )
-        // }
-        // else{
-        //     return (
-        //     <SearchResults {...this.state} updateUser={this.handler} flipScreen={this.flip} addClasses={this.addClass}/>
-        //     )
-        // }
     }
 }

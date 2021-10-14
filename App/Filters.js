@@ -19,7 +19,9 @@ export default class MainScreenTwo extends React.Component {
 
 	constructor(props) {
 		super(props)
-		// console.log("Filter.js: Constructor params", this.props.route.params.username)
+		console.log("Filter.js: Constructor params", this.props.route.params)
+		// console.log("Filter.js: Constructor params", this.props.route)
+		// console.log("Filter.js: Constructor params", this.props)
 		this.state = {
 			username: this.props.route.params.username,
 			password: this.props.route.params.password,
@@ -35,6 +37,7 @@ export default class MainScreenTwo extends React.Component {
 			classes: this.props.route.params.classes,
 			classPool: this.props.route.params.classPool,
 			departments: this.props.route.params.departments,
+			addClass: this.props.route.params.addClass,
 		}
 		// console.log("Department in the filter object", this.state.departments)
 		// departments = this.props.departments
@@ -104,11 +107,13 @@ export default class MainScreenTwo extends React.Component {
 	}
 
 	render() {
-		console.log("Filter.js: state of filter courses -- just pressed show classes",this.props.route.params.classes)
+		// console.log("Filter.js: state of filter courses -- just pressed show classes",this.props.route.params.classes)
 		if(this.state.show)
-			this.props.navigation.push('Results', {
-				...this.state
-			})
+				// return(
+				this.props.navigation.push('Results', {
+					...this.state
+				})				
+			// )
 
 		// this.props.updateUser(this.state)
 		return (

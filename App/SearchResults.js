@@ -14,7 +14,7 @@ export default class SearchResults extends React.Component {
 
 	constructor(props) {
 		super(props)
-		console.log("SearchResults.js: Props params", this.props.route.params.classes)
+		// console.log("SearchResults.js: Props params", this.props)
 		this.state = {
 			username: this.props.route.params.username,
 			password: this.props.route.params.password,
@@ -34,31 +34,39 @@ export default class SearchResults extends React.Component {
 		// console.log("Clases search department received.", this.state.selectedDepartment)
 		this.flip = this.flip.bind(this)
 		this.mapClasses = this.mapClasses.bind(this)
+		this.addClass = this.addClass.bind(this)
 	}
 
+	addClass(item){
+		console.log("SearchResults.js: Add class was called. Should call parent one", this.props.route.params.addClass)
+		// console.log("SearchResults.js: Add class was called. Should call parent two", this.props.route.options)
+		// console.log("SearchResults.js: Add class was called. Should call parent 3", this.props.options)
+
+		this.props.route.params.addClass(...item)
+	}
 
 	mapClasses(){
-		console.log("SearchResults.js: mapClasses state of classes",this.props.route.params.classes)
+		// console.log("SearchResults.js: mapClasses state of classes",this.props.route.params.classes)
 		// console.log("SearchResults: mapClasses props",this.props)
 		// console.log("mapClasses sate of classPool",this.state.classPool)
 		var grab = this.state.classes
 		// console.log("The map", this.props)
 		// var grab = this.state.classPool
-		console.log("SearchResults.js: MapClasses selectedDepartment", grab)
+		// console.log("SearchResults.js: MapClasses selectedDepartment", grab)
 		return (
 			<ScrollView>
 				{grab.map((item, key) => {
-					console.log("Mapping", item)
+					// console.log("Mapping", item)
 					return (
 						<View key={key}>
 							<Text style={styles.className}>{item.title}</Text>
 							<Text style={styles.details}>{item.instructor}</Text>
-							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }} >
 								<Button
 									type="clear"
 									title="Add"
 									color="#FFFF"
-									onPress={console.log("pressed")}
+									onClick={function(){this.addClass({...item})}}
 									// onPress={this.props.addClasses(item)}
 								/>
 							</View>
@@ -104,10 +112,10 @@ export default class SearchResults extends React.Component {
 
 	render() {
 		// this.getResults;
-		console.log(this.props.route.params.name)
-		console.log(this.props.route.params.departments)
-		console.log(this.props.route.params.classes)
-
+		// console.log(this.props.route.params.name)
+		// console.log(this.props.route.params.departments)
+		// console.log("search results params",this.props.route.params.addClasses)
+		var grab = this.state.classes
 		return (
 		<View
 			style={styles.searchResultsView}>
@@ -141,7 +149,38 @@ export default class SearchResults extends React.Component {
 						width: "100%",
 						borderRadius: 6,
 					}}>
-					<View>{this.mapClasses()}</View>
+					<View>
+					<ScrollView>
+				{grab.map((item, key) => {
+					// console.log("Mapping", item)
+					return (
+						<View key={key}>
+							<Text style={styles.className}>{item.title}</Text>
+							<Text style={styles.details}>{item.instructor}</Text>
+							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }} >
+								<Button
+									type="clear"
+									title="Add"
+									color="#FFFF"
+									onPress={this.addClass(item)}
+									// onPress={this.props.addClasses(item)}
+								/>
+							</View>
+							<Text style={styles.details}>{item.days}</Text>
+							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
+							<View
+								style={{
+									borderBottomColor: 'black',
+									borderBottomWidth: 2,
+									width: "90%",
+									left: "5%",
+								}}
+							/>
+						</View>
+					)
+				})}
+			</ScrollView>
+					</View>
 				</ScrollView>
 			</View>
 			<View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>
