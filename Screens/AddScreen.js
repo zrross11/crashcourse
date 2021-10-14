@@ -33,16 +33,10 @@ export default class AddScreen extends React.Component {
 
         }
         this.handler = this.handler.bind(this)
-        this.flip = this.flip.bind(this)
-        this.flipFilter = this.flipFilter.bind(this)
         this.addClass = this.addClass.bind(this)
     }
 
 
-
-    // componentDidMount(){
-        // this.getResults
-    // }
 	async addClass(key){
 		console.log("Clicked class ",key)
 		// Call the populate class method on the course
@@ -59,8 +53,8 @@ export default class AddScreen extends React.Component {
 
 	}
     handler(childState){
-        console.log("AddScreen.js:  handler was called. class array",childState.classes);
-        console.log("AddScreen.js:  handler was called. show",childState.show);
+        // console.log("AddScreen.js:  handler was called. class array",childState.classes);
+        // console.log("AddScreen.js:  handler was called. show",childState.show);
  
         if(childState.classes.length > 0){
 
@@ -75,7 +69,6 @@ export default class AddScreen extends React.Component {
                 //   console.log("AddScreen handler just got called test", childState.classes)
 
         }
-        //   console.log()
         this.setState({username: childState.username})
         this.setState({password: childState.password})
         this.setState({email: childState.email})
@@ -93,34 +86,13 @@ export default class AddScreen extends React.Component {
         // this.props.updateUser(this.state)
       }
 
-    flip(){
-        console.log("Flip was called -- turning from ", this.state.show)
-        this.setState({show: !this.state.show})
-        this.setState({classes: []})
-    }
-
-    flipFilter(){
-        console.log("Flip Filter was called -- turning from ", this.state.show)
-        this.setState({show: !this.state.show})
-    }
 
     render(){
         return (
             <Stack.Navigator>
-                <Stack.Screen name="Filters" component={Filters} initialParams={{...this.state}}/>
-                <Stack.Screen name="Results" component={SearchResults}  />                
+                <Stack.Screen name="Filters" component={Filters} initialParams={{...this.state}} options={{headerShown: false}}/>
+                <Stack.Screen name="Results" component={SearchResults} options={{headerShown: false}}/>                
             </Stack.Navigator>
         )
-
-        // if(!this.state.show){
-        //     return(
-        //         <Filters {...this.state} updateUser={this.handler} flipScreen={this.flipFilter}  addClasses={this.addClass}/>
-        //     )
-        // }
-        // else{
-        //     return (
-        //     <SearchResults {...this.state} updateUser={this.handler} flipScreen={this.flip} addClasses={this.addClass}/>
-        //     )
-        // }
     }
 }

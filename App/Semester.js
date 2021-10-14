@@ -71,6 +71,7 @@ export async function SemesterMapper(startDate,endDate){
         }
       }
     //   console.log("Semester Mapper list of all days", SemesterDays)
+    //   console.log(Semester)
       return {Semester, SemesterDays};
 }
 
