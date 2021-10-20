@@ -1,13 +1,9 @@
 import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
-// import { courses } from './../App'
 import { selectedDepartment } from './Filters'
 import { classExtractor } from './CourseRoster';
 import populateClass from '../ExtraCode'
 import SemesterMapper from './Semester';
-
-
-var classes = []
 
 
 export default class SearchResults extends React.Component {
@@ -32,8 +28,9 @@ export default class SearchResults extends React.Component {
 		}
 		// console.log("Clases searchresults received.", this.state.classes)
 		// console.log("Clases search department received.", this.state.selectedDepartment)
-		this.flip = this.flip.bind(this)
 		this.mapClasses = this.mapClasses.bind(this)
+		this.goBack = this.goBack.bind(this)
+		this.confirm = this.confirm.bind(this)
 		this.addClass = this.addClass.bind(this)
 	}
 
@@ -47,8 +44,6 @@ export default class SearchResults extends React.Component {
 
 	mapClasses(){
 		// console.log("SearchResults.js: mapClasses state of classes",this.props.route.params.classes)
-		// console.log("SearchResults: mapClasses props",this.props)
-		// console.log("mapClasses sate of classPool",this.state.classPool)
 		var grab = this.state.classes
 		// console.log("The map", this.props)
 		// var grab = this.state.classPool
@@ -66,7 +61,7 @@ export default class SearchResults extends React.Component {
 									type="clear"
 									title="Add"
 									color="#FFFF"
-									onClick={function(){this.addClass({...item})}}
+									onPress={() => this.addClass(item)}
 									// onPress={this.props.addClasses(item)}
 								/>
 							</View>
@@ -87,27 +82,24 @@ export default class SearchResults extends React.Component {
 		)
 	}
 
-
-	flip() {
-		this.props.flipScreen();
+	goBack() {
+		this.props.navigation.pop()
 	}
 
+	confirm() {
+		this.props.navigation.pop()
+		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
+	}
 
+	async addClass(key){
+		// Call the populate class method on the course
+		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
+		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
+		populateClass(key, Semester, sched)
+		this.setState((state, props) => ({
+			...state, retrievedSchedule: sched
+		}));
 
-    async getResults() {
-		var courses = await classExtractor();
-
-		var k = this.state.classes
-		for (var key of Object.values(courses)) {
-			if (key[0].subject == this.state.selectedDepartment) {
-				for (var j = 0; j < key.length; j++) {
-					k.push([key[j].title, key[j].instructor, key[j].start, key[j].days, (key[j].subject + key[j].mnemonic), j]);
-				}
-			}
-		}
-		k.sort()
-		this.setState({classes: k})
-		this.props.updateUser(this.state)
 	}
 
 	render() {
@@ -188,7 +180,7 @@ export default class SearchResults extends React.Component {
 					type="clear"
 					title="Go back"
 					color="#FFFF"
-					onPress={this.flip}
+					onPress={this.goBack}
 				/>
 			</View>
 			<View style={{ backgroundColor: "black", width: "30%", right: "10%", top: "88%", position: "absolute" }}>
@@ -196,7 +188,7 @@ export default class SearchResults extends React.Component {
 					type="clear"
 					title="Confirm"
 					color="#FFFF"
-				onPress={() => this.props.navigation.navigate("Drop Class")}
+				onPress={this.confirm}
 				/></View>
 
 		</View>

@@ -5,14 +5,10 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { classExtractor } from './CourseRoster';
 import populateClass from '../ExtraCode'
 
-var departments = ['APMA','CS','ETC']
+var departments = ['APMA', 'CS', 'ETC']
 var professors = []
 var meetingdays = []
 var locations = []
-
-
-var courses = {}
-
 
 
 export default class MainScreenTwo extends React.Component {
@@ -39,71 +35,22 @@ export default class MainScreenTwo extends React.Component {
 			departments: this.props.route.params.departments,
 			addClass: this.props.route.params.addClass,
 		}
-		// console.log("Department in the filter object", this.state.departments)
-		// departments = this.props.departments
-		// console.log("Departments variable in filters", departments)
-		// console.log("Departments props in filters", this.props.departments)
 		this.filterCourses = this.filterCourses.bind(this)
-		// this.getFilters = this.getFilters.bind(this)
-		// this.getFilters();
 	}
 
-
-	// componentDidMount() {
-	// 	console.log("Filters didmount being called")
-	// 	this.getFilters();
-	//  }
-
-	//  async getFilters() {
-	// async componentDidMount(){
-	// 	console.log("getFilters was called and is about to populate")
-	// 	// courses = await classExtractor();
-	// 	console.log("getFilters was called and just populated")
-	// 	// console.log("courses!",courses)
-	// 	for (var key of Object.values(this.props.classPool)) {
-	// 		if (!departments.includes(key[0].subject)) {
-	// 			departments.push(key[0].subject)
-	// 		}
-	// 		if (!professors.includes(key[0].instructor)) {
-	// 			professors.push(key[0].instructor)
-	// 		}
-	// 		if (!meetingdays.includes(key[0].days)) {
-	// 			meetingdays.push(key[0].days)
-	// 		}
-	// 	}
-	// 	departments.sort()
-	// 	professors.sort()
-	// 	meetingdays.sort()
-	// }
-
 	filterCourses() {
-		// Filter results based on the filter query
-		// Set the list of courses that fit the constraints in state 
-		// Courses are being filtered
-		// console.log("filter courses was called")
-		// var courses = await classExtractor();
-		// courses = await classExtractor();
-		// console.log("courses finished.",this.state)
 		var k = []
-
-		// console.log("Filter k on filter courses", k, this.state)
 		for (var key of Object.values(this.state.classPool)) {
-			// console.log("What is key", key)
 			if (key[0].subject == this.state.selectedDepartment) {
 				for (var j = 0; j < key.length; j++) {
 					k.push(key[j]);
-					// console.log("What is key", key)
-
 				}
 			}
 		}
 		k = k.sort()
-		// console.log("Fiter.js: Just sorted and stuff",k)
-		// this.setState({classes: k})
-		// this.setState({show: 1})
 		this.setState((state, props) => ({
 			...state, show: 1, classes: k
-		 }));
+		}));
 	}
 
 	render() {
@@ -114,8 +61,8 @@ export default class MainScreenTwo extends React.Component {
 					...this.state
 				})				
 			// )
+			// this.state.show = 0;
 
-		// this.props.updateUser(this.state)
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View
@@ -156,7 +103,6 @@ export default class MainScreenTwo extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								// console.log(selectedItem, index)
 								this.setState({ selectedDepartment: selectedItem })
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
@@ -230,7 +176,7 @@ export default class MainScreenTwo extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								console.log(selectedItem, index)
+								// console.log(selectedItem, index)
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
