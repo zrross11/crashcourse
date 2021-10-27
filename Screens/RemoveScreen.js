@@ -33,6 +33,20 @@ export default class RemoveClasses extends React.Component {
 		// this.props.updateUser(this.state)
     }
 
+	async removeClasses(item){
+        console.log("RemoveScreen.js: removeClasses was hit and called", item)
+		// Call the populate class method on the course
+		var sched = {} // map holding each date in the semester and the array of clases on it 
+		console.log("Sched", sched)
+		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
+		// console.log("Semester",Semester)
+		var newSched = depopulateClass(item, Semester, sched)
+		this.setState((state, props) => ({
+			...state, retrievedSchedule: newSched
+		 }));
+		// this.props.updateUser(this.state)
+    }
+
 	RemoveClasses() {
 		var grab = this.state.retrievedSchedule;
 		var classes = []

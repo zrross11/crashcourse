@@ -18,6 +18,7 @@ import { NavigationContainer } from '@react-navigation/native';
   import '../App/CourseRoster'
   import { classExtractor } from '../App/CourseRoster';
   import SemesterMapper from '../App/Semester';
+  import { connect } from 'react-redux'
 //   import LoginScreen from './Screens/UserLoginScreen';
 //   import SignUpScreen from './Screens/UserSignupScreen';
   Parse.setAsyncStorage(AsyncStorage);
@@ -27,7 +28,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
 
     constructor(props) {
 		super(props)
@@ -56,7 +57,7 @@ export default class HomeScreen extends React.Component {
 
     render(){
         // console.log("home Screen sched", this.state)
-        // console.log("home Screen sched props", this.props)
+        // console.log("HomeScreen.js: sched props", this.props.retrievedSchedule)
         return (
             <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
             <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center'}}>
@@ -110,6 +111,32 @@ export default class HomeScreen extends React.Component {
           );
     }
 }
+
+function mapStateToProps(state) {
+  return {
+    username: state.username,
+    password: state.password,
+    email: state.email,
+    firstName: state.firstName,
+    lastName: state.lastName,
+    loggedIn: state.loggedIn,
+    schedule: state.schedule,
+    retrievedSchedule: state.retrievedSchedule,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+    decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+    loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item})
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreen);
 
 const styles = StyleSheet.create({
     backgroundImage: {
