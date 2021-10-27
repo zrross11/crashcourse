@@ -111,8 +111,8 @@
     return testEvents;
   }
   
-export function depopulateClass(course,semesterMap, testEventss){
-    var testDates = testEventss
+export function depopulateClass(course,semesterMap, testEvents){
+    var testDates = testEvents
     // console.log("ExtraCode.js: initial testDates", testDates)
     // Each letter in course.days corresponds to another day
     // console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
