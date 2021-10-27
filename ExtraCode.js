@@ -28,7 +28,7 @@
   export default function populateClass(course,semesterMap, testEvents){
     var testDates = testEvents
 
-    console.log("ExtraCode.js: Selected course:", course)
+    // console.log("ExtraCode.js: Selected course:", course)
     for(var ind of course.days){
       // console.log("Day of the week", ind)
       switch(ind){
@@ -197,6 +197,6 @@ export function depopulateClass(course,semesterMap, testEvents){
           break
       }
     } // Closes for loop
-    console.log("ExtraCode.js: rrlast testDates depopulateClass", testEvents)
+    // console.log("ExtraCode.js: rrlast testDates depopulateClass", testEvents)
     return testEvents;
   }

@@ -84,8 +84,7 @@ class SearchResults extends React.Component {
 	}
 
 	goBack() {
-		// this.props.navigation.pop()
-		this.setState((state, props) => ({...state, show: 0}))
+		this.props.navigation.pop()
 	}
 
 	confirm() {
@@ -102,7 +101,7 @@ class SearchResults extends React.Component {
 		// this.setState((state, props) => ({
 		// 	...state, retrievedSchedule: sched
 		// }));
-		console.log("SearchResults.js: class update", sched)
+		// console.log("SearchResults.js: class update", sched)
 		this.props.addClasses({retrievedSchedule: sched})
 		this.props.toggleShow(!this.props.show)
 		// this.props.navigation.navigate("Filter Page")

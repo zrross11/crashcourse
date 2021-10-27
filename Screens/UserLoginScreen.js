@@ -9,19 +9,14 @@ import {
 } from '@react-navigation/drawer';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
-import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-// import AsyncStorage from '@react-native-community/async-storage'
 
 import Parse from 'parse/react-native';
 import '../App/CourseRoster'
-// import { Provider } from 'react-redux'
-// import { createStore} from 'redux'
-// import * as SecureStore from 'expo-secure-store';
+
 import populateClass from   '../ExtraCode'
 import { classExtractor } from '../App/CourseRoster';
 import SemesterMapper from '../App/Semester';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
 
 class LoginScreen extends React.Component {

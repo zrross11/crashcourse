@@ -7,21 +7,14 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
-import { Card, Icon } from 'react-native-elements'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Parse from 'parse/react-native';
 import './App/CourseRoster'
-import { classExtractor } from './App/CourseRoster';
-import SemesterMapper from './App/Semester';
 import LoginScreen from './Screens/UserLoginScreen';
 import SignUpScreen from './Screens/UserSignupScreen';
 import HomeScreen from './Screens/HomeScreen';
 import AddScreen from './Screens/AddScreen';
 import RemoveScreen from "./Screens/RemoveScreen";
 import ProfileScreen from './Screens/ProfileScreen'
-import { createStore } from 'redux'
-import { Provider, connect } from 'react-redux'
+import { connect } from 'react-redux'
 
 function CustomDrawerContent(props) {
     // console.log("Custom props",props);

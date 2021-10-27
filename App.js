@@ -106,7 +106,7 @@ const reducer = (state = initialState, action) => {
 
 function addClass(state, newClass){
   console.log("App.js: addClass newclass param", newClass)
-  return {...state}
+  return {...state, ...newClass}
   // return {...state, classes: [...state.classes, { newClass }] }; 
 }
 
@@ -135,8 +135,8 @@ var datad = require('./api.json')
     var course;
   
     // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
-    var free = ['AFFL', 'CE']
-    // var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL']
+    // var free = ['AFFL', 'CE']
+    var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL']
   
     for(var index = 0; index < datad.length; index++){
       course = datad[index];

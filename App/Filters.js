@@ -5,7 +5,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { classExtractor } from './CourseRoster';
 import populateClass from '../ExtraCode'
 import { connect } from 'react-redux'
-import store from '../App'
 
 var professors = []
 var meetingdays = []
