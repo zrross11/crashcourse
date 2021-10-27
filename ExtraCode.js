@@ -182,6 +182,6 @@ export function depopulateClass(course,semesterMap, testEvents){
           break
       }
     } // Closes for loop
-    console.log("ExtraCode.js: rrlast testDates populateClass", testEvents)
+    // console.log("ExtraCode.js: rrlast testDates depopulateClass", testEvents)
     return testEvents;
   }

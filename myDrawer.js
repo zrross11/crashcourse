@@ -7,21 +7,14 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
-import { Card, Icon } from 'react-native-elements'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Parse from 'parse/react-native';
 import './App/CourseRoster'
-import { classExtractor } from './App/CourseRoster';
-import SemesterMapper from './App/Semester';
 import LoginScreen from './Screens/UserLoginScreen';
 import SignUpScreen from './Screens/UserSignupScreen';
 import HomeScreen from './Screens/HomeScreen';
 import AddScreen from './Screens/AddScreen';
 import RemoveScreen from "./Screens/RemoveScreen";
 import ProfileScreen from './Screens/ProfileScreen'
-import { createStore } from 'redux'
-import { Provider, connect } from 'react-redux'
+import { connect } from 'react-redux'
 
 function CustomDrawerContent(props) {
     // console.log("Custom props",props);
@@ -67,8 +60,13 @@ class MyDrawer extends React.Component {
               <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)} >
                 <Drawer.Screen name={`${this.props.firstName}'s Schedule`} children={() => (<HomeScreen/>)} />
                 <Drawer.Screen name="Add Class" children={() => (<AddScreen/>)} />
+<<<<<<< HEAD
                 {/* <Drawer.Screen name="Drop Class" children={() => (<RemoveScreen {...this.state} updateUser={this.handler} />)} /> */}
                 <Drawer.Screen name="Profile" children={() => (<ProfileScreen {...this.state} updateUser={this.handler} />)} />
+=======
+                <Drawer.Screen name="Drop Class" children={() => (<RemoveScreen/>)} />
+                {/* <Drawer.Screen name="Profile" children={() => (<ProfileScreen {...this.state} updateUser={this.handler} />)} /> */}
+>>>>>>> 582b7e61e70a00355b26476ba5d5d3b452b1eb78
               </Drawer.Navigator>            
           )
         }

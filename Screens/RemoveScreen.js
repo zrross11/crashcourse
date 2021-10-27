@@ -2,8 +2,9 @@ import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
 import {depopulateClass} from '../ExtraCode';
 import SemesterMapper from './../App/Semester';
+import { connect } from 'react-redux'
 
-export default class RemoveClasses extends React.Component {
+export class RemoveClasses extends React.Component {
 
 	constructor(props) {
 		super(props)
@@ -27,10 +28,12 @@ export default class RemoveClasses extends React.Component {
 		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		var newSched = depopulateClass(item, Semester, sched)
-		this.setState((state, props) => ({
-			...state, retrievedSchedule: newSched
-		 }));
+		// this.setState((state, props) => ({
+		// 	...state, retrievedSchedule: newSched
+		//  }));
+
 		// this.props.updateUser(this.state)
+		this.props.removeClasses({classes: newSched})
     }
 
 	async removeClasses(item){
@@ -61,6 +64,7 @@ export default class RemoveClasses extends React.Component {
 		return (
 			<ScrollView>
 				{classes.map((item, key) => {
+					var theClass = item;
 					return (
 					<View key={key}>
 						<Text style={styles.className}>{item.title}</Text>
@@ -70,7 +74,7 @@ export default class RemoveClasses extends React.Component {
 								type="clear"
 								title="Drop"
 								color="#FFFF"
-								onPress={() => this.removeAClass(item)}
+								onPress={() => this.removeAClass(theClass)}
 							/>
 						</View>
 						<Text style={styles.details}>{item.days}</Text>
@@ -152,6 +156,40 @@ export default class RemoveClasses extends React.Component {
 		)
 	}
 }
+
+function mapStateToProps(state) {
+    return {
+      username: state.username,
+      password: state.password,
+      email: state.email,
+      firstName: state.firstName,
+      lastName: state.lastName,
+      loggedIn: state.loggedIn,
+      schedule: state.schedule,
+      retrievedSchedule: state.retrievedSchedule,
+	  show: state.show,
+	  selectedDepartment: state.selectedDepartment,
+	  classes: state.classes,
+	  classPool: state.classPool,
+	  departments: state.departments,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+      decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+      loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
+	  removeClasses: (item) => dispatch({type: 'REMOVE_CLASSES', payload: item}),
+	  toggleShow: (item) => dispatch({type: 'TOGGLE_SHOW', payload: item})
+    };
+  }
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(RemoveClasses);
 
 
 const styles = StyleSheet.create({
