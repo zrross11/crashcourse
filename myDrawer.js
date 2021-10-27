@@ -71,7 +71,7 @@ class MyDrawer extends React.Component {
               <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)} >
                 <Drawer.Screen name={`${this.props.firstName}'s Schedule`} children={() => (<HomeScreen/>)} />
                 <Drawer.Screen name="Add Class" children={() => (<AddScreen/>)} />
-                {/* <Drawer.Screen name="Drop Class" children={() => (<RemoveScreen {...this.state} updateUser={this.handler} />)} /> */}
+                <Drawer.Screen name="Drop Class" children={() => (<RemoveScreen/>)} />
                 {/* <Drawer.Screen name="Profile" children={() => (<ProfileScreen {...this.state} updateUser={this.handler} />)} /> */}
               </Drawer.Navigator>            
           )

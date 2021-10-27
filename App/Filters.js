@@ -45,9 +45,9 @@ class Filters extends React.Component {
 		// console.log("Filters.js: filterCourses state", Object.values(this.state.classPool))
 		console.log("Filter.js: filterCourses was called. About to enter for loop")
 		for (var key of Object.values(this.state.classPool)) {
-			console.log("Filters.js: filterCourses classPool keys",key)
+			// console.log("Filters.js: filterCourses classPool keys",key)
 			if (key[0].subject == this.state.selectedDepartment) {
-				console.log("Subject was found")
+				// console.log("Subject was found")
 				for (var j = 0; j < key.length; j++) {
 					k.push(key[j]);
 				}
@@ -61,7 +61,6 @@ class Filters extends React.Component {
 	}
 
 	render() {
-		// const { departments } = this.props
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View

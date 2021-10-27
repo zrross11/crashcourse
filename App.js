@@ -94,6 +94,9 @@ const reducer = (state = initialState, action) => {
           return { counter: state.counter - 1 }
       case 'TOGGLE_SHOW':
         return {...state, show: action.payload }
+      case 'REMOVE_CLASSES':
+          console.log("App.js: Removing a class from schedule")
+          return {...state, ...action.payload}
       default:
         return state;
 
@@ -106,6 +109,8 @@ function addClass(state, newClass){
   return {...state}
   // return {...state, classes: [...state.classes, { newClass }] }; 
 }
+
+
 const store = createStore(reducer)
 
 
