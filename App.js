@@ -77,6 +77,7 @@ class MyDrawer extends React.Component {
       lastName: '',
       loggedIn: false,
       departments: [], // Holds the list of searchable departments
+      professors: [],
       schedule: {},
       retrievedSchedule: {},
       classes: [],
@@ -156,12 +157,18 @@ class MyDrawer extends React.Component {
   }
     var classList = customMap ;
     var dept = []
+    var profs = []
     this.setState({classPool: classList})
     console.log("Classes were just populated into the pool")
     		for (var key of Object.values(classList)) {
 			if (!dept.includes(key[0].subject)) {
 				dept.push(key[0].subject)
 			}
+      for (var i = 0; i < key.length; i++) {
+        if(!profs.includes(key[i].professor)) {
+          profs.push(key[i].professor);
+        }
+      }
 			// if (!professors.includes(key[0].instructor)) {
 			// 	professors.push(key[0].instructor)
 			// }
@@ -170,8 +177,11 @@ class MyDrawer extends React.Component {
 			// }
 		}
 		dept.sort()
+    profs.sort()
     // console.log("Dept after its sorted", dept)
     this.setState({departments: dept})
+    this.setState({professors: profs})
+    console.log(profs)
     // console.log("Department shouldve just been set", this.state.departments)
   }
 
