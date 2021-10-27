@@ -2,30 +2,13 @@ import * as React from "react";
 import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { classExtractor } from './CourseRoster';
-import populateClass from '../ExtraCode'
 import { connect } from 'react-redux'
-import store from '../App'
-
-var departments = ['APMA', 'CS', 'ETC']
-var professors = []
-var meetingdays = []
-var locations = []
 
 class Filters extends React.Component {
 
 	constructor(props) {
 		super(props)
-		// console.log("Filter.js: Constructor params", this.props.route.params)
-		// console.log("Filter.js: Constructor params", this.props.route)
-		// console.log("Filter.js: Constructor params", this.props)
 		this.state = {
-			// username: this.props.username,
-			// password: this.props.password,
-			// email: this.props.email,
-			// firstName: this.props.firstName,
-			// lastName: this.props.lastName,
-			// loggedIn: this.props.loggedIn,
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
 			courses: this.props.courses,
@@ -35,15 +18,12 @@ class Filters extends React.Component {
 			classPool: this.props.classPool,
 			departments: this.props.departments,
 		}
-    //   console.log("Filters.js: checking for classPool", this.state.classPool)
-	  // console.log("Filters.js: State when constructed",this.props)
 		this.filterCourses = this.filterCourses.bind(this)
 	}
 
 
 	filterCourses() {
 		var k = []
-		// console.log("Filters.js: filterCourses state", Object.values(this.state.classPool))
 		console.log("Filter.js: filterCourses was called. About to enter for loop")
 		for (var key of Object.values(this.state.classPool)) {
 			console.log("Filters.js: filterCourses classPool keys",key)
@@ -55,38 +35,14 @@ class Filters extends React.Component {
 			}
 		}
 		k = k.sort()
-		// console.log("Sorted classes", k)
-		// // this.setState((state, props) => ({
-		// // 	...state, show: 1, classes: k
-		// // }));
-
-		// var d = {...this.state, show: 1, classes: k}
-		// // this.setState((state, props) => ({...state, ...d}))
-		// console.log("Filter.js: State that is about to be uplaoded into the store",d)
-		// this.setState(d)
-		// // this.props.loadClasses(d)
-		// // console.log("Filter.js: Store after filtering courses", store.getState())
-		// this.setState((state, props) => ({...state, show: 1}))
 		this.props.loadClasses({classes: k})
-		this.props.toggleShow(!this.props.show)
+		// this.props.toggleShow(!this.props.show)
 		this.props.navigation.navigate("Search Results")
 
 	}
 
 	render() {
-		const { loggingIn, username, password, show, departments  } = this.props;
-		// console.log("Filters.js: Props during render", this.props)
-		// console.log("Filters.js: State during render", this.state)
-		// console.log("Filters.js: checking for classPool", this.state.classPool)
-
-		// if(this.props.show){
-		// 	console.log("Filters.js: Props about to be laoded")
-		// 	// this.props.loadClasses(this.state);
-		// 	// return (
-		// 	// 	<SearchResults {...this.props}/>
-		// 	// )
-		// 	this.props.navigation.navigate("Search Results")
-		// }
+		const { departments  } = this.props;
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View
@@ -141,7 +97,7 @@ class Filters extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={professors}
+							data={departments}
 							defaultButtonText={"Professor"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -166,7 +122,7 @@ class Filters extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={meetingdays}
+							data={departments}
 							defaultButtonText={"Meeting Days"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
