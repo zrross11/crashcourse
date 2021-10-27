@@ -7,7 +7,6 @@ import populateClass from '../ExtraCode'
 import { connect } from 'react-redux'
 import store from '../App'
 
-var departments = ['APMA', 'CS', 'ETC']
 var professors = []
 var meetingdays = []
 var locations = []
@@ -62,6 +61,7 @@ class Filters extends React.Component {
 	}
 
 	render() {
+		// const { departments } = this.props
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View
@@ -92,7 +92,7 @@ class Filters extends React.Component {
 						}}>
 						<Text style={styles.titleText}>What type of class?</Text>
 						<SelectDropdown
-							data={departments}
+							data={this.props.departments}
 							defaultButtonText={"Department"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -165,7 +165,7 @@ class Filters extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={departments}
+							data={locations}
 							defaultButtonText={"Location"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}

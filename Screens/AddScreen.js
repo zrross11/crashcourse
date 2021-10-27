@@ -26,8 +26,7 @@ class AddScreen extends React.Component {
             selectedDepartment: this.props.selectedDepartment,
             filterResults: this.props.filterResults,
           }
-        this.addClasses = this.addClasses.bind(this)
-        this.addClass = this.addClass.bind(this)
+
     }
 
 
