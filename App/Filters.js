@@ -36,9 +36,7 @@ class Filters extends React.Component {
 		}
 		k = k.sort()
 		this.props.loadClasses({classes: k})
-		// this.props.toggleShow(!this.props.show)
 		this.props.navigation.navigate("Search Results")
-
 	}
 
 	render() {

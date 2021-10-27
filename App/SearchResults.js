@@ -47,10 +47,10 @@ class SearchResults extends React.Component {
 		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		populateClass(key, Semester, sched)
+
 		this.props.addClasses({retrievedSchedule: sched})
 		this.props.toggleShow(!this.props.show)
 	}
-
 
 	render() {
 		var grab = this.state.classes

@@ -57,62 +57,8 @@ class MyDrawer extends React.Component {
       }
     //   console.log("myDrawer.js: checking for classPool", this.state.classPool)
     }
-      
-    //   this.handler = this.handler.bind(this)
-    // }
-  
-    handler(childState) {
-      // this.setState({ username: childState.username })
-      // this.setState({ password: childState.password })
-      // this.setState({ email: childState.email })
-      // this.setState({ firstName: childState.firstName })
-      // this.setState({ lastName: childState.lastName })
-      // this.setState({ loggedIn: childState.loggedIn })
-      // this.setState({ schedule: childState.schedule })
-      // this.setState({ retrievedSchedule: childState.retrievedSchedule })
-      // this.setState({ courses: childState.courses })
-      // this.setState({ show: childState.show })
-      // this.setState({ classes: childState.classes })
-      // this.setState({ selectedDepartment: childState.selectedDepartment })
-          this.setState((state, props) => ({
-              ...state, username: childState.username, show: 1, password: childState.password, email: childState.email, firstName: childState.firstName, lastName: childState.lastName,
-        loggedIn: childState.loggedIn, schedule: childState.schedule, retrievedSchedule: childState.retrievedSchedule, courses: childState.courses, show: childState.show, 
-          }));
-      // console.log("childState", ...childState)
-      console.log("App.js: handler just got called", this.state.classes)
-    }
-  
-  
-    // Populates the total list of classes after the user logs in
-    buildClasses(){
-      // var classList = classExtractor() ;
-      // var dept = []
-      // this.setState({classPool: classList})
-      // console.log("Classes were just populated into the pool")
-      // 		for (var key of Object.values(this.state.classPool)) {
-          // 	if (!dept.includes(key[0].subject)) {
-          // 		dept.push(key[0].subject)
-          // 	}
-          // 	// if (!professors.includes(key[0].instructor)) {
-          // 	// 	professors.push(key[0].instructor)
-          // 	// }
-          // 	// if (!meetingdays.includes(key[0].days)) {
-          // 	// 	meetingdays.push(key[0].days)
-          // 	// }
-          // }
-          // dept.sort()
-      // console.log("Dept after its sorted", dept)
-      // this.setState({departments: dept})
-      // console.log("Department shouldve just been called", this.state.departments)
-          // // professors.sort()
-          // // meetingdays.sort()
-    }
   
     render() {
-      // console.log("Department shouldve just been set", this.state.departments)
-  
-        // console.log("This just logged in")
-        // console.log("This props", this.props)
         if(this.props.loggedIn){
   
         //   console.log("App.js: Got into it", store.getState())
