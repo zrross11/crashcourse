@@ -55,18 +55,6 @@ class Filters extends React.Component {
 			}
 		}
 		k = k.sort()
-		// console.log("Sorted classes", k)
-		// // this.setState((state, props) => ({
-		// // 	...state, show: 1, classes: k
-		// // }));
-
-		// var d = {...this.state, show: 1, classes: k}
-		// // this.setState((state, props) => ({...state, ...d}))
-		// console.log("Filter.js: State that is about to be uplaoded into the store",d)
-		// this.setState(d)
-		// // this.props.loadClasses(d)
-		// // console.log("Filter.js: Store after filtering courses", store.getState())
-		// this.setState((state, props) => ({...state, show: 1}))
 		this.props.loadClasses({classes: k})
 		this.props.toggleShow(!this.props.show)
 		this.props.navigation.navigate("Search Results")
@@ -74,19 +62,6 @@ class Filters extends React.Component {
 	}
 
 	render() {
-		const { loggingIn, username, password, show, departments  } = this.props;
-		// console.log("Filters.js: Props during render", this.props)
-		// console.log("Filters.js: State during render", this.state)
-		// console.log("Filters.js: checking for classPool", this.state.classPool)
-
-		// if(this.props.show){
-		// 	console.log("Filters.js: Props about to be laoded")
-		// 	// this.props.loadClasses(this.state);
-		// 	// return (
-		// 	// 	<SearchResults {...this.props}/>
-		// 	// )
-		// 	this.props.navigation.navigate("Search Results")
-		// }
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View

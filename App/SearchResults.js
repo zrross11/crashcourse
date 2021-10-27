@@ -11,7 +11,6 @@ class SearchResults extends React.Component {
 
 	constructor(props) {
 		super(props)
-		// console.log("SearchResults.js: Props params", this.props)
 		this.state = {
 			username: this.props.username,
 			password: this.props.password,
@@ -27,70 +26,16 @@ class SearchResults extends React.Component {
 			show: 1,
 			selectedDepartment: this.props.selectedDepartment,
 		}
-		// console.log("Clases searchresults received.", this.state.classes)
-		// console.log("Clases search department received.", this.state.selectedDepartment)
-		this.mapClasses = this.mapClasses.bind(this)
 		this.goBack = this.goBack.bind(this)
 		this.confirm = this.confirm.bind(this)
 		this.addClass = this.addClass.bind(this)
-		// console.log("SearchResults.js: Props",this.props)
-	}
-
-	addClass(item){
-		console.log("SearchResults.js: Add class was called. Should call parent one", item)
-		// console.log("SearchResults.js: Add class was called. Should call parent two", this.props.route.options)
-		// console.log("SearchResults.js: Add class was called. Should call parent 3", this.props.options)
-
-		this.props.addClass(...item)
-	}
-
-	mapClasses(){
-		// console.log("SearchResults.js: mapClasses state of classes",this.props.classes)
-		var grab = this.state.classes
-		// console.log("The map", this.props)
-		// var grab = this.state.classPool
-		console.log("SearchResults.js: checking for classPool", this.state.classPool)
-		// console.log("SearchResults.js: MapClasses selectedDepartment", grab)
-		return (
-			<ScrollView>
-				{grab.map((item, key) => {
-					return (
-						<View key={key}>
-							<Text style={styles.className}>{item.title}</Text>
-							<Text style={styles.details}>{item.instructor}</Text>
-							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }} >
-								<Button
-									type="clear"
-									title="Add"
-									color="#FFFF"
-									onPress={(item) => this.addClass(item)}
-									// onPress={this.props.addClasses(item)}
-								/>
-							</View>
-							<Text style={styles.details}>{item.days}</Text>
-							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
-							<View
-								style={{
-									borderBottomColor: 'black',
-									borderBottomWidth: 2,
-									width: "90%",
-									left: "5%",
-								}}
-							/>
-						</View>
-					)
-				})}
-			</ScrollView>
-		)
 	}
 
 	goBack() {
-		// this.props.navigation.pop()
-		this.setState((state, props) => ({...state, show: 0}))
+		this.props.navigation.pop()
 	}
 
 	confirm() {
-		// this.props.navigation.pop()
 		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	}
 
@@ -100,15 +45,12 @@ class SearchResults extends React.Component {
 		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		populateClass(key, Semester, sched)
-		// this.setState((state, props) => ({
-		// 	...state, retrievedSchedule: sched
-		// }));
+
 		console.log("SearchResults.js: class update", sched)
 		this.props.addClasses({retrievedSchedule: sched})
 		this.props.toggleShow(!this.props.show)
 		// this.props.navigation.navigate("Filter Page")
 	}
-
 
 	render() {
 		var grab = this.state.classes

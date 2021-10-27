@@ -173,6 +173,7 @@ var datad = require('./api.json')
     }
       var classList = customMap ;
       var dept = []
+      
       console.log("myDrawer.js: Classes were just populated into the pool")
               for (var key of Object.values(classList)) {
               if (!dept.includes(key[0].subject)) {
@@ -186,6 +187,8 @@ var datad = require('./api.json')
               // }
           }
           dept.sort()
+          // professors.sort()
+          // meetingdays.sort()
       // console.log("Dept after its sorted", dept)
       // console.log("App.js: lassList", classList )
           return {classList, dept};
