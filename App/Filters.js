@@ -4,65 +4,90 @@ import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { classExtractor } from './CourseRoster';
 import populateClass from '../ExtraCode'
+import { connect } from 'react-redux'
+import SearchResults from "../App/SearchResults/"
+import store from '../App'
 
 var departments = ['APMA', 'CS', 'ETC']
 var professors = []
 var meetingdays = []
 var locations = []
 
-
-export default class MainScreenTwo extends React.Component {
+class Filters extends React.Component {
 
 	constructor(props) {
 		super(props)
-		console.log("Filter.js: Constructor params", this.props.route.params)
+		// console.log("Filter.js: Constructor params", this.props.route.params)
 		// console.log("Filter.js: Constructor params", this.props.route)
 		// console.log("Filter.js: Constructor params", this.props)
 		this.state = {
-			username: this.props.route.params.username,
-			password: this.props.route.params.password,
-			email: this.props.route.params.email,
-			firstName: this.props.route.params.firstName,
-			lastName: this.props.route.params.lastName,
-			loggedIn: this.props.route.params.loggedIn,
-			schedule: this.props.route.params.schedule,
-			retrievedSchedule: this.props.route.params.retrievedSchedule,
-			courses: this.props.route.params.courses,
-			show: this.props.route.params.show,
-			selectedDepartment: this.props.route.params.selectedDepartment,
-			classes: this.props.route.params.classes,
-			classPool: this.props.route.params.classPool,
-			departments: this.props.route.params.departments,
-			addClass: this.props.route.params.addClass,
+			// username: this.props.username,
+			// password: this.props.password,
+			// email: this.props.email,
+			// firstName: this.props.firstName,
+			// lastName: this.props.lastName,
+			// loggedIn: this.props.loggedIn,
+			schedule: this.props.schedule,
+			retrievedSchedule: this.props.retrievedSchedule,
+			courses: this.props.courses,
+			show: 0,
+			selectedDepartment: '',
+			classes: [],
+			classPool: this.props.classPool,
+			departments: this.props.departments,
 		}
+    //   console.log("Filters.js: checking for classPool", this.state.classPool)
+	  // console.log("Filters.js: State when constructed",this.props)
 		this.filterCourses = this.filterCourses.bind(this)
 	}
 
+
 	filterCourses() {
 		var k = []
+		// console.log("Filters.js: filterCourses state", Object.values(this.state.classPool))
+		console.log("Filter.js: filterCourses was called. About to enter for loop")
 		for (var key of Object.values(this.state.classPool)) {
+			console.log("Filters.js: filterCourses classPool keys",key)
 			if (key[0].subject == this.state.selectedDepartment) {
+				console.log("Subject was found")
 				for (var j = 0; j < key.length; j++) {
 					k.push(key[j]);
 				}
 			}
 		}
 		k = k.sort()
-		this.setState((state, props) => ({
-			...state, show: 1, classes: k
-		}));
+		// console.log("Sorted classes", k)
+		// // this.setState((state, props) => ({
+		// // 	...state, show: 1, classes: k
+		// // }));
+
+		// var d = {...this.state, show: 1, classes: k}
+		// // this.setState((state, props) => ({...state, ...d}))
+		// console.log("Filter.js: State that is about to be uplaoded into the store",d)
+		// this.setState(d)
+		// // this.props.loadClasses(d)
+		// // console.log("Filter.js: Store after filtering courses", store.getState())
+		// this.setState((state, props) => ({...state, show: 1}))
+		this.props.loadClasses({classes: k})
+		this.props.toggleShow(!this.props.show)
+		this.props.navigation.navigate("Search Results")
+
 	}
 
 	render() {
-		// console.log("Filter.js: state of filter courses -- just pressed show classes",this.props.route.params.classes)
-		if(this.state.show)
-				// return(
-				this.props.navigation.push('Results', {
-					...this.state
-				})				
-			// )
-			// this.state.show = 0;
+		const { loggingIn, username, password, show, departments  } = this.props;
+		// console.log("Filters.js: Props during render", this.props)
+		// console.log("Filters.js: State during render", this.state)
+		// console.log("Filters.js: checking for classPool", this.state.classPool)
 
+		// if(this.props.show){
+		// 	console.log("Filters.js: Props about to be laoded")
+		// 	// this.props.loadClasses(this.state);
+		// 	// return (
+		// 	// 	<SearchResults {...this.props}/>
+		// 	// )
+		// 	this.props.navigation.navigate("Search Results")
+		// }
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View
@@ -93,7 +118,7 @@ export default class MainScreenTwo extends React.Component {
 						}}>
 						<Text style={styles.titleText}>What type of class?</Text>
 						<SelectDropdown
-							data={this.state.departments}
+							data={departments}
 							defaultButtonText={"Department"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -103,7 +128,7 @@ export default class MainScreenTwo extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState({ selectedDepartment: selectedItem })
+								this.setState((state,props) => ({...state, selectedDepartment: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -211,6 +236,38 @@ export default class MainScreenTwo extends React.Component {
 
 	}
 }
+
+function mapStateToProps(state) {
+    return {
+      username: state.username,
+      password: state.password,
+      email: state.email,
+      firstName: state.firstName,
+      lastName: state.lastName,
+      loggedIn: state.loggedIn,
+      schedule: state.schedule,
+      retrievedSchedule: state.retrievedSchedule,
+	  show: state.show,
+	  selectedDepartment: state.selectedDepartment,
+	  classes: state.classes,
+	  classPool: state.classPool,
+	  departments: state.departments,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+      decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+      loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
+	  toggleShow: (item) => dispatch({type: 'TOGGLE_SHOW', payload: item})
+    };
+  }
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Filters);
 
 const styles = StyleSheet.create({
 	mainScreenView: {

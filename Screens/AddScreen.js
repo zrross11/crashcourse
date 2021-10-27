@@ -7,36 +7,35 @@ import SemesterMapper from '../App/Semester';
 import populateClass from '../ExtraCode'
 import { StackRouter } from "react-navigation";
 import { createStackNavigator } from "@react-navigation/stack";
+import {connect} from 'react-redux'
 
 const Stack = createStackNavigator();
-export default class AddScreen extends React.Component {
+class AddScreen extends React.Component {
 
     constructor(props) {
 		super(props)
 
         this.state = {
-            username: this.props.username,
-            password: this.props.password,
-            email: this.props.email,
-            firstName: this.props.firstName,
-            lastName: this.props.lastName,
-            loggedIn: this.props.loggedIn,
+            // username: this.props.username,
+            // password: this.props.password,
+            // email: this.props.email,
+            // firstName: this.props.firstName,
+            // lastName: this.props.lastName,
+            // loggedIn: this.props.loggedIn,
             schedule: this.props.schedule,
             departments: this.props.departments,
             classPool: this.props.classPool,
-            // classPool: [],
             retrievedSchedule: this.props.retrievedSchedule,
-            courses: [],
-            show: 0,
-            classes: [],
-            selectedDepartment: '',
-            filterResults: [],
-            addClass: this.addClasses,
-
-        }
-        this.handler = this.handler.bind(this)
-        this.flip = this.flip.bind(this)
-        this.flipFilter = this.flipFilter.bind(this)
+            courses: this.props.courses,
+            show: this.props.show,
+            classes: this.props.classes,
+            selectedDepartment: this.props.selectedDepartment,
+            filterResults: this.props.filterResults,
+          }
+        // console.log("AddScreen.js: props",this.props.retrievedSchedule)
+        // this.flip = this.flip.bind(this)
+    //   console.log("addScreen.js: checking for classPool", this.state.classPool)
+      // this.flipFilter = this.flipFilter.bind(this)
         this.addClasses = this.addClasses.bind(this)
         this.addClass = this.addClass.bind(this)
     }
@@ -51,45 +50,12 @@ export default class AddScreen extends React.Component {
 		console.log("Semester",semester)
 		populateClass(key, semester, sched)
 
-		this.setState({retrievedSchedule: sched});
-		this.props.updateUser(this.state)
+		this.setState((state, props) => ({...state, retrievedSchedule: sched}));
+		// this.props.updateUser(this.state)
+        this.props.loadClasses(this.state)
 		// Update the schedule mapper for the agenda 
 
 	}
-    handler(childState){
-        // console.log("AddScreen.js:  handler was called. class array",childState.classes);
-        // console.log("AddScreen.js:  handler was called. show",childState.show);
- 
-        if(childState.classes.length > 0){
-
-        
-        // this.setState(prevState => ({
-        //     formData: {
-        //       ...prevState.formData,
-        //       ...childState
-        //     }
-        //   }));
-        //   console.log("Entered",this.state)
-                //   console.log("AddScreen handler just got called test", childState.classes)
-
-        }
-        this.setState({username: childState.username})
-        this.setState({password: childState.password})
-        this.setState({email: childState.email})
-        this.setState({firstName: childState.firstName})
-        this.setState({lastName: childState.lastName})
-        this.setState({loggedIn: childState.loggedIn})
-        this.setState({schedule: childState.schedule})
-        this.setState({retrievedSchedule: childState.retrievedSchedule})
-        this.setState({courses: childState.courses})
-        this.setState({show: childState.show})
-        this.setState({classes: childState.classes})
-        this.setState({selectedDepartment: childState.selectedDepartment})
-        this.setState({classPool: childState.classPool})
-        console.log("AddScreen handler just got called: ", this.state.show)
-        // this.props.updateUser(this.state)
-      }
-
 
     async addClasses(item){
         console.log("AddScreen.js: addClasses was hit and called", item)
@@ -102,17 +68,63 @@ export default class AddScreen extends React.Component {
 		this.setState((state, props) => ({
 			...state, retrievedSchedule: newSched
 		 }));
-		// this.props.updateUser(this.state)
+         console.log("AddScreen.js: New Sched", newSched)
+		// this.props.loadClasses(this.state)
     }
 
     render(){
-        if(this.state.retrievedSchedule)
-        console.log("Add Screen retrieved Sched", this.state.retrievedSchedule)
+        // if(this.state.retrievedSchedule)
+        // console.log("AddScreen.js: State new sched", this.state.retrievedSchedule)
+
+        // console.log("Add Screen retrieved Sched", this.props)
+            // console.log("Why the fuck is show positive")
+
         return (
             <Stack.Navigator>
-                <Stack.Screen name="Filters" component={Filters} initialParams={{...this.state}} options={{headerShown: false}}/>
-                <Stack.Screen name="Results" component={SearchResults} options={{headerShown: false}}/>                
+                <Stack.Screen name="Filter Page" component={Filters}/>
+                <Stack.Screen name="Search Results" component={SearchResults}/>
             </Stack.Navigator>
         )
+        //     if(!this.state.show)
+        //     return (
+        //         <Filters />
+        //     )
+        // else {
+        //     return (
+        //         <SearchResults/>
+        //     )
+        // }
+
     }
 }
+function mapStateToProps(state) {
+    return {
+      username: state.username,
+      password: state.password,
+      email: state.email,
+      firstName: state.firstName,
+      lastName: state.lastName,
+      loggedIn: state.loggedIn,
+      schedule: state.schedule,
+      retrievedSchedule: state.retrievedSchedule,
+	  show: state.show,
+	  selectedDepartment: state.selectedDepartment,
+	  classes: state.classes,
+	  classPool: state.classPool,
+	  departments: state.departments,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+      decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+      loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item})
+    };
+  }
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AddScreen);

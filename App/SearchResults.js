@@ -4,27 +4,29 @@ import { selectedDepartment } from './Filters'
 import { classExtractor } from './CourseRoster';
 import populateClass from '../ExtraCode'
 import SemesterMapper from './Semester';
+import { connect } from 'react-redux';
+import Filters from "../App/Filters/";
 
 
-export default class SearchResults extends React.Component {
+class SearchResults extends React.Component {
 
 	constructor(props) {
 		super(props)
 		// console.log("SearchResults.js: Props params", this.props)
 		this.state = {
-			username: this.props.route.params.username,
-			password: this.props.route.params.password,
-			email: this.props.route.params.email,
-			firstName: this.props.route.params.firstName,
-			lastName: this.props.route.params.lastName,
-			loggedIn: this.props.route.params.loggedIn,
-			schedule: this.props.route.params.schedule,
-			retrievedSchedule: this.props.route.params.retrievedSchedule,
-			courses: this.props.route.params.courses,
-			classes: this.props.route.params.classes,
-			classPool: this.props.route.params.classPool,
-			show: this.props.route.params.show,
-			selectedDepartment: this.props.route.params.selectedDepartment,
+			username: this.props.username,
+			password: this.props.password,
+			email: this.props.email,
+			firstName: this.props.firstName,
+			lastName: this.props.lastName,
+			loggedIn: this.props.loggedIn,
+			schedule: this.props.schedule,
+			retrievedSchedule: this.props.retrievedSchedule,
+			courses: this.props.courses,
+			classes: this.props.classes,
+			classPool: this.props.classPool,
+			show: 1,
+			selectedDepartment: this.props.selectedDepartment,
 		}
 		// console.log("Clases searchresults received.", this.state.classes)
 		// console.log("Clases search department received.", this.state.selectedDepartment)
@@ -32,26 +34,27 @@ export default class SearchResults extends React.Component {
 		this.goBack = this.goBack.bind(this)
 		this.confirm = this.confirm.bind(this)
 		this.addClass = this.addClass.bind(this)
+		console.log("SearchResults.js: Props",this.props)
 	}
 
 	addClass(item){
-		console.log("SearchResults.js: Add class was called. Should call parent one", this.props.route.params.addClass)
+		console.log("SearchResults.js: Add class was called. Should call parent one", this.props.addClass)
 		// console.log("SearchResults.js: Add class was called. Should call parent two", this.props.route.options)
 		// console.log("SearchResults.js: Add class was called. Should call parent 3", this.props.options)
 
-		this.props.route.params.addClass(...item)
+		this.props.addClass(...item)
 	}
 
 	mapClasses(){
-		// console.log("SearchResults.js: mapClasses state of classes",this.props.route.params.classes)
+		// console.log("SearchResults.js: mapClasses state of classes",this.props.classes)
 		var grab = this.state.classes
 		// console.log("The map", this.props)
 		// var grab = this.state.classPool
+		console.log("SearchResults.js: checking for classPool", this.state.classPool)
 		// console.log("SearchResults.js: MapClasses selectedDepartment", grab)
 		return (
 			<ScrollView>
 				{grab.map((item, key) => {
-					// console.log("Mapping", item)
 					return (
 						<View key={key}>
 							<Text style={styles.className}>{item.title}</Text>
@@ -83,12 +86,13 @@ export default class SearchResults extends React.Component {
 	}
 
 	goBack() {
-		this.props.navigation.pop()
+		// this.props.navigation.pop()
+		this.setState((state, props) => ({...state, show: 0}))
 	}
 
 	confirm() {
-		this.props.navigation.pop()
-		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
+		// this.props.navigation.pop()
+		// this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	}
 
 	async addClass(key){
@@ -102,11 +106,44 @@ export default class SearchResults extends React.Component {
 
 	}
 
+	componentDidMount() {
+		var k = []
+		// console.log("Filters.js: filterCourses state", Object.values(this.state.classPool))
+		console.log("Filter.js: filterCourses was called. About to enter for loop")
+		for (var key of Object.values(this.state.classPool)) {
+			console.log("Filters.js: filterCourses classPool keys",key)
+			if (key[0].subject == this.state.selectedDepartment) {
+				console.log("Subject was found")
+				for (var j = 0; j < key.length; j++) {
+					k.push(key[j]);
+				}
+			}
+		}
+		k = k.sort()
+		console.log("Sorted classes", k)
+		// this.setState((state, props) => ({
+		// 	...state, show: 1, classes: k
+		// }));
+
+		var d = {...this.state, show: 1, classes: k}
+		// this.setState((state, props) => ({...state, ...d}))
+		console.log("Filter.js: State that is about to be uplaoded into the store",d)
+		// this.setState(d)
+		this.props.addClasses(d)
+		// console.log("Filter.js: Store after filtering courses", store.getState())
+	}
+
 	render() {
+		if(!this.state.show){
+			// return ( <Filters />)
+			console.log("SearchResults.js: Props about to be loaded")
+			this.props.loadClasses(this.state)
+			this.props.navigation.navigate("Filter Page")
+		}
 		// this.getResults;
-		// console.log(this.props.route.params.name)
-		// console.log(this.props.route.params.departments)
-		// console.log("search results params",this.props.route.params.addClasses)
+		// console.log(this.props.name)
+		// console.log(this.props.departments)
+		// console.log("search results params",this.props.addClasses)
 		var grab = this.state.classes
 		return (
 		<View
@@ -154,7 +191,7 @@ export default class SearchResults extends React.Component {
 									type="clear"
 									title="Add"
 									color="#FFFF"
-									onPress={this.addClass(item)}
+									onPress={(item) => this.addClass(item)}
 									// onPress={this.props.addClasses(item)}
 								/>
 							</View>
@@ -196,6 +233,39 @@ export default class SearchResults extends React.Component {
 	}
 }
 
+
+
+function mapStateToProps(state) {
+    return {
+      username: state.username,
+      password: state.password,
+      email: state.email,
+      firstName: state.firstName,
+      lastName: state.lastName,
+      loggedIn: state.loggedIn,
+      schedule: state.schedule,
+      retrievedSchedule: state.retrievedSchedule,
+	  show: state.show,
+	  selectedDepartment: state.selectedDepartment,
+	  classes: state.classes,
+	  classPool: state.classPool,
+	  departments: state.departments,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+      decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+      loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item})
+    };
+  }
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SearchResults);
 
 const styles = StyleSheet.create({
 	backgroundImage: {

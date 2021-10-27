@@ -17,9 +17,12 @@ import SemesterMapper from './App/Semester';
 import LoginScreen from './Screens/UserLoginScreen';
 import SignUpScreen from './Screens/UserSignupScreen';
 import HomeScreen from './Screens/HomeScreen';
+import MyDrawer from './myDrawer'
 import AddScreen from './Screens/AddScreen';
 import RemoveScreen from "./Screens/RemoveScreen";
 import ProfileScreen from './Screens/ProfileScreen'
+import { createStore } from 'redux'
+import { Provider, connect } from 'react-redux'
 
 Parse.setAsyncStorage(AsyncStorage);
 
@@ -55,183 +58,137 @@ function CustomDrawerContent(props) {
 }
 
 const Drawer = createDrawerNavigator();
-
-class MyDrawer extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-
-    const { params = {} } = navigation.state
-    return {
-      header: null,
-      headerLeft: null,
-      headerRight: null,
-    }
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: '',
-      password: '',
-      email: '',
-      firstName: '',
-      lastName: '',
-      loggedIn: false,
-      departments: [], // Holds the list of searchable departments
-      schedule: {},
-      retrievedSchedule: {},
-      classes: [],
-      classPool: [],
-
-    }
-    this.handler = this.handler.bind(this)
-    this.buildClasses = this.buildClasses.bind(this);
-  }
-
-  handler(childState) {
-    this.setState({ username: childState.username })
-    this.setState({ password: childState.password })
-    this.setState({ email: childState.email })
-    this.setState({ firstName: childState.firstName })
-    this.setState({ lastName: childState.lastName })
-    this.setState({ loggedIn: childState.loggedIn })
-    this.setState({ schedule: childState.schedule })
-    this.setState({ retrievedSchedule: childState.retrievedSchedule })
-    this.setState({ courses: childState.courses })
-    this.setState({ show: childState.show })
-    this.setState({ classes: childState.classes })
-    this.setState({ selectedDepartment: childState.selectedDepartment })
-    console.log("App.js: handler just got called", this.state.classes)
-  }
-
-  componentDidMount(){  
-  var datad = require('./api.json')
-  datad = datad.class_schedules.records
-  // console.log("headers", datad.class_schedules.columns)
-  var map = {}
-  var customMap = {} // only tracks some choice classes
-  //console.log(datad[0])
-  // console.log(datad);
-  var course;
-
-  // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
-  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL']
-
-  for(var index = 0; index < datad.length; index++){
-    course = datad[index];
-    var name = `${course[0]}${course[1]}`
-    // if(index === 15000)
-    //   console.log("Checking parse length",  name)
-    // console.log(course)
-    var classObject = {
-      subject: course[0],
-      mnemonic: course[1],
-      section: course[2],
-      number: course[3],
-      title: course[4],
-      desc: course[5],
-      instructor: course[6],
-      capacity: course[7],
-      days: course[8], // 'MTWRF'
-      start: course[9],
-      end: course[10], // 'HH:MM:SS' 24hr
-      term: course[11], // '1216
-      termdesc: course[12], // '2021 Summer'
-    }
-    // await saveCourse(classObject)
-
-// ----   UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
-    // console.log(`Name: ${classObject.subject}`)
-    if (free.includes(`${classObject.subject}`)){
-      // console.log("e school course!",classObject)
-      if( name in customMap){
-        var sectionArray = customMap[name]
-        sectionArray.push(classObject)
-        customMap[name] = sectionArray
-      }
-      else{
-        // console.log("E school new course found") // It does find all the e school courses
-        customMap[name] = [classObject]
-      }
-    }
-  }
-    var classList = customMap ;
-    var dept = []
-    this.setState({classPool: classList})
-    console.log("Classes were just populated into the pool")
-    		for (var key of Object.values(classList)) {
-			if (!dept.includes(key[0].subject)) {
-				dept.push(key[0].subject)
-			}
-			// if (!professors.includes(key[0].instructor)) {
-			// 	professors.push(key[0].instructor)
-			// }
-			// if (!meetingdays.includes(key[0].days)) {
-			// 	meetingdays.push(key[0].days)
-			// }
-		}
-		dept.sort()
-    // console.log("Dept after its sorted", dept)
-    this.setState({departments: dept})
-    // console.log("Department shouldve just been set", this.state.departments)
-  }
-
-  // Populates the total list of classes after the user logs in
-  buildClasses(){
-    // var classList = classExtractor() ;
-    // var dept = []
-    // this.setState({classPool: classList})
-    // console.log("Classes were just populated into the pool")
-    // 		for (var key of Object.values(this.state.classPool)) {
-		// 	if (!dept.includes(key[0].subject)) {
-		// 		dept.push(key[0].subject)
-		// 	}
-		// 	// if (!professors.includes(key[0].instructor)) {
-		// 	// 	professors.push(key[0].instructor)
-		// 	// }
-		// 	// if (!meetingdays.includes(key[0].days)) {
-		// 	// 	meetingdays.push(key[0].days)
-		// 	// }
-		// }
-		// dept.sort()
-    // console.log("Dept after its sorted", dept)
-    // this.setState({departments: dept})
-    // console.log("Department shouldve just been called", this.state.departments)
-		// // professors.sort()
-		// // meetingdays.sort()
-  }
-
-  render() {
-
-    if (this.state.loggedIn) {
-      // console.log("This just logged in")
-      return (
-        <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)} >
-          <Drawer.Screen name={`${this.state.firstName}'s Schedule`} children={() => (<HomeScreen {...this.state} updateUser={this.handler} />)} />
-          <Drawer.Screen name="Add Class" children={() => (<AddScreen {...this.state} updateUser={this.handler} />)} />
-          <Drawer.Screen name="Drop Class" children={() => (<RemoveScreen {...this.state} updateUser={this.handler} />)} />
-          <Drawer.Screen name="Profile" children={() => (<ProfileScreen {...this.state} updateUser={this.handler} />)} />
-        </Drawer.Navigator>
-      )
-    }
-    else {
-      return (
-        <Drawer.Navigator >
-          <Drawer.Screen name="Login Page" children={() => (<LoginScreen {...this.state} updateUser={this.handler} buildClasses={this.buildClasses}/>)} />
-          <Drawer.Screen name="Sign Up" children={() => (<SignUpScreen {...this.state} updateUser={this.handler} />)} />
-        </Drawer.Navigator>
-      )
-    }
-  }
+const {classList, dept} = fillClass();
+// console.log("App.js: classList const", classList)
+// Initial User Account state 
+const initialState = {
+  username: '',
+  password: '',
+  email: '',
+  firstName: '',
+  lastName: '',
+  loggedIn: false,
+  departments: dept, // Holds the list of searchable departments
+  schedule: {}, // Stores the object key for user's schedule item
+  retrievedSchedule: {}, // Stores the schedule of all semester days in array
+  classes: [],
+  classPool: classList, // Holds the list of all classes
+  courses: [],
+  show: 0,
+  selectedDepartment: '',
+  filterResults: [],
 }
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+      case 'LOGIN':
+          console.log("App.js: State has registered login")
+          return { ...state, ...action.payload }
+      case 'LOAD_CLASSES':
+        console.log("App.js: Loading Classes up")
+        return { ...state, ...action.payload }
+      // case 'ADD_CLASSES':
+      //   console.log("App.js: Adding a class to schedule")
+      //   return addClass(state, action.payload)
+      case 'DECREASE_COUNTER':
+          return { counter: state.counter - 1 }
+      case 'TOGGLE_SHOW':
+        return {...state, show: action.payload }
+      default:
+        return state;
+
+  }
+  return state
+}
+
+function addClass(state, newClass){
+  return {...state, classes: [...state.classes, { newClass }] }; 
+}
+const store = createStore(reducer)
 
 
 export default function App() {
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <MyDrawer />
-    </NavigationContainer>
+    </NavigationContainer>      
+    </Provider>
+
   );
 }
+function fillClass(){
+var datad = require('./api.json')
+    datad = datad.class_schedules.records
+    // console.log("headers", datad.class_schedules.columns)
+    var map = {}
+    var customMap = {} // only tracks some choice classes
+    //console.log(datad[0])
+    // console.log(datad);
+    var course;
+  
+    // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
+    var free = ['AFFL', 'CE']
+    // var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL']
+  
+    for(var index = 0; index < datad.length; index++){
+      course = datad[index];
+      var name = `${course[0]}${course[1]}`
+      // if(index === 15000)
+      //   console.log("Checking parse length",  name)
+      // console.log(course)
+      var classObject = {
+        subject: course[0],
+        mnemonic: course[1],
+        section: course[2],
+        number: course[3],
+        title: course[4],
+        desc: course[5],
+        instructor: course[6],
+        capacity: course[7],
+        days: course[8], // 'MTWRF'
+        start: course[9],
+        end: course[10], // 'HH:MM:SS' 24hr
+        term: course[11], // '1216
+        termdesc: course[12], // '2021 Summer'
+      }
+      // await saveCourse(classObject)
+  
+  // ----   UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
+      // console.log(`Name: ${classObject.subject}`)
+      if (free.includes(`${classObject.subject}`)){
+        // console.log("e school course!",classObject)
+        if( name in customMap){
+          var sectionArray = customMap[name]
+          sectionArray.push(classObject)
+          customMap[name] = sectionArray
+        }
+        else{
+          // console.log("E school new course found") // It does find all the e school courses
+          customMap[name] = [classObject]
+        }
+      }
+    }
+      var classList = customMap ;
+      var dept = []
+      console.log("myDrawer.js: Classes were just populated into the pool")
+              for (var key of Object.values(classList)) {
+              if (!dept.includes(key[0].subject)) {
+                  dept.push(key[0].subject)
+              }
+              // if (!professors.includes(key[0].instructor)) {
+              // 	professors.push(key[0].instructor)
+              // }
+              // if (!meetingdays.includes(key[0].days)) {
+              // 	meetingdays.push(key[0].days)
+              // }
+          }
+          dept.sort()
+      // console.log("Dept after its sorted", dept)
+      // console.log("App.js: lassList", classList )
+          return {classList, dept};
+}
+  
 
 const styles = StyleSheet.create({
   backgroundImage: {
