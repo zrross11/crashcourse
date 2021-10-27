@@ -1,11 +1,6 @@
 import Filters from "../App/Filters/";
 import SearchResults from "../App/SearchResults/"
 import * as React from 'react'
-import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
-import { classExtractor } from '../App/CourseRoster';
-import SemesterMapper from '../App/Semester';
-import populateClass from '../ExtraCode'
-import { StackRouter } from "react-navigation";
 import { createStackNavigator } from "@react-navigation/stack";
 import {connect} from 'react-redux'
 
