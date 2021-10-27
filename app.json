@@ -21,9 +21,11 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [],
+      "package": "com.sdutta1.crashcourse"
     },
-    "web": {
-    }
+    "web": {},
+    "description": "Scheduling App for UVA students"
   }
 }
