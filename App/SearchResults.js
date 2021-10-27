@@ -5,7 +5,6 @@ import { classExtractor } from './CourseRoster';
 import populateClass from '../ExtraCode'
 import SemesterMapper from './Semester';
 import { connect } from 'react-redux';
-import Filters from "../App/Filters/";
 
 
 class SearchResults extends React.Component {
@@ -34,11 +33,11 @@ class SearchResults extends React.Component {
 		this.goBack = this.goBack.bind(this)
 		this.confirm = this.confirm.bind(this)
 		this.addClass = this.addClass.bind(this)
-		console.log("SearchResults.js: Props",this.props)
+		// console.log("SearchResults.js: Props",this.props)
 	}
 
 	addClass(item){
-		console.log("SearchResults.js: Add class was called. Should call parent one", this.props.addClass)
+		console.log("SearchResults.js: Add class was called. Should call parent one", item)
 		// console.log("SearchResults.js: Add class was called. Should call parent two", this.props.route.options)
 		// console.log("SearchResults.js: Add class was called. Should call parent 3", this.props.options)
 
@@ -64,7 +63,7 @@ class SearchResults extends React.Component {
 									type="clear"
 									title="Add"
 									color="#FFFF"
-									onPress={() => this.addClass(item)}
+									onPress={(item) => this.addClass(item)}
 									// onPress={this.props.addClasses(item)}
 								/>
 							</View>
@@ -97,49 +96,54 @@ class SearchResults extends React.Component {
 
 	async addClass(key){
 		// Call the populate class method on the course
+
 		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		populateClass(key, Semester, sched)
-		this.setState((state, props) => ({
-			...state, retrievedSchedule: sched
-		}));
-
-	}
-
-	componentDidMount() {
-		var k = []
-		// console.log("Filters.js: filterCourses state", Object.values(this.state.classPool))
-		console.log("Filter.js: filterCourses was called. About to enter for loop")
-		for (var key of Object.values(this.state.classPool)) {
-			console.log("Filters.js: filterCourses classPool keys",key)
-			if (key[0].subject == this.state.selectedDepartment) {
-				console.log("Subject was found")
-				for (var j = 0; j < key.length; j++) {
-					k.push(key[j]);
-				}
-			}
-		}
-		k = k.sort()
-		console.log("Sorted classes", k)
 		// this.setState((state, props) => ({
-		// 	...state, show: 1, classes: k
+		// 	...state, retrievedSchedule: sched
 		// }));
-
-		var d = {...this.state, show: 1, classes: k}
-		// this.setState((state, props) => ({...state, ...d}))
-		console.log("Filter.js: State that is about to be uplaoded into the store",d)
-		// this.setState(d)
-		this.props.addClasses(d)
-		// console.log("Filter.js: Store after filtering courses", store.getState())
+		console.log("SearchResults.js: class update", sched)
+		this.props.addClasses({retrievedSchedule: sched})
+		this.props.toggleShow(!this.props.show)
+		this.props.navigation.navigate("Filter Page")
 	}
+
+
+	// componentDidMount() {
+	// 	var k = []
+	// 	// console.log("Filters.js: filterCourses state", Object.values(this.state.classPool))
+	// 	console.log("Filter.js: filterCourses was called. About to enter for loop")
+	// 	for (var key of Object.values(this.state.classPool)) {
+	// 		console.log("Filters.js: filterCourses classPool keys",key)
+	// 		if (key[0].subject == this.state.selectedDepartment) {
+	// 			console.log("Subject was found")
+	// 			for (var j = 0; j < key.length; j++) {
+	// 				k.push(key[j]);
+	// 			}
+	// 		}
+	// 	}
+	// 	k = k.sort()
+	// 	console.log("Sorted classes", k)
+	// 	// this.setState((state, props) => ({
+	// 	// 	...state, show: 1, classes: k
+	// 	// }));
+
+	// 	var d = {...this.state, show: 1, classes: k}
+	// 	// this.setState((state, props) => ({...state, ...d}))
+	// 	console.log("Filter.js: State that is about to be uplaoded into the store",d)
+	// 	// this.setState(d)
+	// 	this.props.addClasses(d)
+	// 	// console.log("Filter.js: Store after filtering courses", store.getState())
+	// }
 
 	render() {
-		if(!this.state.show){
-			// return ( <Filters />)
-			console.log("SearchResults.js: Props about to be loaded")
-			this.props.loadClasses(this.state)
-			this.props.navigation.navigate("Filter Page")
-		}
+		// if(!this.state.show){
+		// 	// return ( <Filters />)
+		// 	console.log("SearchResults.js: Props about to be loaded")
+		// 	this.props.loadClasses(this.state)
+		// 	this.props.navigation.navigate("Filter Page")
+		// }
 		// this.getResults;
 		// console.log(this.props.name)
 		// console.log(this.props.departments)
@@ -182,16 +186,18 @@ class SearchResults extends React.Component {
 					<ScrollView>
 				{grab.map((item, key) => {
 					// console.log("Mapping", item)
+					var theClass = item
+					// console.log("searchresults.js,;",theClass)
 					return (
 						<View key={key}>
 							<Text style={styles.className}>{item.title}</Text>
 							<Text style={styles.details}>{item.instructor}</Text>
 							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }} >
 								<Button
-									type="clear"
+									// type="clear"
 									title="Add"
 									color="#FFFF"
-									onPress={(item) => this.addClass(item)}
+									onPress={() => this.addClass(theClass)}
 									// onPress={this.props.addClasses(item)}
 								/>
 							</View>
@@ -258,7 +264,8 @@ function mapStateToProps(state) {
       LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
       decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
       loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
-      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item})
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
+	  toggleShow: (item) => dispatch({type: 'TOGGLE_SHOW', payload: item})
     };
   }
   
