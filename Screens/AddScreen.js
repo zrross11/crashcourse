@@ -26,8 +26,8 @@ class AddScreen extends React.Component {
 
     render(){
         return (
-            <Stack.Navigator>
-                <Stack.Screen name="Filter Page" component={Filters}/>
+            <Stack.Navigator screenOptions={{headerShown:  false}}>
+                <Stack.Screen name="Filter Page" component={Filters} />
                 <Stack.Screen name="Search Results" component={SearchResults}/>
             </Stack.Navigator>
         )

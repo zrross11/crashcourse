@@ -28,44 +28,34 @@
   export default function populateClass(course,semesterMap, testEvents){
     var testDates = testEvents
 
-    console.log("ExtraCode.js: Selected course:", course)
     for(var ind of course.days){
-      // console.log("Day of the week", ind)
       switch(ind){
         case 'M': // Monday
           for(var date of semesterMap['M']){
-            // console.log("Monday dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
               testEvents[`${date}`] = temp
-              // console.log(testEvents[`${date}`])
             }
             else{
               testEvents[`${date}`] = [course]
-              // console.log(testEvents[`${date}`])
             }
           }
           break
         case 'T': // Tuesday
           for(var date of semesterMap['T']){
-            // console.log("Tuesday dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
               testEvents[`${date}`] = temp
-              // console.log(testEvents[`${date}`])
             }
             else{
               testEvents[`${date}`] = [course]
-              // console.log(testEvents[`${date}`])
-  
             }
           }
           break            
         case 'W': // Wednesday
           for(var date of semesterMap['W']){
-            // console.log("Wed dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
@@ -73,13 +63,11 @@
             }
             else{
               testEvents[`${date}`] = [course]
-  
             }      
           }
           break
         case 'R': // Thursday
           for(var date of semesterMap['R']){
-            // console.log("Thursday dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
@@ -93,7 +81,6 @@
           break
         case 'F': // Friday
           for(var date of semesterMap['F']){
-            // console.log("Friday dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
@@ -101,13 +88,11 @@
             }
             else{
               testEvents[`${date}`] = [course]
-  
             }       
           }
           break
       }
     }
-    // console.log("ExtraCode.js: rrlast testDates populateClass", testEvents)
     return testEvents;
   }
   

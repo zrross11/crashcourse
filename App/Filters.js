@@ -24,11 +24,8 @@ class Filters extends React.Component {
 
 	filterCourses() {
 		var k = []
-		console.log("Filter.js: filterCourses was called. About to enter for loop")
 		for (var key of Object.values(this.state.classPool)) {
-			console.log("Filters.js: filterCourses classPool keys",key)
 			if (key[0].subject == this.state.selectedDepartment) {
-				console.log("Subject was found")
 				for (var j = 0; j < key.length; j++) {
 					k.push(key[j]);
 				}
@@ -105,7 +102,6 @@ class Filters extends React.Component {
 							}}
 							onSelect={(selectedItem, index) => {
 								console.log(selectedItem, index)
-								// this.setState({professor: selectedItem})
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -153,7 +149,6 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								// console.log(selectedItem, index)
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
