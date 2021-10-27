@@ -5,7 +5,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { classExtractor } from './CourseRoster';
 import populateClass from '../ExtraCode'
 import { connect } from 'react-redux'
-import SearchResults from "../App/SearchResults/"
 import store from '../App'
 
 var departments = ['APMA', 'CS', 'ETC']

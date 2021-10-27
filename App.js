@@ -58,9 +58,9 @@ const reducer = (state = initialState, action) => {
       case 'LOAD_CLASSES':
         console.log("App.js: Loading Classes up")
         return { ...state, ...action.payload }
-      // case 'ADD_CLASSES':
-      //   console.log("App.js: Adding a class to schedule")
-      //   return addClass(state, action.payload)
+      case 'ADD_CLASSES':
+        console.log("App.js: Adding a class to schedule")
+        return addClass(state, action.payload)
       case 'DECREASE_COUNTER':
           return { counter: state.counter - 1 }
       case 'TOGGLE_SHOW':
@@ -73,7 +73,9 @@ const reducer = (state = initialState, action) => {
 }
 
 function addClass(state, newClass){
-  return {...state, classes: [...state.classes, { newClass }] }; 
+  console.log("App.js: addClass newclass param", newClass)
+  return {...state}
+  // return {...state, classes: [...state.classes, { newClass }] }; 
 }
 const store = createStore(reducer)
 
