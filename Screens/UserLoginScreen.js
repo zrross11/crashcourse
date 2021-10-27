@@ -202,8 +202,6 @@ async updateSchedule(){
                         backgroundColor="white"            
                         accessibilityLabel="Learn more about this purple button"
                         />
-
-                        {/* <Text>{`Sign In`}</Text> */}
                     </View>
                     </TouchableOpacity>
                 </View>

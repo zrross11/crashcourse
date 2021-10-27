@@ -27,9 +27,7 @@
   
   export default function populateClass(course,semesterMap, testEvents){
     var testDates = testEvents
-    // console.log("ExtraCode.js: initial testDates", testDates)
-    // Each letter in course.days corresponds to another day
-    // console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
+
     console.log("ExtraCode.js: Selected course:", course)
     for(var ind of course.days){
       // console.log("Day of the week", ind)
