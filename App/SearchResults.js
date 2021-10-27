@@ -91,7 +91,7 @@ class SearchResults extends React.Component {
 
 	confirm() {
 		// this.props.navigation.pop()
-		// this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
+		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	}
 
 	async addClass(key){
@@ -106,48 +106,11 @@ class SearchResults extends React.Component {
 		console.log("SearchResults.js: class update", sched)
 		this.props.addClasses({retrievedSchedule: sched})
 		this.props.toggleShow(!this.props.show)
-		this.props.navigation.navigate("Filter Page")
+		// this.props.navigation.navigate("Filter Page")
 	}
 
 
-	// componentDidMount() {
-	// 	var k = []
-	// 	// console.log("Filters.js: filterCourses state", Object.values(this.state.classPool))
-	// 	console.log("Filter.js: filterCourses was called. About to enter for loop")
-	// 	for (var key of Object.values(this.state.classPool)) {
-	// 		console.log("Filters.js: filterCourses classPool keys",key)
-	// 		if (key[0].subject == this.state.selectedDepartment) {
-	// 			console.log("Subject was found")
-	// 			for (var j = 0; j < key.length; j++) {
-	// 				k.push(key[j]);
-	// 			}
-	// 		}
-	// 	}
-	// 	k = k.sort()
-	// 	console.log("Sorted classes", k)
-	// 	// this.setState((state, props) => ({
-	// 	// 	...state, show: 1, classes: k
-	// 	// }));
-
-	// 	var d = {...this.state, show: 1, classes: k}
-	// 	// this.setState((state, props) => ({...state, ...d}))
-	// 	console.log("Filter.js: State that is about to be uplaoded into the store",d)
-	// 	// this.setState(d)
-	// 	this.props.addClasses(d)
-	// 	// console.log("Filter.js: Store after filtering courses", store.getState())
-	// }
-
 	render() {
-		// if(!this.state.show){
-		// 	// return ( <Filters />)
-		// 	console.log("SearchResults.js: Props about to be loaded")
-		// 	this.props.loadClasses(this.state)
-		// 	this.props.navigation.navigate("Filter Page")
-		// }
-		// this.getResults;
-		// console.log(this.props.name)
-		// console.log(this.props.departments)
-		// console.log("search results params",this.props.addClasses)
 		var grab = this.state.classes
 		return (
 		<View
@@ -185,9 +148,7 @@ class SearchResults extends React.Component {
 					<View>
 					<ScrollView>
 				{grab.map((item, key) => {
-					// console.log("Mapping", item)
 					var theClass = item
-					// console.log("searchresults.js,;",theClass)
 					return (
 						<View key={key}>
 							<Text style={styles.className}>{item.title}</Text>
@@ -198,7 +159,6 @@ class SearchResults extends React.Component {
 									title="Add"
 									color="#FFFF"
 									onPress={() => this.addClass(theClass)}
-									// onPress={this.props.addClasses(item)}
 								/>
 							</View>
 							<Text style={styles.details}>{item.days}</Text>
