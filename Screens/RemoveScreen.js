@@ -33,6 +33,7 @@ export class RemoveClasses extends React.Component {
 		//  }));
 
 		// this.props.updateUser(this.state)
+		console.log("updated")
 		this.props.removeClasses({classes: newSched})
     }
 

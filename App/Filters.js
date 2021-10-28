@@ -4,6 +4,22 @@ import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from 'react-redux'
 
+const daymap = {
+	'Monday': 'M',
+	'Tuesday': 'T',
+	'Wednesday': 'W',
+	'Thursday': 'R',
+	'Friday': 'F',
+	'Saturday': 'S',
+	'Monday, Wednesday': 'MW',
+	'Tuesday, Thursday': 'TR',
+	'Wednesday, Friday': 'MW',
+	'Monday, Wednesday, Friday': 'MWF',
+	'Monday, Tuesday, Wednesday': 'MWF',
+	'Monday, Tuesday, Wednesday, Thursday, Friday': 'MTWRF',
+	'Online': ''
+}
+
 class Filters extends React.Component {
 
 	constructor(props) {
@@ -14,24 +30,204 @@ class Filters extends React.Component {
 			courses: this.props.courses,
 			show: 0,
 			selectedDepartment: '',
+			selectedProfessor: '',
+			selectedDay: '',
+			selectedTime: '',
 			classes: [],
 			classPool: this.props.classPool,
 			departments: this.props.departments,
+			professors: this.props.professors,
+			meetingTimes: this.props.meetingTimes,
+			className: this.props.className
 		}
 		this.filterCourses = this.filterCourses.bind(this)
 	}
 
-
 	filterCourses() {
 		var k = []
-		for (var key of Object.values(this.state.classPool)) {
-			if (key[0].subject == this.state.selectedDepartment) {
-				for (var j = 0; j < key.length; j++) {
-					k.push(key[j]);
+		//all filters on
+		if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+							k.push(key[j]);
+						}
+					}
 				}
 			}
 		}
+		//department, professor, day
+		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//department, professor, time
+		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].instructor == this.state.selectedProfessor && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//department, day, time
+		else if (this.state.selectedDepartment != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//professor, day, time
+		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//department, professor
+		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].instructor == this.state.selectedProfessor) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//department, day
+		else if (this.state.selectedDepartment != '' && this.state.selectedDay != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].days == this.state.selectedDay) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//department, time
+		else if (this.state.selectedDepartment != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if ((key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//professor, day
+		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//professor, time
+		else if (this.state.selectedProfessor != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].instructor == this.state.selectedProfessor && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//day, time
+		else if (this.state.selectedDay != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//department
+		else if (this.state.selectedDepartment != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//professor
+		else if (this.state.selectedProfessor != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].instructor == this.state.selectedProfessor) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//day
+		else if (this.state.selectedDay != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].days == this.state.selectedDay) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//time
+		else {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if ((key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+
 		k = k.sort()
+
+		//text input stuff... if there are elements in k, filter from box
+		if (this.state.className != null && k.length > 0) {
+			k = k.filter(data => data.title.includes(this.state.className));
+		}
+		//if no elements in k, search for classes with said name
+		else if (this.state.className != null) {
+			console.log(this.state.className)
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].title.includes(this.state.className)) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+
 		this.props.loadClasses({classes: k})
 		this.props.navigation.navigate("Search Results")
 	}
@@ -91,7 +287,7 @@ class Filters extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={this.props.departments}
+							data={this.props.professors}
 							defaultButtonText={"Professor"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -101,7 +297,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								console.log(selectedItem, index)
+								this.setState((state,props) => ({...state, selectedProfessor: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -115,7 +311,7 @@ class Filters extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={this.props.departments}
+							data={Object.keys(daymap)}
 							defaultButtonText={"Meeting Days"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -125,7 +321,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								console.log(selectedItem, index)
+								this.setState((state,props) => ({...state, selectedDay: daymap[selectedItem]}))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -139,8 +335,8 @@ class Filters extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={this.props.departments}
-							defaultButtonText={"Location"}
+							data={this.props.meetingTimes}
+							defaultButtonText={"Meeting Times"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
 							renderDropdownIcon={() => {
@@ -149,6 +345,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
+								this.setState((state,props) => ({...state, selectedTime: selectedItem}))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -162,8 +359,10 @@ class Filters extends React.Component {
 								flex: 0.3,
 							}} />
 						<Text style={styles.titleText2}>Search By Class Name:</Text>
-						<TextInput style={styles.input} placeholder="Type here..." />
-
+						<TextInput style={styles.input} placeholder="Type here... (case-sensitive)" onChangeText={(text) => {
+							this.setState((state,props) => ({...state, className: text}))
+						}}/>
+							
 						<View
 							style={{
 								flex: 0.1,
@@ -196,9 +395,15 @@ function mapStateToProps(state) {
       retrievedSchedule: state.retrievedSchedule,
 	  show: state.show,
 	  selectedDepartment: state.selectedDepartment,
+	  selectedProfessor: state.selectedProfessor,
+	  selectedDay:  state.selectedDay,
+	  selectedTime: state.selectedTime,
 	  classes: state.classes,
 	  classPool: state.classPool,
 	  departments: state.departments,
+	  professors: state.professors,
+	  meetingTimes: state.meetingTimes,
+	  className: state.className
     };
   }
   

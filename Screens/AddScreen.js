@@ -13,6 +13,8 @@ class AddScreen extends React.Component {
         this.state = {
             schedule: this.props.schedule,
             departments: this.props.departments,
+            professors: this.props.professors,
+            meetingTimes: this.props.meetingTimes,
             classPool: this.props.classPool,
             retrievedSchedule: this.props.retrievedSchedule,
             courses: this.props.courses,
@@ -48,6 +50,8 @@ function mapStateToProps(state) {
       classes: state.classes,
       classPool: state.classPool,
       departments: state.departments,
+      professors: state.professors,
+      meetingTimes: state.meetingTimes,
     };
   }
   
