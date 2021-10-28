@@ -28,28 +28,13 @@ export class RemoveClasses extends React.Component {
 		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		var newSched = depopulateClass(item, Semester, sched)
-		// this.setState((state, props) => ({
-		// 	...state, retrievedSchedule: newSched
-		//  }));
+		console.log("RemoveScreen.js: removing a class updated")
+		this.props.removeClasses({retrievedSchedule: newSched})
 
-		// this.props.updateUser(this.state)
-		console.log("updated")
-		this.props.removeClasses({classes: newSched})
+		this.setState((state, props) => ({...state, retrievedSchedule: newSched}))
     }
 
-	async removeClasses(item){
-        console.log("RemoveScreen.js: removeClasses was hit and called", item)
-		// Call the populate class method on the course
-		var sched = {} // map holding each date in the semester and the array of clases on it 
-		console.log("Sched", sched)
-		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
-		// console.log("Semester",Semester)
-		var newSched = depopulateClass(item, Semester, sched)
-		this.setState((state, props) => ({
-			...state, retrievedSchedule: newSched
-		 }));
-		// this.props.updateUser(this.state)
-    }
+
 
 	RemoveClasses() {
 		var grab = this.state.retrievedSchedule;
@@ -62,6 +47,7 @@ export class RemoveClasses extends React.Component {
 					}
 				}
 		}
+
 		return (
 			<ScrollView>
 				{classes.map((item, key) => {
@@ -72,7 +58,7 @@ export class RemoveClasses extends React.Component {
 						<Text style={styles.details}>{item.instructor}</Text>
 						<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
 							<Button
-								type="clear"
+								// type="clear"
 								title="Drop"
 								color="#FFFF"
 								onPress={() => this.removeAClass(theClass)}

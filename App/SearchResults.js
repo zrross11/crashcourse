@@ -43,6 +43,7 @@ class SearchResults extends React.Component {
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7));
 		populateClass(key, Semester, sched)
 		this.props.navigation.pop()
+		this.props.addClasses({classes: sched})
 		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	}
 
