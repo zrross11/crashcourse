@@ -27,13 +27,11 @@ class Filters extends React.Component {
 		this.state = {
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
-			courses: this.props.courses,
-			show: 0,
 			selectedDepartment: '',
 			selectedProfessor: '',
 			selectedDay: '',
 			selectedTime: '',
-			classes: [],
+			filterResults: [],
 			classPool: this.props.classPool,
 			departments: this.props.departments,
 			professors: this.props.professors,
@@ -216,7 +214,7 @@ class Filters extends React.Component {
 		if (this.state.className != null && k.length > 0) {
 			k = k.filter(data => data.title.includes(this.state.className));
 		}
-		//if no elements in k, search for classes with said name
+		//if no elements in k, search for filterResults with said name
 		else if (this.state.className != null) {
 			console.log(this.state.className)
 			for (var key of Object.values(this.state.classPool)) {
@@ -228,7 +226,7 @@ class Filters extends React.Component {
 			}
 		}
 
-		this.props.loadClasses({classes: k})
+		this.props.loadClasses({filterResults: k})
 		this.props.navigation.navigate("Search Results")
 	}
 
@@ -367,10 +365,10 @@ class Filters extends React.Component {
 							style={{
 								flex: 0.1,
 							}} />
-						<View style={{ backgroundColor: "black", left: "60%" }}>
+						<View style={{ backgroundColor: "black", left: "55%" }}>
 							<Button
 								type="clear"
-								title="Show classes"
+								title="Search Classes"
 								color="#FFFF"
 								onPress={this.filterCourses}
 							/>
@@ -393,12 +391,11 @@ function mapStateToProps(state) {
       loggedIn: state.loggedIn,
       schedule: state.schedule,
       retrievedSchedule: state.retrievedSchedule,
-	  show: state.show,
 	  selectedDepartment: state.selectedDepartment,
 	  selectedProfessor: state.selectedProfessor,
 	  selectedDay:  state.selectedDay,
 	  selectedTime: state.selectedTime,
-	  classes: state.classes,
+	  filterResults: state.filterResults,
 	  classPool: state.classPool,
 	  departments: state.departments,
 	  professors: state.professors,
@@ -413,7 +410,6 @@ function mapStateToProps(state) {
       decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
       loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
       addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
-	  toggleShow: (item) => dispatch({type: 'TOGGLE_SHOW', payload: item})
     };
   }
   export default connect(

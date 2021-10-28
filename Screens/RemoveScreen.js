@@ -19,24 +19,21 @@ export class RemoveClasses extends React.Component {
 			retrievedSchedule: this.props.retrievedSchedule,
 			courses: this.props.courses,
 		}
-		this.RemoveClasses = this.RemoveClasses.bind(this)
 		this.removeAClass = this.removeAClass.bind(this)
 	}
 
 	async removeAClass(item){
 		// Call the populate class method on the course
 		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
-		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
+		var { Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		var newSched = depopulateClass(item, Semester, sched)
-		console.log("RemoveScreen.js: removing a class updated")
+		console.log("RemoveScreen.js: removing a class updated", newSched)
 		this.props.removeClasses({retrievedSchedule: newSched})
 
 		this.setState((state, props) => ({...state, retrievedSchedule: newSched}))
     }
 
-
-
-	RemoveClasses() {
+	render() {
 		var grab = this.state.retrievedSchedule;
 		var classes = []
 		for (let i = 0; i < 7; i++) {
@@ -47,47 +44,7 @@ export class RemoveClasses extends React.Component {
 					}
 				}
 		}
-
-		return (
-			<ScrollView>
-				{classes.map((item, key) => {
-					var theClass = item;
-					return (
-					<View key={key}>
-						<Text style={styles.className}>{item.title}</Text>
-						<Text style={styles.details}>{item.instructor}</Text>
-						<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
-							<Button
-								// type="clear"
-								title="Drop"
-								color="#FFFF"
-								onPress={() => this.removeAClass(theClass)}
-							/>
-						</View>
-						<Text style={styles.details}>{item.days}</Text>
-						<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
-						<View
-							style={{
-								borderBottomColor: 'black',
-								borderBottomWidth: 2,
-								width: "90%",
-								left: "5%",
-							}}
-						/>
-					</View>
-					)				
-				})}
-			</ScrollView>
-		)
-	}
-
-
-	flip() {
-		this.props.flipScreen();
-	}
-
-
-	render() {
+		console.log("RemoveScreen.js: Grab new classes", grab)
 		return (<View
 			style={styles.DropView}>
 			<View
@@ -120,7 +77,37 @@ export class RemoveClasses extends React.Component {
 						width: "100%",
 						borderRadius: 6,
 					}}>
-					<View>{this.RemoveClasses()}</View>
+				<View>
+					<ScrollView>
+					{classes.map((item, key) => {
+						var theClass = item;
+						return (
+						<View key={key}>
+							<Text style={styles.className}>{item.title}</Text>
+							<Text style={styles.details}>{item.instructor}</Text>
+							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
+								<Button
+									// type="clear"
+									title="Drop"
+									color="#FFFF"
+									onPress={() => this.removeAClass(theClass)}
+								/>
+							</View>
+							<Text style={styles.details}>{item.days}</Text>
+							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
+							<View
+								style={{
+									borderBottomColor: 'black',
+									borderBottomWidth: 2,
+									width: "90%",
+									left: "5%",
+								}}
+							/>
+						</View>
+						)				
+					})}
+				</ScrollView>
+				</View>
 				</ScrollView>
 			</View>
 			{/* <View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>

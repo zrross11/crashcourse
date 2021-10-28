@@ -25,23 +25,29 @@ const { classList, dept, profs, times } = fillClass();
 // console.log("App.js: classList const", classList)
 // Initial User Account state 
 const initialState = {
+  // State elements that are stored in our database to be reloaded and updated by the currently logged in user
   username: '',
   password: '',
   email: '',
   firstName: '',
   lastName: '',
+  schedule: {}, // Stores the object key for user's schedule item
+  retrievedSchedule: {}, // Stores the schedule of all semester days in array
+
+ 
+  courses: [],
+
+  // State attributes that are used for the class search feature
+  classes: [], // Stores the classes that fit the search criteria
+  selectedDepartment: '', // Stores chosen department in 
+  filterResults: [],
+  
+  // State attributes that are constant and populates on initial start of the app
   loggedIn: false,
   departments: dept, // Holds the list of searchable departments
   professors: profs,
   meetingTimes: times,
-  schedule: {}, // Stores the object key for user's schedule item
-  retrievedSchedule: {}, // Stores the schedule of all semester days in array
-  classes: [],
   classPool: classList, // Holds the list of all classes
-  courses: [],
-  show: 0,
-  selectedDepartment: '',
-  filterResults: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -57,16 +63,15 @@ const reducer = (state = initialState, action) => {
       return addClass(state, action.payload)
     case 'DECREASE_COUNTER':
       return { counter: state.counter - 1 }
-    case 'TOGGLE_SHOW':
-      return { ...state, show: action.payload }
     case 'REMOVE_CLASSES':
       console.log("App.js: Removing a class from schedule")
       return { ...state, ...action.payload }
+    case 'LOGOUT':
+      console.log("App.js: Logging out of account. Saving state of store")
     default:
       return state;
 
   }
-  return state
 }
 
 function addClass(state, newClass) {
@@ -75,6 +80,30 @@ function addClass(state, newClass) {
   // return {...state, classes: [...state.classes, { newClass }] }; 
 }
 
+
+function doLogout(state){
+
+
+  return {
+    username: '',
+    password: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    loggedIn: false,
+    departments: dept, // Holds the list of searchable departments
+    professors: profs,
+    meetingTimes: times,
+    schedule: {}, // Stores the object key for user's schedule item
+    retrievedSchedule: {}, // Stores the schedule of all semester days in array
+    classes: [],
+    classPool: classList, // Holds the list of all classes
+    courses: [],
+    show: 0,
+    selectedDepartment: '',
+    filterResults: [],
+  }
+}
 
 const store = createStore(reducer)
 
@@ -101,7 +130,7 @@ function fillClass() {
 
   // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
   // var free = ['AFFL', 'CE']
-  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL']
+  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL', 'PHYS', 'CE', 'MAE', 'STS']
 
   for (var index = 0; index < datad.length; index++) {
     course = datad[index];

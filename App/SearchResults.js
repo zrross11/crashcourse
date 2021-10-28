@@ -18,10 +18,8 @@ class SearchResults extends React.Component {
 			loggedIn: this.props.loggedIn,
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
-			courses: this.props.courses,
-			classes: this.props.classes,
+			filterResults: this.props.filterResults,
 			classPool: this.props.classPool,
-			show: 1,
 			selectedDepartment: this.props.selectedDepartment,
 		}
 		this.goBack = this.goBack.bind(this)
@@ -41,15 +39,15 @@ class SearchResults extends React.Component {
 	async addClass(key){
 		var sched = this.state.retrievedSchedule
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7));
-		populateClass(key, Semester, sched)
+		var newSched = populateClass(key, Semester, sched)
 		this.props.navigation.pop()
-		this.props.addClasses({classes: sched})
+		this.props.addClasses({retrievedSchedule: newSched})
 		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	}
 
 
 	render() {
-		var grab = this.state.classes
+		var grab = this.state.filterResults
 		return (
 		<View
 			style={styles.searchResultsView}>
@@ -148,9 +146,8 @@ function mapStateToProps(state) {
       loggedIn: state.loggedIn,
       schedule: state.schedule,
       retrievedSchedule: state.retrievedSchedule,
-	  show: state.show,
 	  selectedDepartment: state.selectedDepartment,
-	  classes: state.classes,
+	  filterResults: state.filterResults,
 	  classPool: state.classPool,
 	  departments: state.departments,
     };
