@@ -43,25 +43,17 @@ class HomeScreen extends React.Component {
             schedule: this.props.schedule,
             retrievedSchedule: this.props.retrievedSchedule,
         }
-        // this.doUserLogIn = this.doUserLogIn.bind(this)
 	}
 
-    // componentDidMount(){
-    //    // Call the class population method and update retrievedSchedule 
-
-    // }
-
-    // componentDidUpdate(){
-
-    // }
-
     render(){
-        // console.log("home Screen sched", this.state)
-        // console.log("HomeScreen.js: sched props", this.props.retrievedSchedule)
         return (
-            <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
+            <ImageBackground source={require('../assets/images/background.jpg')} style={styles.backgroundImage}> 
             <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center'}}>
-            <Agenda
+            <View
+							style={{
+								flex: 0.15,
+							}} />
+            <Agenda theme={{backgroundColor: 'transparent', calendarBackground: "transparent"}}
                     // The list of items that have to be displayed in agenda. If you want to render item as empty date
                     // the value of date key has to be an empty array []. If there exists no value for date key it is
                     // considered that the date in question is not yet loaded
@@ -141,7 +133,7 @@ export default connect(
 const styles = StyleSheet.create({
     backgroundImage: {
       flex: 1,
-      width: '100%',
+      width: '100%'
     },
     input: {
       height: 40,

@@ -124,7 +124,7 @@ export class RemoveClasses extends React.Component {
 					position: "absolute",
 					left: "10%",
 					width: "80%",
-					top: "5%",
+					top: "12%",
 					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: '100%',
 	},
 	className: {
 		fontSize: 15,

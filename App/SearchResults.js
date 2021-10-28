@@ -72,7 +72,7 @@ class SearchResults extends React.Component {
 					position: "absolute",
 					left: "10%",
 					width: "80%",
-					top: "5%",
+					top: "12%",
 					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
@@ -171,10 +171,6 @@ function mapStateToProps(state) {
   )(SearchResults);
 
 const styles = StyleSheet.create({
-	backgroundImage: {
-		flex: 1,
-		width: '100%',
-	},
 	searchResultsView: {
 		backgroundColor: "white",
 		flex: 1,
@@ -183,7 +179,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: '100%',
 	},
 	className: {
 		fontSize: 15,
