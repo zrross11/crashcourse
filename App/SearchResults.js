@@ -1,101 +1,54 @@
 import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
-import { selectedDepartment } from './Filters'
-import { classExtractor } from './CourseRoster';
 import populateClass from '../ExtraCode'
 import SemesterMapper from './Semester';
+import { connect } from 'react-redux';
 
 
-export default class SearchResults extends React.Component {
+class SearchResults extends React.Component {
 
 	constructor(props) {
 		super(props)
-		// console.log("SearchResults.js: Props params", this.props.route.params.classes)
 		this.state = {
-			username: this.props.route.params.username,
-			password: this.props.route.params.password,
-			email: this.props.route.params.email,
-			firstName: this.props.route.params.firstName,
-			lastName: this.props.route.params.lastName,
-			loggedIn: this.props.route.params.loggedIn,
-			schedule: this.props.route.params.schedule,
-			retrievedSchedule: this.props.route.params.retrievedSchedule,
-			courses: this.props.route.params.courses,
-			classes: this.props.route.params.classes,
-			classPool: this.props.route.params.classPool,
-			show: this.props.route.params.show,
-			selectedDepartment: this.props.route.params.selectedDepartment,
+			username: this.props.username,
+			password: this.props.password,
+			email: this.props.email,
+			firstName: this.props.firstName,
+			lastName: this.props.lastName,
+			loggedIn: this.props.loggedIn,
+			schedule: this.props.schedule,
+			retrievedSchedule: this.props.retrievedSchedule,
+			courses: this.props.courses,
+			classes: this.props.classes,
+			classPool: this.props.classPool,
+			show: 1,
+			selectedDepartment: this.props.selectedDepartment,
 		}
-		// console.log("Clases searchresults received.", this.state.classes)
-		// console.log("Clases search department received.", this.state.selectedDepartment)
-		this.mapClasses = this.mapClasses.bind(this)
 		this.goBack = this.goBack.bind(this)
-		this.confirm = this.confirm.bind(this)
+		// this.confirm = this.confirm.bind(this)
 		this.addClass = this.addClass.bind(this)
-	}
-
-
-	mapClasses(){
-		// console.log("SearchResults.js: mapClasses state of classes",this.props.route.params.classes)
-		var grab = this.state.classes
-		// console.log("The map", this.props)
-		// var grab = this.state.classPool
-		// console.log("SearchResults.js: MapClasses selectedDepartment", grab)
-		return (
-			<ScrollView>
-				{grab.map((item, key) => {
-					// console.log("Mapping", item)
-					return (
-						<View key={key}>
-							<Text style={styles.className}>{item.title}</Text>
-							<Text style={styles.details}>{item.instructor}</Text>
-							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }}>
-								<Button
-									type="clear"
-									title="Add"
-									color="#FFFF"
-									onPress={() => this.addClass(item)}
-									// onPress={this.props.addClasses(item)}
-								/>
-							</View>
-							<Text style={styles.details}>{item.days}</Text>
-							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
-							<View
-								style={{
-									borderBottomColor: 'black',
-									borderBottomWidth: 2,
-									width: "90%",
-									left: "5%",
-								}}
-							/>
-						</View>
-					)
-				})}
-			</ScrollView>
-		)
 	}
 
 	goBack() {
 		this.props.navigation.pop()
 	}
 
-	confirm() {
+	// confirm() {
+	// 	this.props.navigation.pop()
+	// 	this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
+	// }
+
+	async addClass(key){
+		var sched = this.state.retrievedSchedule
+		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7));
+		populateClass(key, Semester, sched)
 		this.props.navigation.pop()
 		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	}
 
-	async addClass(key){
-		// Call the populate class method on the course
-		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
-		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
-		populateClass(key, Semester, sched)
-		this.setState((state, props) => ({
-			...state, retrievedSchedule: sched
-		}));
-
-	}
 
 	render() {
+		var grab = this.state.classes
 		return (
 		<View
 			style={styles.searchResultsView}>
@@ -129,7 +82,36 @@ export default class SearchResults extends React.Component {
 						width: "100%",
 						borderRadius: 6,
 					}}>
-					<View>{this.mapClasses()}</View>
+					<View>
+					<ScrollView>
+				{grab.map((item, key) => {
+					var theClass = item
+					return (
+						<View key={key}>
+							<Text style={styles.className}>{item.title}</Text>
+							<Text style={styles.details}>{item.instructor}</Text>
+							<View style={{ backgroundColor: "black", width: "20%", left: "75%", top: "25%", position: "absolute" }} >
+								<Button
+									title="Add"
+									color="#FFFF"
+									onPress={() => this.addClass(theClass)}
+								/>
+							</View>
+							<Text style={styles.details}>{item.days}</Text>
+							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
+							<View
+								style={{
+									borderBottomColor: 'black',
+									borderBottomWidth: 2,
+									width: "90%",
+									left: "5%",
+								}}
+							/>
+						</View>
+					)
+				})}
+			</ScrollView>
+					</View>
 				</ScrollView>
 			</View>
 			<View style={{ backgroundColor: "black", width: "30%", left: "10%", top: "88%", position: "absolute" }}>
@@ -140,19 +122,53 @@ export default class SearchResults extends React.Component {
 					onPress={this.goBack}
 				/>
 			</View>
-			<View style={{ backgroundColor: "black", width: "30%", right: "10%", top: "88%", position: "absolute" }}>
+			{/* <View style={{ backgroundColor: "black", width: "30%", right: "10%", top: "88%", position: "absolute" }}>
 				<Button
 					type="clear"
 					title="Confirm"
 					color="#FFFF"
 				onPress={this.confirm}
-				/></View>
+				/></View> */}
 
 		</View>
 		)
 	}
 }
 
+
+
+function mapStateToProps(state) {
+    return {
+      username: state.username,
+      password: state.password,
+      email: state.email,
+      firstName: state.firstName,
+      lastName: state.lastName,
+      loggedIn: state.loggedIn,
+      schedule: state.schedule,
+      retrievedSchedule: state.retrievedSchedule,
+	  show: state.show,
+	  selectedDepartment: state.selectedDepartment,
+	  classes: state.classes,
+	  classPool: state.classPool,
+	  departments: state.departments,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+      decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+      loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
+	  toggleShow: (item) => dispatch({type: 'TOGGLE_SHOW', payload: item})
+    };
+  }
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SearchResults);
 
 const styles = StyleSheet.create({
 	backgroundImage: {

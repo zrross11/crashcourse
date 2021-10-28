@@ -9,47 +9,44 @@ import {
 } from '@react-navigation/drawer';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
 import { Card, Icon } from 'react-native-elements'
-import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-// import AsyncStorage from '@react-native-community/async-storage'
 
 import Parse from 'parse/react-native';
 import '../App/CourseRoster'
-// import { Provider } from 'react-redux'
-// import { createStore} from 'redux'
-// import * as SecureStore from 'expo-secure-store';
+
 import populateClass from   '../ExtraCode'
 import { classExtractor } from '../App/CourseRoster';
 import SemesterMapper from '../App/Semester';
+import { connect } from 'react-redux';
 
 
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
 
-    constructor(props) {
+  constructor(props){
 		super(props)
 
         this.state = {
-            username: this.props.username,
-            password: this.props.password,
-            email: this.props.email,
-            firstName: this.props.firstName,
-            lastName: this.props.lastName,
-            loggedIn: this.props.loggedIn,
-            schedule: this.props.schedule,
-            retrievedSchedule: this.props.retrievedSchedule,
+            username: '',
+            password: '',
+            email: '',
+            firstName: '',
+            lastName: '',
+            loggedIn: false,
+            schedule: {},
+            retrievedSchedule: {},
         }
         this.doUserLogIn = this.doUserLogIn.bind(this)
-        this.getSchedule = this.getSchedule.bind(this)
-        this.updateSchedule = this.updateSchedule.bind(this)
+  //       this.getSchedule = this.getSchedule.bind(this)
+  //       this.updateSchedule = this.updateSchedule.bind(this)
+  }
 
-	}
 
   // SecureStore.deleteItemAsync('token')
   async getSchedule(){
     const schedules = new Parse.Query(Parse.Object.extend('Schedule'))
 
         // Update Class Schedule 
-    var savedSched = await schedules.get(`${this.state.schedule}`)
+    var savedSched = await schedules.get(`${this.props.schedule}`)
+    this.setState((state, props) => ({...state, schedule: savedSched}))
     return savedSched;
     // .then((sched) => {
     //     // The object was retrieved successfully and it is ready to update.
@@ -127,29 +124,25 @@ async updateSchedule(){
             // console.log("2",currentUser.get);
             // console.log("json parse",JSON.parse(currentUser));
             
-              this.setState({loggedIn: true})
-              this.setState({firstName:k.firstName})
-              this.setState({lastName:k.lastName})
-              this.setState({username: currentUser.getUsername()})
-              this.setState({password:k.password})
-              this.setState({email: currentUser.getEmail()})
-              this.setState({schedule: k.schedule})
-              this.setState({retrievedSchedule: SemesterDays})
+              this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
+              email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: SemesterDays})
+              // console.log("UserLoginScreen.js : state",this.state)
               
               // var sched = this.getSchedule;
               // updateSchedule();
               // console.log("after updateSchedule", this.state.retrievedSchedule);
               // this.setState({retrievedSchedule: sched})
               // this.props.buildClasses();
-              this.props.updateUser(this.state);
               // console.log("The props", this.props)
           }
-          
-        //   console.log("Logged In User & Current User are good.",loggedInUser === currentUser);
+          // this.props.updateUser(this.state);
+
+          // console.log("Logged In User & Current User are good.",loggedInUser === currentUser);
+          this.props.LOGIN(this.state)
           return true;
         })
         .catch((error) => {
-          console.log("Error trying to login")
+          console.log("Error trying to login",error)
           // Error can be caused by wrong parameters or lack of Internet connection
         //   Alert.alert('Error!', error.message);
           return false;
@@ -157,7 +150,11 @@ async updateSchedule(){
     }
 
     render(){
-        return (
+      // if(this.state.loggedIn)
+      const { loggingIn } = this.props;
+      const { username, password } = this.state;
+
+      return (
             <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
              <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center'}}>
              <SafeAreaView >
@@ -178,18 +175,18 @@ async updateSchedule(){
                 <View  style={{margin: "0%", padding: "0%", marginTop: "-5%"}}>
                     <TextInput
                     style={styles.input}
-                    value={this.state.username}
+                    value={username}
                     placeholder={'Username'}
-                    onChangeText={(text) => this.setState({username: (text)})}
-                    autoCapitalize={'none'}
+                    onChangeText={(text) => this.setState((state, props) => ({...state, username: text}))}
+                     autoCapitalize={'none'}
                     // keyboardType={'email-address'}
                     />
                     <TextInput          
                     style={styles.input}
-                    value={this.state.password}
+                    value={password}
                     placeholder={'Password'}
                     secureTextEntry
-                    onChangeText={(text) => this.setState({password: (text)})}
+                    onChangeText={(text) => this.setState((state, props) => ({...state, password: text}))}
                     />
                     <TouchableOpacity style={{borderWidth: 1, borderRadius: 10, width: "30%"}}>
                     <View  style={{borderColor: "white", }}>
@@ -200,8 +197,6 @@ async updateSchedule(){
                         backgroundColor="white"            
                         accessibilityLabel="Learn more about this purple button"
                         />
-
-                        {/* <Text>{`Sign In`}</Text> */}
                     </View>
                     </TouchableOpacity>
                 </View>
@@ -212,6 +207,31 @@ async updateSchedule(){
             )
     }
 }
+
+function mapStateToProps(state) {
+  return {
+    username: state.username,
+    password: state.password,
+    email: state.email,
+    firstName: state.firstName,
+    lastName: state.lastName,
+    loggedIn: state.loggedIn,
+    schedule: state.schedule,
+    retrievedSchedule: state.retrievedSchedule,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+    decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginScreen);
 
 const styles = StyleSheet.create({
     backgroundImage: {
