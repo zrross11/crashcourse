@@ -53,7 +53,7 @@ class HomeScreen extends React.Component {
 							style={{
 								flex: 0.15,
 							}} />
-            <Agenda theme={{backgroundColor: 'transparent', calendarBackground: "transparent"}}
+            <Agenda theme={{backgroundColor: 'transparent', calendarBackground: "white", agendaDayTextColor: "white", agendaDayNumColor:"white"}}
                     // The list of items that have to be displayed in agenda. If you want to render item as empty date
                     // the value of date key has to be an empty array []. If there exists no value for date key it is
                     // considered that the date in question is not yet loaded

@@ -61,7 +61,7 @@ class MyDrawer extends React.Component {
     }
     else {
       return (
-        <Drawer.Navigator >
+        <Drawer.Navigator screenOptions={{headerTransparent: true, headerTintColor: "white"}}>
           <Drawer.Screen name="Login Page" children={() => (<LoginScreen />)} />
           <Drawer.Screen name="Sign Up" children={() => (<SignUpScreen />)} />
         </Drawer.Navigator>
