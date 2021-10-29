@@ -1,8 +1,8 @@
 import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
+import { connect } from 'react-redux';
 
-
-export default class RemoveClasses extends React.Component {
+export class ProfileScreen extends React.Component {
 
 	constructor(props) {
 		super(props)
@@ -88,6 +88,43 @@ export default class RemoveClasses extends React.Component {
 		)
 	}
 }
+
+function mapStateToProps(state) {
+    return {
+      username: state.username,
+      password: state.password,
+      email: state.email,
+      firstName: state.firstName,
+      lastName: state.lastName,
+      loggedIn: state.loggedIn,
+      schedule: state.schedule,
+	  filterResults: state.filterResults,
+      retrievedSchedule: state.retrievedSchedule,
+	  selectedDepartment: state.selectedDepartment,
+	  selectedProfessor: state.selectedProfessor,
+	  selectedDay:  state.selectedDay,
+	  selectedTime: state.selectedTime,
+	  classPool: state.classPool,
+	  departments: state.departments,
+	  professors: state.professors,
+	  meetingTimes: state.meetingTimes,
+	  className: state.className
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+      decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+      loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
+	  toggleShow: (item) => dispatch({type: 'TOGGLE_SHOW', payload: item})
+    };
+  }
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ProfileScreen);
 
 
 const styles = StyleSheet.create({
