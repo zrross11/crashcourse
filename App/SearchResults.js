@@ -4,6 +4,21 @@ import populateClass from '../ExtraCode'
 import SemesterMapper from './Semester';
 import { connect } from 'react-redux';
 
+const daymap = {
+	'M': 'Monday',
+	'T': 'Tuesday',
+	'W': 'Wednesday',
+	'R': 'Thursday',
+	'F': 'Friday',
+	'S': 'Saturday',
+	'MW': 'Monday, Wednesday',
+	'TR': 'Tuesday, Thursday',
+	'WF': 'Wednesday, Friday',
+	'MWF': 'Monday, Wednesday, Friday',
+	'MTW': 'Monday, Tuesday, Wednesday',
+	'MTWRF': 'Mon, Tues, Wed, Thurs, Fri',
+	'': 'Online'
+}
 
 class SearchResults extends React.Component {
 
@@ -18,10 +33,8 @@ class SearchResults extends React.Component {
 			loggedIn: this.props.loggedIn,
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
-			courses: this.props.courses,
-			classes: this.props.classes,
+			filterResults: this.props.filterResults,
 			classPool: this.props.classPool,
-			show: 1,
 			selectedDepartment: this.props.selectedDepartment,
 		}
 		this.goBack = this.goBack.bind(this)
@@ -41,14 +54,15 @@ class SearchResults extends React.Component {
 	async addClass(key){
 		var sched = this.state.retrievedSchedule
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7));
-		populateClass(key, Semester, sched)
+		var newSched = populateClass(key, Semester, sched)
 		this.props.navigation.pop()
+		this.props.addClasses({retrievedSchedule: newSched})
 		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	}
 
 
 	render() {
-		var grab = this.state.classes
+		var grab = this.state.filterResults
 		return (
 		<View
 			style={styles.searchResultsView}>
@@ -72,7 +86,7 @@ class SearchResults extends React.Component {
 					position: "absolute",
 					left: "10%",
 					width: "80%",
-					top: "5%",
+					top: "12%",
 					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
@@ -97,7 +111,7 @@ class SearchResults extends React.Component {
 									onPress={() => this.addClass(theClass)}
 								/>
 							</View>
-							<Text style={styles.details}>{item.days}</Text>
+							<Text style={styles.details}>{daymap[item.days]}</Text>
 							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
 							<View
 								style={{
@@ -147,9 +161,8 @@ function mapStateToProps(state) {
       loggedIn: state.loggedIn,
       schedule: state.schedule,
       retrievedSchedule: state.retrievedSchedule,
-	  show: state.show,
 	  selectedDepartment: state.selectedDepartment,
-	  classes: state.classes,
+	  filterResults: state.filterResults,
 	  classPool: state.classPool,
 	  departments: state.departments,
     };
@@ -171,10 +184,6 @@ function mapStateToProps(state) {
   )(SearchResults);
 
 const styles = StyleSheet.create({
-	backgroundImage: {
-		flex: 1,
-		width: '100%',
-	},
 	searchResultsView: {
 		backgroundColor: "white",
 		flex: 1,
@@ -183,7 +192,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: '100%',
 	},
 	className: {
 		fontSize: 15,

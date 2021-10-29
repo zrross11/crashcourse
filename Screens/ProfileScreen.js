@@ -1,8 +1,8 @@
 import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
+import { connect } from 'react-redux';
 
-
-export default class RemoveClasses extends React.Component {
+export class ProfileScreen extends React.Component {
 
 	constructor(props) {
 		super(props)
@@ -71,12 +71,15 @@ export default class RemoveClasses extends React.Component {
 					position: "absolute",
 					left: "10%",
 					width: "80%",
-					top: "5%",
+					top: "12%",
 					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
+					<Text>{this.props.firstName}</Text>
+					<Text>{this.props.lastName}</Text>
+					<Text>{this.props.email}</Text>
 			</View>
-			<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "10%", position: "absolute" }}>
+			<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "20%", position: "relative" }}>
 				<Button
 					type="clear"
 					title="Logout"
@@ -88,6 +91,43 @@ export default class RemoveClasses extends React.Component {
 		)
 	}
 }
+
+function mapStateToProps(state) {
+    return {
+      username: state.username,
+      password: state.password,
+      email: state.email,
+      firstName: state.firstName,
+      lastName: state.lastName,
+      loggedIn: state.loggedIn,
+      schedule: state.schedule,
+	  filterResults: state.filterResults,
+      retrievedSchedule: state.retrievedSchedule,
+	  selectedDepartment: state.selectedDepartment,
+	  selectedProfessor: state.selectedProfessor,
+	  selectedDay:  state.selectedDay,
+	  selectedTime: state.selectedTime,
+	  classPool: state.classPool,
+	  departments: state.departments,
+	  professors: state.professors,
+	  meetingTimes: state.meetingTimes,
+	  className: state.className
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+      decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+      loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
+	  toggleShow: (item) => dispatch({type: 'TOGGLE_SHOW', payload: item})
+    };
+  }
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ProfileScreen);
 
 
 const styles = StyleSheet.create({
@@ -103,7 +143,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: '100%',
 	},
 	className: {
 		fontSize: 15,

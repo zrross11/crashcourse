@@ -8,21 +8,18 @@ const Stack = createStackNavigator();
 class AddScreen extends React.Component {
 
     constructor(props) {
-		super(props)
+      super(props)
 
-        this.state = {
-            schedule: this.props.schedule,
-            departments: this.props.departments,
-            professors: this.props.professors,
-            meetingTimes: this.props.meetingTimes,
-            classPool: this.props.classPool,
-            retrievedSchedule: this.props.retrievedSchedule,
-            courses: this.props.courses,
-            show: this.props.show,
-            classes: this.props.classes,
-            selectedDepartment: this.props.selectedDepartment,
-            filterResults: this.props.filterResults,
-          }
+      this.state = {
+          schedule: this.props.schedule,
+          departments: this.props.departments,
+          professors: this.props.professors,
+          meetingTimes: this.props.meetingTimes,
+          classPool: this.props.classPool,
+          retrievedSchedule: this.props.retrievedSchedule,
+          selectedDepartment: this.props.selectedDepartment,
+          filterResults: this.props.filterResults,
+        }
     }
 
 
@@ -45,9 +42,8 @@ function mapStateToProps(state) {
       loggedIn: state.loggedIn,
       schedule: state.schedule,
       retrievedSchedule: state.retrievedSchedule,
-      show: state.show,
       selectedDepartment: state.selectedDepartment,
-      classes: state.classes,
+      filterResults: state.filterResults,
       classPool: state.classPool,
       departments: state.departments,
       professors: state.professors,

@@ -1,9 +1,10 @@
 import * as React from "react";
+import { useRef } from 'react'
 import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from 'react-redux'
-
+ 
 const daymap = {
 	'Monday': 'M',
 	'Tuesday': 'T',
@@ -13,27 +14,24 @@ const daymap = {
 	'Saturday': 'S',
 	'Monday, Wednesday': 'MW',
 	'Tuesday, Thursday': 'TR',
-	'Wednesday, Friday': 'MW',
+	'Wednesday, Friday': 'WF',
 	'Monday, Wednesday, Friday': 'MWF',
-	'Monday, Tuesday, Wednesday': 'MWF',
+	'Monday, Tuesday, Wednesday': 'MTW',
 	'Monday, Tuesday, Wednesday, Thursday, Friday': 'MTWRF',
 	'Online': ''
 }
 
-class Filters extends React.Component {
-
+class Filters extends React.Component { 
 	constructor(props) {
 		super(props)
 		this.state = {
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
-			courses: this.props.courses,
-			show: 0,
 			selectedDepartment: '',
 			selectedProfessor: '',
 			selectedDay: '',
 			selectedTime: '',
-			classes: [],
+			filterResults: [],
 			classPool: this.props.classPool,
 			departments: this.props.departments,
 			professors: this.props.professors,
@@ -44,13 +42,14 @@ class Filters extends React.Component {
 	}
 
 	filterCourses() {
+		
 		var k = []
 		//all filters on
 		if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
-						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 							k.push(key[j]);
 						}
 					}
@@ -74,7 +73,7 @@ class Filters extends React.Component {
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
-						if (key[j].instructor == this.state.selectedProfessor && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						if (key[j].instructor == this.state.selectedProfessor && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 							k.push(key[j]);
 						}
 					}
@@ -86,7 +85,7 @@ class Filters extends React.Component {
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
-						if (key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 							k.push(key[j]);
 						}
 					}
@@ -97,7 +96,7 @@ class Filters extends React.Component {
 		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 						k.push(key[j]);
 					}
 				}
@@ -132,7 +131,7 @@ class Filters extends React.Component {
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
-						if ((key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						if ((key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 							k.push(key[j]);
 						}
 					}
@@ -153,7 +152,7 @@ class Filters extends React.Component {
 		else if (this.state.selectedProfessor != '' && this.state.selectedTime != '') {
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if (key[j].instructor == this.state.selectedProfessor && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+					if (key[j].instructor == this.state.selectedProfessor && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 						k.push(key[j]);
 					}
 				}
@@ -163,7 +162,7 @@ class Filters extends React.Component {
 		else if (this.state.selectedDay != '' && this.state.selectedTime != '') {
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if (key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+					if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 						k.push(key[j]);
 					}
 				}
@@ -203,7 +202,7 @@ class Filters extends React.Component {
 		else {
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if ((key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+					if ((key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 						k.push(key[j]);
 					}
 				}
@@ -216,7 +215,7 @@ class Filters extends React.Component {
 		if (this.state.className != null && k.length > 0) {
 			k = k.filter(data => data.title.includes(this.state.className));
 		}
-		//if no elements in k, search for classes with said name
+		//if no elements in k, search for filterResults with said name
 		else if (this.state.className != null) {
 			console.log(this.state.className)
 			for (var key of Object.values(this.state.classPool)) {
@@ -228,7 +227,7 @@ class Filters extends React.Component {
 			}
 		}
 
-		this.props.loadClasses({classes: k})
+		this.props.loadClasses({filterResults: k})
 		this.props.navigation.navigate("Search Results")
 	}
 
@@ -257,11 +256,15 @@ class Filters extends React.Component {
 							position: "absolute",
 							left: "10%",
 							width: "80%",
-							top: "5%",
+							top: "12%",
 							bottom: "5%",
 							alignItems: "flex-start",
 						}}>
 						<Text style={styles.titleText}>What type of class?</Text>
+						<View
+							style={{
+								flex: 0.05,
+							}} />
 						<SelectDropdown
 							data={this.props.departments}
 							defaultButtonText={"Department"}
@@ -273,7 +276,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState((state,props) => ({...state, selectedDepartment: selectedItem }))
+								this.setState((state, props) => ({ ...state, selectedDepartment: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -297,7 +300,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState((state,props) => ({...state, selectedProfessor: selectedItem }))
+								this.setState((state, props) => ({ ...state, selectedProfessor: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -321,7 +324,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState((state,props) => ({...state, selectedDay: daymap[selectedItem]}))
+								this.setState((state, props) => ({ ...state, selectedDay: daymap[selectedItem] }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -345,7 +348,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState((state,props) => ({...state, selectedTime: selectedItem}))
+								this.setState((state, props) => ({ ...state, selectedTime: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -360,17 +363,17 @@ class Filters extends React.Component {
 							}} />
 						<Text style={styles.titleText2}>Search By Class Name:</Text>
 						<TextInput style={styles.input} placeholder="Type here... (case-sensitive)" onChangeText={(text) => {
-							this.setState((state,props) => ({...state, className: text}))
-						}}/>
-							
+							this.setState((state, props) => ({ ...state, className: text }))
+						}} />
+
 						<View
 							style={{
 								flex: 0.1,
 							}} />
-						<View style={{ backgroundColor: "black", left: "60%" }}>
+						<View style={{ backgroundColor: "black", left: "55%" }}>
 							<Button
 								type="clear"
-								title="Show classes"
+								title="Search Classes"
 								color="#FFFF"
 								onPress={this.filterCourses}
 							/>
@@ -379,7 +382,6 @@ class Filters extends React.Component {
 				</View>
 			</ImageBackground>
 		)
-
 	}
 }
 
@@ -393,12 +395,11 @@ function mapStateToProps(state) {
       loggedIn: state.loggedIn,
       schedule: state.schedule,
       retrievedSchedule: state.retrievedSchedule,
-	  show: state.show,
 	  selectedDepartment: state.selectedDepartment,
 	  selectedProfessor: state.selectedProfessor,
 	  selectedDay:  state.selectedDay,
 	  selectedTime: state.selectedTime,
-	  classes: state.classes,
+	  filterResults: state.filterResults,
 	  classPool: state.classPool,
 	  departments: state.departments,
 	  professors: state.professors,
@@ -413,7 +414,6 @@ function mapStateToProps(state) {
       decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
       loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
       addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
-	  toggleShow: (item) => dispatch({type: 'TOGGLE_SHOW', payload: item})
     };
   }
   export default connect(
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: "100%",
 	},
 	dropdown1BtnStyle: {
 		width: "100%",

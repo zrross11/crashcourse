@@ -39,9 +39,6 @@ class MyDrawer extends React.Component {
       professors: this.props.professors,
       classPool: this.props.classPool,
       retrievedSchedule: this.props.retrievedSchedule,
-      courses: this.props.courses,
-      show: this.props.show,
-      classes: this.props.classes,
       selectedDepartment: this.props.selectedDepartment,
       filterResults: this.props.filterResults,
     }
@@ -51,17 +48,17 @@ class MyDrawer extends React.Component {
     if (this.props.loggedIn) {
       return (
 
-        <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)} >
+        <Drawer.Navigator screenOptions={{headerTransparent: true, headerTintColor: "white"}} drawerContent={props => CustomDrawerContent(props)} >
           <Drawer.Screen name={`${this.props.firstName}'s Schedule`} children={() => (<HomeScreen />)} />
-          <Drawer.Screen name="Add Class" children={() => (<AddScreen />)} />
+          <Drawer.Screen name="Add Class" component={AddScreen} />
           <Drawer.Screen name="Drop Class" children={() => (<RemoveScreen />)} />
-          <Drawer.Screen name="Profile" children={() => (<ProfileScreen {...this.state} updateUser={this.handler} />)} />
+          <Drawer.Screen name="Profile" children={() => (<ProfileScreen/>)} />
         </Drawer.Navigator>
       )
     }
     else {
       return (
-        <Drawer.Navigator >
+        <Drawer.Navigator screenOptions={{headerTransparent: true, headerTintColor: "white"}}>
           <Drawer.Screen name="Login Page" children={() => (<LoginScreen />)} />
           <Drawer.Screen name="Sign Up" children={() => (<SignUpScreen />)} />
         </Drawer.Navigator>
@@ -81,13 +78,11 @@ function mapStateToProps(state) {
     loggedIn: state.loggedIn,
     schedule: state.schedule,
     retrievedSchedule: state.retrievedSchedule,
-    show: state.show,
     selectedDepartment: state.selectedDepartment,
-    classes: state.classes,
+    filterResults: state.filterResults,
     classPool: state.classPool,
     departments: state.departments,
     professors: state.professors,
-    courses: state.courses,
     filterResults: state.filterResults,
   };
 }
