@@ -4,6 +4,21 @@ import populateClass from '../ExtraCode'
 import SemesterMapper from './Semester';
 import { connect } from 'react-redux';
 
+const daymap = {
+	'M': 'Monday',
+	'T': 'Tuesday',
+	'W': 'Wednesday',
+	'R': 'Thursday',
+	'F': 'Friday',
+	'S': 'Saturday',
+	'MW': 'Monday, Wednesday',
+	'TR': 'Tuesday, Thursday',
+	'WF': 'Wednesday, Friday',
+	'MWF': 'Monday, Wednesday, Friday',
+	'MTW': 'Monday, Tuesday, Wednesday',
+	'MTWRF': 'Mon, Tues, Wed, Thurs, Fri',
+	'': 'Online'
+}
 
 class SearchResults extends React.Component {
 
@@ -96,7 +111,7 @@ class SearchResults extends React.Component {
 									onPress={() => this.addClass(theClass)}
 								/>
 							</View>
-							<Text style={styles.details}>{item.days}</Text>
+							<Text style={styles.details}>{daymap[item.days]}</Text>
 							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
 							<View
 								style={{
@@ -184,4 +199,8 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		marginLeft: "2%"
 	},
+	details: {
+		fontSize: 13,
+		marginLeft: "2%"
+	}
 })

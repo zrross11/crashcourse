@@ -75,8 +75,11 @@ export class ProfileScreen extends React.Component {
 					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
+					<Text>{this.props.firstName}</Text>
+					<Text>{this.props.lastName}</Text>
+					<Text>{this.props.email}</Text>
 			</View>
-			<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "10%", position: "absolute" }}>
+			<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "20%", position: "relative" }}>
 				<Button
 					type="clear"
 					title="Logout"

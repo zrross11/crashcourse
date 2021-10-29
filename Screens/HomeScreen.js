@@ -79,13 +79,13 @@ class HomeScreen extends React.Component {
                             </View>
                             <View style={{ flexDirection: "row" }}>
                               <Text style={{ fontSize: 10 }}> Professor: {item.instructor}</Text>
-                              <View style={{ flexDirection: "column", marginLeft: "15%" }}>
+                              {/* <View style={{ flexDirection: "column", marginLeft: "15%" }}>
                                 <Text style={{ fontSize: 10 }}> Avg GPA: {item.gpa ? item.gpa : 0}</Text>
-                              </View>
+                              </View> */}
                             </View>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ flexDirection: "column" }}>
-                                <Text style={{ fontSize: 10 }}> Days: {item.days}</Text>
+                                <Text style={{ fontSize: 10 }}> Time: {item.start} - {item.end}</Text>
                               </View>
                             </View>
                           </Card>                      

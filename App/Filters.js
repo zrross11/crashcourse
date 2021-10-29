@@ -1,9 +1,10 @@
 import * as React from "react";
+import { useRef } from 'react'
 import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from 'react-redux'
-
+ 
 const daymap = {
 	'Monday': 'M',
 	'Tuesday': 'T',
@@ -13,15 +14,14 @@ const daymap = {
 	'Saturday': 'S',
 	'Monday, Wednesday': 'MW',
 	'Tuesday, Thursday': 'TR',
-	'Wednesday, Friday': 'MW',
+	'Wednesday, Friday': 'WF',
 	'Monday, Wednesday, Friday': 'MWF',
-	'Monday, Tuesday, Wednesday': 'MWF',
+	'Monday, Tuesday, Wednesday': 'MTW',
 	'Monday, Tuesday, Wednesday, Thursday, Friday': 'MTWRF',
 	'Online': ''
 }
 
-class Filters extends React.Component {
-
+class Filters extends React.Component { 
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -42,6 +42,7 @@ class Filters extends React.Component {
 	}
 
 	filterCourses() {
+		
 		var k = []
 		//all filters on
 		if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
@@ -381,7 +382,6 @@ class Filters extends React.Component {
 				</View>
 			</ImageBackground>
 		)
-
 	}
 }
 
