@@ -27,7 +27,7 @@ export class RemoveClasses extends React.Component {
 		var sched = this.state.retrievedSchedule // map holding each date in the semester and the array of clases on it 
 		var { Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		var newSched = depopulateClass(item, Semester, sched)
-		console.log("RemoveScreen.js: removing a class updated", newSched)
+		// console.log("RemoveScreen.js: removing a class updated", newSched)
 		this.props.removeClasses({retrievedSchedule: newSched})
 
 		this.setState((state, props) => ({...state, retrievedSchedule: newSched}))
@@ -44,7 +44,7 @@ export class RemoveClasses extends React.Component {
 					}
 				}
 		}
-		console.log("RemoveScreen.js: Grab new classes", grab)
+		// console.log("RemoveScreen.js: Grab new classes", grab)
 		return (<View
 			style={styles.DropView}>
 			<View
