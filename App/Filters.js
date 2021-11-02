@@ -1,9 +1,10 @@
 import * as React from "react";
+import { useRef } from 'react'
 import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from 'react-redux'
-
+ 
 const daymap = {
 	'Monday': 'M',
 	'Tuesday': 'T',
@@ -13,15 +14,14 @@ const daymap = {
 	'Saturday': 'S',
 	'Monday, Wednesday': 'MW',
 	'Tuesday, Thursday': 'TR',
-	'Wednesday, Friday': 'MW',
+	'Wednesday, Friday': 'WF',
 	'Monday, Wednesday, Friday': 'MWF',
-	'Monday, Tuesday, Wednesday': 'MWF',
+	'Monday, Tuesday, Wednesday': 'MTW',
 	'Monday, Tuesday, Wednesday, Thursday, Friday': 'MTWRF',
 	'Online': ''
 }
 
-class Filters extends React.Component {
-
+class Filters extends React.Component { 
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -42,13 +42,14 @@ class Filters extends React.Component {
 	}
 
 	filterCourses() {
+		
 		var k = []
 		//all filters on
 		if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
-						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 							k.push(key[j]);
 						}
 					}
@@ -72,7 +73,7 @@ class Filters extends React.Component {
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
-						if (key[j].instructor == this.state.selectedProfessor && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						if (key[j].instructor == this.state.selectedProfessor && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 							k.push(key[j]);
 						}
 					}
@@ -84,7 +85,7 @@ class Filters extends React.Component {
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
-						if (key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 							k.push(key[j]);
 						}
 					}
@@ -95,7 +96,7 @@ class Filters extends React.Component {
 		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 						k.push(key[j]);
 					}
 				}
@@ -130,7 +131,7 @@ class Filters extends React.Component {
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
-						if ((key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+						if ((key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 							k.push(key[j]);
 						}
 					}
@@ -151,7 +152,7 @@ class Filters extends React.Component {
 		else if (this.state.selectedProfessor != '' && this.state.selectedTime != '') {
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if (key[j].instructor == this.state.selectedProfessor && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+					if (key[j].instructor == this.state.selectedProfessor && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 						k.push(key[j]);
 					}
 				}
@@ -161,7 +162,7 @@ class Filters extends React.Component {
 		else if (this.state.selectedDay != '' && this.state.selectedTime != '') {
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if (key[j].days == this.state.selectedDay && (key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+					if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 						k.push(key[j]);
 					}
 				}
@@ -201,7 +202,7 @@ class Filters extends React.Component {
 		else {
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if ((key[j].start +  " - " + key[j].end) == this.state.selectedTime) {
+					if ((key[j].start + " - " + key[j].end) == this.state.selectedTime) {
 						k.push(key[j]);
 					}
 				}
@@ -255,11 +256,15 @@ class Filters extends React.Component {
 							position: "absolute",
 							left: "10%",
 							width: "80%",
-							top: "5%",
+							top: "12%",
 							bottom: "5%",
 							alignItems: "flex-start",
 						}}>
 						<Text style={styles.titleText}>What type of class?</Text>
+						<View
+							style={{
+								flex: 0.05,
+							}} />
 						<SelectDropdown
 							data={this.props.departments}
 							defaultButtonText={"Department"}
@@ -271,7 +276,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState((state,props) => ({...state, selectedDepartment: selectedItem }))
+								this.setState((state, props) => ({ ...state, selectedDepartment: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -295,7 +300,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState((state,props) => ({...state, selectedProfessor: selectedItem }))
+								this.setState((state, props) => ({ ...state, selectedProfessor: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -319,7 +324,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState((state,props) => ({...state, selectedDay: daymap[selectedItem]}))
+								this.setState((state, props) => ({ ...state, selectedDay: daymap[selectedItem] }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -343,7 +348,7 @@ class Filters extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState((state,props) => ({...state, selectedTime: selectedItem}))
+								this.setState((state, props) => ({ ...state, selectedTime: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -358,9 +363,9 @@ class Filters extends React.Component {
 							}} />
 						<Text style={styles.titleText2}>Search By Class Name:</Text>
 						<TextInput style={styles.input} placeholder="Type here... (case-sensitive)" onChangeText={(text) => {
-							this.setState((state,props) => ({...state, className: text}))
-						}}/>
-							
+							this.setState((state, props) => ({ ...state, className: text }))
+						}} />
+
 						<View
 							style={{
 								flex: 0.1,
@@ -377,7 +382,6 @@ class Filters extends React.Component {
 				</View>
 			</ImageBackground>
 		)
-
 	}
 }
 
@@ -426,7 +430,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: "100%",
 	},
 	dropdown1BtnStyle: {
 		width: "100%",

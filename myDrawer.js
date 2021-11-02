@@ -48,7 +48,7 @@ class MyDrawer extends React.Component {
     if (this.props.loggedIn) {
       return (
 
-        <Drawer.Navigator drawerContent={props => CustomDrawerContent(props)} >
+        <Drawer.Navigator screenOptions={{headerTransparent: true, headerTintColor: "white"}} drawerContent={props => CustomDrawerContent(props)} >
           <Drawer.Screen name={`${this.props.firstName}'s Schedule`} children={() => (<HomeScreen />)} />
           <Drawer.Screen name="Add Class" component={AddScreen} />
           <Drawer.Screen name="Drop Class" children={() => (<RemoveScreen />)} />
@@ -58,7 +58,7 @@ class MyDrawer extends React.Component {
     }
     else {
       return (
-        <Drawer.Navigator >
+        <Drawer.Navigator screenOptions={{headerTransparent: true, headerTintColor: "white"}}>
           <Drawer.Screen name="Login Page" children={() => (<LoginScreen />)} />
           <Drawer.Screen name="Sign Up" children={() => (<SignUpScreen />)} />
         </Drawer.Navigator>

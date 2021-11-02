@@ -43,25 +43,17 @@ class HomeScreen extends React.Component {
             schedule: this.props.schedule,
             retrievedSchedule: this.props.retrievedSchedule,
         }
-        // this.doUserLogIn = this.doUserLogIn.bind(this)
 	}
 
-    // componentDidMount(){
-    //    // Call the class population method and update retrievedSchedule 
-
-    // }
-
-    // componentDidUpdate(){
-
-    // }
-
     render(){
-        // console.log("home Screen sched", this.state)
-        // console.log("HomeScreen.js: sched props", this.props.retrievedSchedule)
         return (
-            <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
+            <ImageBackground source={require('../assets/images/background.jpg')} style={styles.backgroundImage}> 
             <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center'}}>
-            <Agenda
+            <View
+							style={{
+								flex: 0.15,
+							}} />
+            <Agenda theme={{backgroundColor: 'transparent', calendarBackground: "white", agendaDayTextColor: "white", agendaDayNumColor:"white"}}
                     // The list of items that have to be displayed in agenda. If you want to render item as empty date
                     // the value of date key has to be an empty array []. If there exists no value for date key it is
                     // considered that the date in question is not yet loaded
@@ -87,13 +79,13 @@ class HomeScreen extends React.Component {
                             </View>
                             <View style={{ flexDirection: "row" }}>
                               <Text style={{ fontSize: 10 }}> Professor: {item.instructor}</Text>
-                              <View style={{ flexDirection: "column", marginLeft: "15%" }}>
+                              {/* <View style={{ flexDirection: "column", marginLeft: "15%" }}>
                                 <Text style={{ fontSize: 10 }}> Avg GPA: {item.gpa ? item.gpa : 0}</Text>
-                              </View>
+                              </View> */}
                             </View>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ flexDirection: "column" }}>
-                                <Text style={{ fontSize: 10 }}> Days: {item.days}</Text>
+                                <Text style={{ fontSize: 10 }}> Time: {item.start} - {item.end}</Text>
                               </View>
                             </View>
                           </Card>                      
@@ -141,7 +133,7 @@ export default connect(
 const styles = StyleSheet.create({
     backgroundImage: {
       flex: 1,
-      width: '100%',
+      width: '100%'
     },
     input: {
       height: 40,

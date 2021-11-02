@@ -4,6 +4,21 @@ import populateClass from '../ExtraCode'
 import SemesterMapper from './Semester';
 import { connect } from 'react-redux';
 
+const daymap = {
+	'M': 'Monday',
+	'T': 'Tuesday',
+	'W': 'Wednesday',
+	'R': 'Thursday',
+	'F': 'Friday',
+	'S': 'Saturday',
+	'MW': 'Monday, Wednesday',
+	'TR': 'Tuesday, Thursday',
+	'WF': 'Wednesday, Friday',
+	'MWF': 'Monday, Wednesday, Friday',
+	'MTW': 'Monday, Tuesday, Wednesday',
+	'MTWRF': 'Mon, Tues, Wed, Thurs, Fri',
+	'': 'Online'
+}
 
 class SearchResults extends React.Component {
 
@@ -72,7 +87,7 @@ class SearchResults extends React.Component {
 					position: "absolute",
 					left: "10%",
 					width: "80%",
-					top: "5%",
+					top: "12%",
 					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
@@ -97,7 +112,7 @@ class SearchResults extends React.Component {
 									onPress={() => this.addClass(theClass)}
 								/>
 							</View>
-							<Text style={styles.details}>{item.days}</Text>
+							<Text style={styles.details}>{daymap[item.days]}</Text>
 							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
 							<View
 								style={{
@@ -170,10 +185,6 @@ function mapStateToProps(state) {
   )(SearchResults);
 
 const styles = StyleSheet.create({
-	backgroundImage: {
-		flex: 1,
-		width: '100%',
-	},
 	searchResultsView: {
 		backgroundColor: "white",
 		flex: 1,
@@ -182,7 +193,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: '100%',
 	},
 	className: {
 		fontSize: 15,

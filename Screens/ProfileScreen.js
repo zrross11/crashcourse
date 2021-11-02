@@ -71,12 +71,15 @@ export class ProfileScreen extends React.Component {
 					position: "absolute",
 					left: "10%",
 					width: "80%",
-					top: "5%",
+					top: "12%",
 					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
+					<Text>{this.props.firstName}</Text>
+					<Text>{this.props.lastName}</Text>
+					<Text>{this.props.email}</Text>
 			</View>
-			<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "10%", position: "absolute" }}>
+			<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "20%", position: "relative" }}>
 				<Button
 					type="clear"
 					title="Logout"
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: '100%',
 	},
 	className: {
 		fontSize: 15,
