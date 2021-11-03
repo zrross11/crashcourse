@@ -68,6 +68,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, ...action.payload }
     case 'LOGOUT':
       console.log("App.js: Logging out of account. Saving state of store")
+      return {...initialState}
     default:
       return state;
 

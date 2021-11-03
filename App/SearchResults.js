@@ -46,6 +46,7 @@ class SearchResults extends React.Component {
 		this.props.navigation.pop()
 	}
 
+	// Was used to return back to the Filters page, corresponding button is commented out of render -- may be reimplemented.
 	// confirm() {
 	// 	this.props.navigation.pop()
 	// 	this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
