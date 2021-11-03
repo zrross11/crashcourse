@@ -18,6 +18,7 @@ import { NavigationContainer } from '@react-navigation/native';
   import '../App/CourseRoster'
   import { classExtractor } from '../App/CourseRoster';
   import SemesterMapper from '../App/Semester';
+  import { connect } from 'react-redux'
 //   import LoginScreen from './Screens/UserLoginScreen';
 //   import SignUpScreen from './Screens/UserSignupScreen';
   Parse.setAsyncStorage(AsyncStorage);
@@ -27,7 +28,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
 
     constructor(props) {
 		super(props)
@@ -42,25 +43,17 @@ export default class HomeScreen extends React.Component {
             schedule: this.props.schedule,
             retrievedSchedule: this.props.retrievedSchedule,
         }
-        // this.doUserLogIn = this.doUserLogIn.bind(this)
 	}
 
-    // componentDidMount(){
-    //    // Call the class population method and update retrievedSchedule 
-
-    // }
-
-    // componentDidUpdate(){
-
-    // }
-
     render(){
-        // console.log("home Screen sched", this.state)
-        // console.log("home Screen sched props", this.props)
         return (
-            <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}> 
+            <ImageBackground source={require('../assets/images/background.jpg')} style={styles.backgroundImage}> 
             <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center'}}>
-            <Agenda
+            <View
+							style={{
+								flex: 0.15,
+							}} />
+            <Agenda theme={{backgroundColor: 'transparent', calendarBackground: "white", agendaDayTextColor: "white", agendaDayNumColor:"white"}}
                     // The list of items that have to be displayed in agenda. If you want to render item as empty date
                     // the value of date key has to be an empty array []. If there exists no value for date key it is
                     // considered that the date in question is not yet loaded
@@ -86,13 +79,13 @@ export default class HomeScreen extends React.Component {
                             </View>
                             <View style={{ flexDirection: "row" }}>
                               <Text style={{ fontSize: 10 }}> Professor: {item.instructor}</Text>
-                              <View style={{ flexDirection: "column", marginLeft: "15%" }}>
+                              {/* <View style={{ flexDirection: "column", marginLeft: "15%" }}>
                                 <Text style={{ fontSize: 10 }}> Avg GPA: {item.gpa ? item.gpa : 0}</Text>
-                              </View>
+                              </View> */}
                             </View>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ flexDirection: "column" }}>
-                                <Text style={{ fontSize: 10 }}> Days: {item.days}</Text>
+                                <Text style={{ fontSize: 10 }}> Time: {item.start} - {item.end}</Text>
                               </View>
                             </View>
                           </Card>                      
@@ -111,10 +104,36 @@ export default class HomeScreen extends React.Component {
     }
 }
 
+function mapStateToProps(state) {
+  return {
+    username: state.username,
+    password: state.password,
+    email: state.email,
+    firstName: state.firstName,
+    lastName: state.lastName,
+    loggedIn: state.loggedIn,
+    schedule: state.schedule,
+    retrievedSchedule: state.retrievedSchedule,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+    decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+    loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item})
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreen);
+
 const styles = StyleSheet.create({
     backgroundImage: {
       flex: 1,
-      width: '100%',
+      width: '100%'
     },
     input: {
       height: 40,

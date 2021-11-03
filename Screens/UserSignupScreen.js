@@ -6,13 +6,14 @@ import '../App/CourseRoster'
 import SemesterMapper from '../App/Semester'
 // import populateClass from   '../ExtraCode'
 import { classExtractor } from '../App/CourseRoster';
+import { connect, useSelector } from 'react-redux';
 
 // Parse.setAsyncStorage(AsyncStorage);
 
 Parse.initialize("xMmrJFN7JLMXS1OvngDZsKisDGA3yff56HQI0Kv2","5jpYBbBMdI4FIcvtxYlgekUeeeR4AoMVK69SfkfF"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
-export default class SignUpScreen extends React.Component {
+class SignUpScreen extends React.Component {
 
     constructor(props) {
 		super(props)
@@ -60,24 +61,7 @@ export default class SignUpScreen extends React.Component {
         this.setState({retrievedSchedule: semesterDays})
         this.setState({loggedIn: true})
         this.setState({schedule: result.id})
-        this.props.updateUser(this.state);
-        // return await Parse.User.logIn(usernameValue, passwordValue)
-        //   .then(async (loggedInUser) => {
-        //     // logIn returns the corresponding ParseUser object
-        //     Alert.alert(
-        //       'Success!',
-        //       `User ${loggedInUser.get('username')} has successfully signed in!`,
-        //     );
-        //     // To verify that this is in fact the current user, currentAsync can be used
-        //     const currentUser = await Parse.User.currentAsync();
-        //     console.log(loggedInUser === currentUser);
-        //     return true;
-        //   })
-        //   .catch((error) => {
-        //     // Error can be caused by wrong parameters or lack of Internet connection
-        //     Alert.alert('Error!', error.message);
-        //     return false;
-        //   });
+        this.props.LOGIN(this.state)
       };
 
     render(){
@@ -156,6 +140,32 @@ export default class SignUpScreen extends React.Component {
             )
     }
 }
+
+function mapStateToProps(state) {
+  return {
+    username: state.username,
+    password: state.password,
+    email: state.email,
+    firstName: state.firstName,
+    lastName: state.lastName,
+    loggedIn: state.loggedIn,
+    schedule: state.schedule,
+    retrievedSchedule: state.retrievedSchedule,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+    decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignUpScreen);
+
 const styles = StyleSheet.create({
     backgroundImage: {
       flex: 1,

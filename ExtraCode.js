@@ -1,16 +1,4 @@
-const initialState = {
-    counter: 0
-  }
-  const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case 'Login':
-            return { counter: state.counter + 1 }
-        case 'DECREASE_COUNTER':
-            return { counter: state.counter - 1 }
-    }
-    return state
-  }
-  
+
   // const store = createStore(reducer)
   
   // const CurrentUser = Parse.User.current();
@@ -38,46 +26,36 @@ const initialState = {
 //   doStuff()
   
   export default function populateClass(course,semesterMap, testEvents){
-    // var testDates = {}
-    // Each letter in course.days corresponds to another day
-    // console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
+    var testDates = testEvents
+
     for(var ind of course.days){
-      // console.log("Day of the week", ind)
       switch(ind){
         case 'M': // Monday
           for(var date of semesterMap['M']){
-            // console.log("Monday dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
               testEvents[`${date}`] = temp
-              // console.log(testEvents[`${date}`])
             }
             else{
               testEvents[`${date}`] = [course]
-              // console.log(testEvents[`${date}`])
             }
           }
           break
         case 'T': // Tuesday
           for(var date of semesterMap['T']){
-            // console.log("Tuesday dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
               testEvents[`${date}`] = temp
-              // console.log(testEvents[`${date}`])
             }
             else{
               testEvents[`${date}`] = [course]
-              // console.log(testEvents[`${date}`])
-  
             }
           }
           break            
         case 'W': // Wednesday
           for(var date of semesterMap['W']){
-            // console.log("Wed dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
@@ -85,13 +63,11 @@ const initialState = {
             }
             else{
               testEvents[`${date}`] = [course]
-  
             }      
           }
           break
         case 'R': // Thursday
           for(var date of semesterMap['R']){
-            // console.log("Thursday dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
@@ -105,7 +81,6 @@ const initialState = {
           break
         case 'F': // Friday
           for(var date of semesterMap['F']){
-            // console.log("Friday dates",date)
             if(testEvents[`${date}`]){
               var temp = testEvents[`${date}`]
               temp.push(course)
@@ -113,15 +88,15 @@ const initialState = {
             }
             else{
               testEvents[`${date}`] = [course]
-  
             }       
           }
           break
       }
     }
+    return testEvents;
   }
-
-  export function depopulateClass(course,semesterMap, testEvents){
+  
+export function depopulateClass(course,semesterMap, testEvents){
     var testDates = testEvents
     // console.log("ExtraCode.js: initial testDates", testDates)
     // Each letter in course.days corresponds to another day
@@ -135,7 +110,7 @@ const initialState = {
             if(testEvents[`${date}`]){ // If the date exists -- which it always should 
               var list = testEvents[`${date}`] // Grabs the list of classes that are in it
               for ( var classObj of list){ // Searches through the list for the current class and then breaks the for loop
-                if(classObj.subject == course.subject && classObj.mnemonic == course.mnemonic && classObj.section == course.subject){
+                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
                   list.splice(list.indexOf(classObj,1))
                   break
                 }
@@ -151,7 +126,7 @@ const initialState = {
             if(testEvents[`${date}`]){
               var list = testEvents[`${date}`]
               for ( var classObj of list){
-                if(classObj.subject == course.subject && classObj.mnemonic == course.mnemonic && classObj.section == course.subject){
+                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
                   list.splice(list.indexOf(classObj,1))
                 }
               }
@@ -166,7 +141,7 @@ const initialState = {
             if(testEvents[`${date}`]){
               var list = testEvents[`${date}`]
               for ( var classObj of list){
-                if(classObj.subject == course.subject && classObj.mnemonic == course.mnemonic && classObj.section == course.subject){
+                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
                   list.splice(list.indexOf(classObj,1))
                 }
               }
@@ -181,7 +156,7 @@ const initialState = {
             if(testEvents[`${date}`]){
               var list = testEvents[`${date}`]
               for ( var classObj of list){
-                if(classObj.subject == course.subject && classObj.mnemonic == course.mnemonic && classObj.section == course.subject){
+                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
                   list.splice(list.indexOf(classObj,1))
                 }
               }
@@ -196,7 +171,7 @@ const initialState = {
             if(testEvents[`${date}`]){
               var list = testEvents[`${date}`]
               for ( var classObj of list){
-                if(classObj.subject == course.subject && classObj.mnemonic == course.mnemonic && classObj.section == course.subject){
+                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
                   list.splice(list.indexOf(classObj,1))
                 }
               }
@@ -206,7 +181,7 @@ const initialState = {
           }
           break
       }
-    }
-    console.log("ExtraCode.js: rrlast testDates populateClass", testEvents)
+    } // Closes for loop
+    // console.log("ExtraCode.js: rrlast testDates depopulateClass", testEvents)
     return testEvents;
   }

@@ -1,61 +1,237 @@
 import * as React from "react";
+import { useRef } from 'react'
 import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { classExtractor } from './CourseRoster';
-import populateClass from '../ExtraCode'
+import { connect } from 'react-redux'
+ 
+const daymap = {
+	'Monday': 'M',
+	'Tuesday': 'T',
+	'Wednesday': 'W',
+	'Thursday': 'R',
+	'Friday': 'F',
+	'Saturday': 'S',
+	'Monday, Wednesday': 'MW',
+	'Tuesday, Thursday': 'TR',
+	'Wednesday, Friday': 'WF',
+	'Monday, Wednesday, Friday': 'MWF',
+	'Monday, Tuesday, Wednesday': 'MTW',
+	'Monday, Tuesday, Wednesday, Thursday, Friday': 'MTWRF',
+	'Online': ''
+}
 
-var departments = ['APMA', 'CS', 'ETC']
-var professors = []
-var meetingdays = []
-var locations = []
-
-
-export default class MainScreenTwo extends React.Component {
-
+class Filters extends React.Component { 
 	constructor(props) {
 		super(props)
 		this.state = {
-			username: this.props.route.params.username,
-			password: this.props.route.params.password,
-			email: this.props.route.params.email,
-			firstName: this.props.route.params.firstName,
-			lastName: this.props.route.params.lastName,
-			loggedIn: this.props.route.params.loggedIn,
-			schedule: this.props.route.params.schedule,
-			retrievedSchedule: this.props.route.params.retrievedSchedule,
-			courses: this.props.route.params.courses,
-			show: this.props.route.params.show,
-			selectedDepartment: this.props.route.params.selectedDepartment,
-			classes: this.props.route.params.classes,
-			classPool: this.props.route.params.classPool,
-			departments: this.props.route.params.departments,
+			schedule: this.props.schedule,
+			retrievedSchedule: this.props.retrievedSchedule,
+			selectedDepartment: '',
+			selectedProfessor: '',
+			selectedDay: '',
+			selectedTime: '',
+			filterResults: [],
+			classPool: this.props.classPool,
+			departments: this.props.departments,
+			professors: this.props.professors,
+			meetingTimes: this.props.meetingTimes,
+			className: this.props.className
 		}
 		this.filterCourses = this.filterCourses.bind(this)
 	}
 
 	filterCourses() {
+		
 		var k = []
-		for (var key of Object.values(this.state.classPool)) {
-			if (key[0].subject == this.state.selectedDepartment) {
-				for (var j = 0; j < key.length; j++) {
-					k.push(key[j]);
+		//all filters on
+		if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
+							k.push(key[j]);
+						}
+					}
 				}
 			}
 		}
+		//department, professor, day
+		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//department, professor, time
+		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].instructor == this.state.selectedProfessor && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//department, day, time
+		else if (this.state.selectedDepartment != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//professor, day, time
+		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//department, professor
+		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].instructor == this.state.selectedProfessor) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//department, day
+		else if (this.state.selectedDepartment != '' && this.state.selectedDay != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if (key[j].days == this.state.selectedDay) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//department, time
+		else if (this.state.selectedDepartment != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						if ((key[j].start + " - " + key[j].end) == this.state.selectedTime) {
+							k.push(key[j]);
+						}
+					}
+				}
+			}
+		}
+		//professor, day
+		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//professor, time
+		else if (this.state.selectedProfessor != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].instructor == this.state.selectedProfessor && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//day, time
+		else if (this.state.selectedDay != '' && this.state.selectedTime != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//department
+		else if (this.state.selectedDepartment != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				if (key[0].subject == this.state.selectedDepartment) {
+					for (var j = 0; j < key.length; j++) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//professor
+		else if (this.state.selectedProfessor != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].instructor == this.state.selectedProfessor) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//day
+		else if (this.state.selectedDay != '') {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].days == this.state.selectedDay) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+		//time
+		else {
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if ((key[j].start + " - " + key[j].end) == this.state.selectedTime) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+
 		k = k.sort()
-		this.setState((state, props) => ({
-			...state, show: 1, classes: k
-		}));
+
+		//text input stuff... if there are elements in k, filter from box
+		if (this.state.className != null && k.length > 0) {
+			k = k.filter(data => data.title.includes(this.state.className));
+		}
+		//if no elements in k, search for filterResults with said name
+		else if (this.state.className != null) {
+			console.log(this.state.className)
+			for (var key of Object.values(this.state.classPool)) {
+				for (var j = 0; j < key.length; j++) {
+					if (key[j].title.includes(this.state.className)) {
+						k.push(key[j]);
+					}
+				}
+			}
+		}
+
+		this.props.loadClasses({filterResults: k})
+		this.props.navigation.navigate("Search Results")
 	}
 
 	render() {
-		if (this.state.show)
-			this.props.navigation.push('Results', {
-				...this.state
-			})
-			this.state.show = 0;
-
 		return (
 			<ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
 				<View
@@ -80,13 +256,17 @@ export default class MainScreenTwo extends React.Component {
 							position: "absolute",
 							left: "10%",
 							width: "80%",
-							top: "5%",
+							top: "12%",
 							bottom: "5%",
 							alignItems: "flex-start",
 						}}>
 						<Text style={styles.titleText}>What type of class?</Text>
+						<View
+							style={{
+								flex: 0.05,
+							}} />
 						<SelectDropdown
-							data={this.state.departments}
+							data={this.props.departments}
 							defaultButtonText={"Department"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -96,7 +276,7 @@ export default class MainScreenTwo extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								this.setState({ selectedDepartment: selectedItem })
+								this.setState((state, props) => ({ ...state, selectedDepartment: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -110,7 +290,7 @@ export default class MainScreenTwo extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={professors}
+							data={this.props.professors}
 							defaultButtonText={"Professor"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -120,8 +300,7 @@ export default class MainScreenTwo extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								console.log(selectedItem, index)
-								// this.setState({professor: selectedItem})
+								this.setState((state, props) => ({ ...state, selectedProfessor: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -135,7 +314,7 @@ export default class MainScreenTwo extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={meetingdays}
+							data={Object.keys(daymap)}
 							defaultButtonText={"Meeting Days"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
@@ -145,7 +324,7 @@ export default class MainScreenTwo extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								console.log(selectedItem, index)
+								this.setState((state, props) => ({ ...state, selectedDay: daymap[selectedItem] }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -159,8 +338,8 @@ export default class MainScreenTwo extends React.Component {
 								flex: 0.1,
 							}} />
 						<SelectDropdown
-							data={departments}
-							defaultButtonText={"Location"}
+							data={this.props.meetingTimes}
+							defaultButtonText={"Meeting Times"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
 							renderDropdownIcon={() => {
@@ -169,7 +348,7 @@ export default class MainScreenTwo extends React.Component {
 								);
 							}}
 							onSelect={(selectedItem, index) => {
-								// console.log(selectedItem, index)
+								this.setState((state, props) => ({ ...state, selectedTime: selectedItem }))
 							}}
 							buttonTextAfterSelection={(selectedItem, index) => {
 								return selectedItem
@@ -183,16 +362,18 @@ export default class MainScreenTwo extends React.Component {
 								flex: 0.3,
 							}} />
 						<Text style={styles.titleText2}>Search By Class Name:</Text>
-						<TextInput style={styles.input} placeholder="Type here..." />
+						<TextInput style={styles.input} placeholder="Type here... (case-sensitive)" onChangeText={(text) => {
+							this.setState((state, props) => ({ ...state, className: text }))
+						}} />
 
 						<View
 							style={{
 								flex: 0.1,
 							}} />
-						<View style={{ backgroundColor: "black", left: "60%" }}>
+						<View style={{ backgroundColor: "black", left: "55%" }}>
 							<Button
 								type="clear"
-								title="Show classes"
+								title="Search Classes"
 								color="#FFFF"
 								onPress={this.filterCourses}
 							/>
@@ -201,9 +382,44 @@ export default class MainScreenTwo extends React.Component {
 				</View>
 			</ImageBackground>
 		)
-
 	}
 }
+
+function mapStateToProps(state) {
+    return {
+      username: state.username,
+      password: state.password,
+      email: state.email,
+      firstName: state.firstName,
+      lastName: state.lastName,
+      loggedIn: state.loggedIn,
+      schedule: state.schedule,
+      retrievedSchedule: state.retrievedSchedule,
+	  selectedDepartment: state.selectedDepartment,
+	  selectedProfessor: state.selectedProfessor,
+	  selectedDay:  state.selectedDay,
+	  selectedTime: state.selectedTime,
+	  filterResults: state.filterResults,
+	  classPool: state.classPool,
+	  departments: state.departments,
+	  professors: state.professors,
+	  meetingTimes: state.meetingTimes,
+	  className: state.className
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item}),
+      decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+      loadClasses: (item) => dispatch({type: 'LOAD_CLASSES', payload: item}),
+      addClasses: (item) => dispatch({type: 'ADD_CLASSES', payload: item}),
+    };
+  }
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Filters);
 
 const styles = StyleSheet.create({
 	mainScreenView: {
@@ -214,7 +430,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		resizeMode: "cover",
 		width: null,
-		height: 814,
+		height: "100%",
 	},
 	dropdown1BtnStyle: {
 		width: "100%",

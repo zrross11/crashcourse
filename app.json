@@ -16,9 +16,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.virginia.crashcourse",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.virginia.crashcourse",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF"
       },
@@ -29,3 +33,4 @@
     "description": "Scheduling App for UVA students"
   }
 }
+
