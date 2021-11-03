@@ -125,7 +125,7 @@ async updateSchedule(){
             // console.log("json parse",JSON.parse(currentUser));
             
               this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
-              email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: SemesterDays})
+              email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: k.retrievedSchedule})
               // console.log("UserLoginScreen.js : state",this.state)
               
               // var sched = this.getSchedule;
