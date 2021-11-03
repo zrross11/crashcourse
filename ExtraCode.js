@@ -25,8 +25,8 @@
   
 //   doStuff()
   
-  export default function populateClass(course,semesterMap, testEvents){
-    var testDates = testEvents
+  export default function populateClass(course,semesterMap, testDates){
+    var testEvents = testDates
 
     for(var ind of course.days){
       switch(ind){

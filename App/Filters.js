@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useRef } from 'react'
 import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } from "react-native"
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -18,7 +17,7 @@ const daymap = {
 	'Monday, Wednesday, Friday': 'MWF',
 	'Monday, Tuesday, Wednesday': 'MTW',
 	'Monday, Tuesday, Wednesday, Thursday, Friday': 'MTWRF',
-	'Online': ''
+	'Online': ' '
 }
 
 class Filters extends React.Component { 
@@ -46,6 +45,9 @@ class Filters extends React.Component {
 		var k = []
 		//all filters on
 		if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			if (this.state.selectedDay == " ") {
+				this.state.selectedDay = ""
+			}
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
@@ -58,6 +60,9 @@ class Filters extends React.Component {
 		}
 		//department, professor, day
 		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '') {
+			if (this.state.selectedDay == " ") {
+				this.state.selectedDay = ""
+			}
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
@@ -82,6 +87,9 @@ class Filters extends React.Component {
 		}
 		//department, day, time
 		else if (this.state.selectedDepartment != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			if (this.state.selectedDay == " ") {
+				this.state.selectedDay = ""
+			}
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
@@ -94,6 +102,9 @@ class Filters extends React.Component {
 		}
 		//professor, day, time
 		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
+			if (this.state.selectedDay == " ") {
+				this.state.selectedDay = ""
+			}
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
 					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
@@ -116,6 +127,9 @@ class Filters extends React.Component {
 		}
 		//department, day
 		else if (this.state.selectedDepartment != '' && this.state.selectedDay != '') {
+			if (this.state.selectedDay == " ") {
+				this.state.selectedDay = ""
+			}
 			for (var key of Object.values(this.state.classPool)) {
 				if (key[0].subject == this.state.selectedDepartment) {
 					for (var j = 0; j < key.length; j++) {
@@ -140,6 +154,9 @@ class Filters extends React.Component {
 		}
 		//professor, day
 		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '') {
+			if (this.state.selectedDay == " ") {
+				this.state.selectedDay = ""
+			}
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
 					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay) {
@@ -160,6 +177,9 @@ class Filters extends React.Component {
 		}
 		//day, time
 		else if (this.state.selectedDay != '' && this.state.selectedTime != '') {
+			if (this.state.selectedDay == " ") {
+				this.state.selectedDay = ""
+			}
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
 					if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
@@ -190,6 +210,9 @@ class Filters extends React.Component {
 		}
 		//day
 		else if (this.state.selectedDay != '') {
+			if (this.state.selectedDay == " ") {
+				this.state.selectedDay = ""
+			}
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
 					if (key[j].days == this.state.selectedDay) {
@@ -224,6 +247,12 @@ class Filters extends React.Component {
 						k.push(key[j]);
 					}
 				}
+			}
+		}
+
+		for (var i=0; i<k.length; i++) {
+			if (k[i].instructor.length < 1) {
+				k[i].instructor = "Staff"
 			}
 		}
 
