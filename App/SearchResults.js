@@ -17,7 +17,7 @@ const daymap = {
 	'MWF': 'Monday, Wednesday, Friday',
 	'MTW': 'Monday, Tuesday, Wednesday',
 	'MTWRF': 'Mon, Tues, Wed, Thurs, Fri',
-	'': 'Online'
+	'': 'Online',
 }
 
 class SearchResults extends React.Component {
