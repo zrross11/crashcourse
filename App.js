@@ -131,7 +131,7 @@ function fillClass() {
 
   // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
   // var free = ['AFFL', 'CE']
-  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL', 'PHYS', 'CE', 'MAE', 'STS']
+  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL', 'PHYS', 'CE', 'MAE', 'STS',]
 
   for (var index = 0; index < datad.length; index++) {
     course = datad[index];
