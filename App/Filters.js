@@ -20,6 +20,11 @@ const daymap = {
 	'Online': ' '
 }
 
+const drop = React.createRef()
+const drop2 = React.createRef()
+const drop3 = React.createRef()
+const drop4 = React.createRef()
+
 class Filters extends React.Component { 
 	constructor(props) {
 		super(props)
@@ -257,6 +262,10 @@ class Filters extends React.Component {
 		}
 
 		this.props.loadClasses({filterResults: k})
+		drop.current.reset()
+		drop2.current.reset()
+		drop3.current.reset()
+		drop4.current.reset()
 		this.props.navigation.navigate("Search Results")
 	}
 
@@ -299,6 +308,7 @@ class Filters extends React.Component {
 							defaultButtonText={"Department"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
+							ref={drop}
 							renderDropdownIcon={() => {
 								return (
 									<FontAwesome name="chevron-down" color={"#444"} size={18} />
@@ -323,6 +333,7 @@ class Filters extends React.Component {
 							defaultButtonText={"Professor"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
+							ref={drop2}
 							renderDropdownIcon={() => {
 								return (
 									<FontAwesome name="chevron-down" color={"#444"} size={18} />
@@ -347,6 +358,7 @@ class Filters extends React.Component {
 							defaultButtonText={"Meeting Days"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
+							ref={drop3}
 							renderDropdownIcon={() => {
 								return (
 									<FontAwesome name="chevron-down" color={"#444"} size={18} />
@@ -371,6 +383,7 @@ class Filters extends React.Component {
 							defaultButtonText={"Meeting Times"}
 							dropdownStyle="arrow"
 							buttonStyle={styles.dropdown1BtnStyle}
+							ref={drop4}
 							renderDropdownIcon={() => {
 								return (
 									<FontAwesome name="chevron-down" color={"#444"} size={18} />
