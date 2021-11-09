@@ -262,11 +262,11 @@ class Filters extends React.Component {
 		}
 
 		this.props.loadClasses({filterResults: k})
+		this.props.navigation.navigate("Search Results")
 		drop.current.reset()
 		drop2.current.reset()
 		drop3.current.reset()
 		drop4.current.reset()
-		this.props.navigation.navigate("Search Results")
 	}
 
 	render() {
