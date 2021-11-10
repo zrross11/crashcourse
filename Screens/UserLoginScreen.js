@@ -124,10 +124,15 @@ async updateSchedule(){
             // console.log("2",currentUser.get);
             // console.log("json parse",JSON.parse(currentUser));
             
-              this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
-              email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: k.retrievedSchedule})
               // console.log("UserLoginScreen.js : state",this.state)
-              
+              if(k.retrievedSchedule == undefined){
+                this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
+                  email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: {}})                
+              }
+              else{
+                this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
+                  email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: k.retrievedSchedule})
+              }
               // var sched = this.getSchedule;
               // updateSchedule();
               // console.log("after updateSchedule", this.state.retrievedSchedule);
