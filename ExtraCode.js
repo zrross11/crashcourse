@@ -27,9 +27,23 @@
   
   export default function populateClass(course,semesterMap, testEvents){
     var testDates = testEvents
+    if(course.days == ''){
+      console.log("ExtraCode.js: populateClass - class is online")
+      for(var date of semesterMap['Sunday']){
+        if(testEvents[`${date}`]){
+          var temp = testEvents[`${date}`]
+          temp.push(course)
+          testEvents[`${date}`] = temp
+        }
+        else{
+          testEvents[`${date}`] = [course]
+        }       
+      }   
+    }
 
     for(var ind of course.days){
       switch(ind){
+
         case 'M': // Monday
           for(var date of semesterMap['M']){
             if(testEvents[`${date}`]){
@@ -101,6 +115,20 @@ export function depopulateClass(course,semesterMap, testEvents){
     // console.log("ExtraCode.js: initial testDates", testDates)
     // Each letter in course.days corresponds to another day
     // console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
+    if(course.days == ''){
+      console.log("ExtraCode.js: populateClass - class is online")
+      for(var date of semesterMap['Sunday']){
+        if(testEvents[`${date}`]){
+          var list = testEvents[`${date}`]
+          for ( var classObj of list){
+            if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
+              list.splice(list.indexOf(classObj,1))
+            }
+          }
+          testEvents[`${date}`] = list     
+        }   
+      }
+    }
     for(var ind of course.days){
       // console.log("Day of the week", ind)
       switch(ind){

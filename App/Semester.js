@@ -29,8 +29,9 @@ export async function SemesterMapper(startDate,endDate){
         var temp = [];
         switch(date.getDay()){
             case 0:
-                // temp = Semester["Sunday"]
-                // Semester["Sunday"] = temp.push(currDate)
+                temp = Semester["Sunday"]
+                temp.push(currDate)
+                Semester["Sunday"] = temp
                 // console.log(temp)
                 // console.log(typeof(temp),temp.length)
                 break
