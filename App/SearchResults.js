@@ -53,7 +53,7 @@ class SearchResults extends React.Component {
 	// }
 
 	async addClass(key){
-		var sched = JSON.parse(JSON.stringify(this.state.retrievedSchedule))
+		var sched = JSON.parse(JSON.stringify(this.props.retrievedSchedule))
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7));
 		var newSched = populateClass(key, Semester, sched)
 		this.props.navigation.pop()
