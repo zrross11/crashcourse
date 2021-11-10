@@ -46,16 +46,18 @@ class SearchResults extends React.Component {
 		this.props.navigation.pop()
 	}
 
+	// Was used to return back to the Filters page, corresponding button is commented out of render -- may be reimplemented.
 	// confirm() {
 	// 	this.props.navigation.pop()
 	// 	this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	// }
 
 	async addClass(key){
-		var sched = this.state.retrievedSchedule
+		var sched = JSON.parse(JSON.stringify(this.state.retrievedSchedule))
 		var {Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7));
 		var newSched = populateClass(key, Semester, sched)
 		this.props.navigation.pop()
+		// console.log("SearchResults.js: Should be updated schedule", newSched)
 		this.props.addClasses({retrievedSchedule: newSched})
 		this.props.navigation.navigate(`${this.state.firstName}'s Schedule`)
 	}
@@ -108,7 +110,7 @@ class SearchResults extends React.Component {
 								<Button
 									title="Add"
 									color="#FFFF"
-									onPress={() => this.addClass(theClass)}
+									onPress={() => {console.log("SearchResults.js: About to add class", theClass);this.addClass(theClass)}}
 								/>
 							</View>
 							<Text style={styles.details}>{daymap[item.days]}</Text>

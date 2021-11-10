@@ -101,37 +101,40 @@ class LoginScreen extends React.Component {
         //     'Success!',
         //     `User ${loggedInUser.get('username')} has successfully signed in!`,
         //   );
-        // To verify that this is in fact the current user, currentAsync can be used
-        var currentUser = await Parse.User.currentAsync();
-        if (currentUser === loggedInUser) {
-          // console.log("just firstname",currentUser.firstname);
-          var k = JSON.parse(JSON.stringify(currentUser))
-          // console.log("k value",k)
-          // console.log("2",currentUser.get);
-          // console.log("json parse",JSON.parse(currentUser));
+          // To verify that this is in fact the current user, currentAsync can be used
+          var currentUser = await Parse.User.currentAsync();
+          if(currentUser === loggedInUser){
+            // console.log("just firstname",currentUser.firstname);
+            var k = JSON.parse(JSON.stringify(currentUser))
+            // console.log("k value",k)
+            // console.log("2",currentUser.get);
+            // console.log("json parse",JSON.parse(currentUser));
+            
+              // console.log("UserLoginScreen.js : state",this.state)
+              if(k.retrievedSchedule == undefined){
+                this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
+                  email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: {}})                
+              }
+              else{
+                this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
+                  email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: k.retrievedSchedule})
+              }
+              // var sched = this.getSchedule;
+              // updateSchedule();
+              // console.log("after updateSchedule", this.state.retrievedSchedule);
+              // this.setState({retrievedSchedule: sched})
+              // this.props.buildClasses();
+              // console.log("The props", this.props)
+          }
+          // this.props.updateUser(this.state);
 
-          this.setState({
-            loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password,
-            email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: SemesterDays
-          })
-          // console.log("UserLoginScreen.js : state",this.state)
-
-          // var sched = this.getSchedule;
-          // updateSchedule();
-          // console.log("after updateSchedule", this.state.retrievedSchedule);
-          // this.setState({retrievedSchedule: sched})
-          // this.props.buildClasses();
-          // console.log("The props", this.props)
-        }
-        // this.props.updateUser(this.state);
-
-        // console.log("Logged In User & Current User are good.",loggedInUser === currentUser);
-        this.props.LOGIN(this.state)
-        return true;
-      })
-      .catch((error) => {
-        console.log("Error trying to login", error)
-        // Error can be caused by wrong parameters or lack of Internet connection
+          // console.log("Logged In User & Current User are good.",loggedInUser === currentUser);
+          this.props.LOGIN(this.state)
+          return true;
+        })
+        .catch((error) => {
+          console.log("Error trying to login",error)
+          // Error can be caused by wrong parameters or lack of Internet connection
         //   Alert.alert('Error!', error.message);
         return false;
       });
