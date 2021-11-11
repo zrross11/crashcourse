@@ -24,7 +24,7 @@ export class RemoveClasses extends React.Component {
 
 	async removeAClass(item){
 		// Call the populate class method on the course
-		var sched = JSON.parse(JSON.stringify(this.state.retrievedSchedule)) // map holding each date in the semester and the array of clases on it 
+		var sched = JSON.parse(JSON.stringify(this.props.retrievedSchedule)) // map holding each date in the semester and the array of clases on it 
 		var { Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // object holding all the dates in the semester 
 		var newSched = depopulateClass(item, Semester, sched)
 		// console.log("RemoveScreen.js: removing a class updated", newSched)
@@ -39,17 +39,17 @@ export class RemoveClasses extends React.Component {
 		var coursenumbers = []
 		for (let i = 0; i < 7; i++) {
 			if (Object.values(grab)[i].length > 0)
-				console.log("RemoveScreen.js: grab[i]", Object.values(grab)[i])
+				// console.log("RemoveScreen.js: grab[i]", Object.values(grab)[i])
 				for (let j = 0; j < Object.values(grab)[i].length; j++) {
 					if (!coursenumbers.includes(Object.values(grab)[i][j].number)) {
-						console.log("RemoveScreen.js: Did not find this", Object.values(grab)[i][j])
+						// console.log("RemoveScreen.js: Did not find this", Object.values(grab)[i][j])
 						classes.push(Object.values(grab)[i][j])
 						coursenumbers.push(Object.values(grab)[i][j].number)
 					}
 				}
 		}
 		
-		console.log("RemoveScreen.js: Grab new classes", classes)
+		// console.log("RemoveScreen.js: Grab new classes", classes)
 		return (<View
 			style={styles.DropView}>
 			<View

@@ -82,30 +82,6 @@ function addClass(state, newClass) {
 }
 
 
-function doLogout(state){
-
-
-  return {
-    username: '',
-    password: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    loggedIn: false,
-    departments: dept, // Holds the list of searchable departments
-    professors: profs,
-    meetingTimes: times,
-    schedule: {}, // Stores the object key for user's schedule item
-    retrievedSchedule: {}, // Stores the schedule of all semester days in array
-    classes: [],
-    classPool: classList, // Holds the list of all classes
-    courses: [],
-    show: 0,
-    selectedDepartment: '',
-    filterResults: [],
-  }
-}
-
 const store = createStore(reducer)
 
 
