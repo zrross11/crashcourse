@@ -267,6 +267,10 @@ class Filters extends React.Component {
 		drop2.current.reset()
 		drop3.current.reset()
 		drop4.current.reset()
+		this.state.selectedDepartment = ''
+		this.state.selectedProfessor = ''
+		this.state.selectedDay = ''
+		this.state.selectedTime = ''
 	}
 
 	render() {

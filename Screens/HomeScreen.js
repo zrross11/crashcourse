@@ -1,26 +1,11 @@
-import {
-    createDrawerNavigator,
-    DrawerContentScrollView,
-    DrawerItemList,
-    DrawerItem,
-  } from '@react-navigation/drawer';
-import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {StyleSheet, View, Text, ImageBackground} from 'react-native';
   import * as React from 'react'
-  import RemoveScreen from "../Screens/RemoveScreen";
-  import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
+  import {Agenda} from 'react-native-calendars'
   import { Card, Icon } from 'react-native-elements'
-  import { createStackNavigator } from '@react-navigation/stack';
   import AsyncStorage from '@react-native-async-storage/async-storage'
-  // import AsyncStorage from '@react-native-community/async-storage'
-  
   import Parse from 'parse/react-native';
   import '../App/CourseRoster'
-  import { classExtractor } from '../App/CourseRoster';
-  import SemesterMapper from '../App/Semester';
   import { connect } from 'react-redux'
-//   import LoginScreen from './Screens/UserLoginScreen';
-//   import SignUpScreen from './Screens/UserSignupScreen';
   Parse.setAsyncStorage(AsyncStorage);
 
   Parse.initialize("mACzMiXlQTl8YbFXSMB7MCyhlXQinlAyS4FVg0k1","VS0yWbPQcLuBK8EgKRfBr6LiRoMdpSU2ZQjzIqvV"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY

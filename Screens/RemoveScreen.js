@@ -37,6 +37,8 @@ export class RemoveClasses extends React.Component {
 		var grab = this.props.retrievedSchedule;
 		var classes = []
 		var coursenumbers = []
+		console.log(Object.keys(grab))
+		// console.log(Object.values(grab))
 		for (let i = 0; i < 7; i++) {
 			if (Object.values(grab)[i].length > 0)
 				// console.log("RemoveScreen.js: grab[i]", Object.values(grab)[i])

@@ -1,20 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
-import { Card, Icon } from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Parse from 'parse/react-native';
 import './App/CourseRoster'
 import MyDrawer from './myDrawer'
 import { createStore } from 'redux'
-import { Provider, connect } from 'react-redux'
+import { Provider } from 'react-redux'
 
 Parse.setAsyncStorage(AsyncStorage);
 
@@ -173,18 +165,3 @@ function fillClass() {
   times.sort()
   return { classList, dept, profs, times };
 }
-
-
-const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: "white",
-  },
-});
