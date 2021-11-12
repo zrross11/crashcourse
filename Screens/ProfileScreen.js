@@ -44,6 +44,10 @@ export class ProfileScreen extends React.Component {
 		}
 	}
 
+	// logout() {
+	// 	this.props.LOGIN({ loggedIn: 0 })
+	// }
+
 	render() {
 		return (<View
 			style={styles.DropView}>
@@ -71,11 +75,26 @@ export class ProfileScreen extends React.Component {
 					bottom: "15%",
 					alignItems: "flex-start",
 				}}>
-					<Text>{this.props.firstName}</Text>
-					<Text>{this.props.lastName}</Text>
-					<Text>{this.props.email}</Text>
+				<Text style={styles.profileText}>Username: </Text>
+				<Text style={styles.profileText2}>{this.props.username}</Text>
+				<View
+					style={{
+						flex: 0.05,
+					}} />
+				<Text style={styles.profileText}>Name: </Text>
+				<Text style={styles.profileText2}>{this.props.firstName} {this.props.lastName}</Text>
+				<View
+					style={{
+						flex: 0.05,
+					}} />
+				<Text style={styles.profileText}>Email: </Text>
+				<Text style={styles.profileText2}>{this.props.email}</Text>
+				<View
+					style={{
+						flex: 0.05,
+					}} />
 			</View>
-			<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "20%", position: "relative" }}>
+			<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "45%", position: "relative" }}>
 				<Button
 					type="clear"
 					title="Logout"
@@ -143,13 +162,11 @@ const styles = StyleSheet.create({
 		width: null,
 		height: '100%',
 	},
-	className: {
-		fontSize: 15,
+	profileText: {
+		fontSize: 25,
 		fontWeight: "bold",
-		marginLeft: "2%"
 	},
-	details: {
-		fontSize: 13,
-		marginLeft: "2%"
-	}
+	profileText2: {
+		fontSize: 25,
+	},
 })

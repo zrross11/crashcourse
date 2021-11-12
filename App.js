@@ -1,20 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
-import { Card, Icon } from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Parse from 'parse/react-native';
 import './App/CourseRoster'
 import MyDrawer from './myDrawer'
 import { createStore } from 'redux'
-import { Provider, connect } from 'react-redux'
+import { Provider } from 'react-redux'
 
 Parse.setAsyncStorage(AsyncStorage);
 
@@ -82,30 +74,6 @@ function addClass(state, newClass) {
 }
 
 
-function doLogout(state){
-
-
-  return {
-    username: '',
-    password: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    loggedIn: false,
-    departments: dept, // Holds the list of searchable departments
-    professors: profs,
-    meetingTimes: times,
-    schedule: {}, // Stores the object key for user's schedule item
-    retrievedSchedule: {}, // Stores the schedule of all semester days in array
-    classes: [],
-    classPool: classList, // Holds the list of all classes
-    courses: [],
-    show: 0,
-    selectedDepartment: '',
-    filterResults: [],
-  }
-}
-
 const store = createStore(reducer)
 
 
@@ -119,6 +87,20 @@ export default function App() {
 
   );
 }
+
+function fixTime(time) {
+  var tester = parseInt(time.substring(0,2))
+  var half = " AM"
+  if (tester >= 12) {
+    half = " PM"
+    if (tester > 12) {
+      tester = tester - 12
+    }
+  }
+  var output = tester + ":" + time.substring(3,5) + half
+  return output
+}
+
 function fillClass() {
   var datad = require('./api.json')
   datad = datad.class_schedules.records
@@ -131,7 +113,7 @@ function fillClass() {
 
   // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
   // var free = ['AFFL', 'CE']
-  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL', 'PHYS', 'CE', 'MAE', 'STS']
+  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL', 'PHYS', 'CE', 'MAE', 'STS',]
 
   for (var index = 0; index < datad.length; index++) {
     course = datad[index];
@@ -195,20 +177,10 @@ function fillClass() {
   profs.sort()
   profs.shift()
   times.sort()
+  for(var index in times) {
+    var endtime = fixTime(times[index].substring(11,19))
+    var begintime = fixTime(times[index].substring(0,8))
+    times[index] = begintime + " - " + endtime
+  }
   return { classList, dept, profs, times };
 }
-
-
-const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: "white",
-  },
-});

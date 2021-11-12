@@ -1,26 +1,11 @@
-import {
-    createDrawerNavigator,
-    DrawerContentScrollView,
-    DrawerItemList,
-    DrawerItem,
-  } from '@react-navigation/drawer';
-import {StyleSheet, Image, View, ScrollView, Text, TextInput, TouchableOpacity, Button, ImageBackground, Dimensions, Row, Col, SafeAreaView} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {StyleSheet, View, Text, ImageBackground} from 'react-native';
   import * as React from 'react'
-  import RemoveScreen from "../Screens/RemoveScreen";
-  import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
+  import {Agenda} from 'react-native-calendars'
   import { Card, Icon } from 'react-native-elements'
-  import { createStackNavigator } from '@react-navigation/stack';
   import AsyncStorage from '@react-native-async-storage/async-storage'
-  // import AsyncStorage from '@react-native-community/async-storage'
-  
   import Parse from 'parse/react-native';
   import '../App/CourseRoster'
-  import { classExtractor } from '../App/CourseRoster';
-  import SemesterMapper from '../App/Semester';
   import { connect } from 'react-redux'
-//   import LoginScreen from './Screens/UserLoginScreen';
-//   import SignUpScreen from './Screens/UserSignupScreen';
   Parse.setAsyncStorage(AsyncStorage);
 
   Parse.initialize("mACzMiXlQTl8YbFXSMB7MCyhlXQinlAyS4FVg0k1","VS0yWbPQcLuBK8EgKRfBr6LiRoMdpSU2ZQjzIqvV"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
@@ -43,6 +28,19 @@ class HomeScreen extends React.Component {
             schedule: this.props.schedule,
             retrievedSchedule: this.props.retrievedSchedule,
         }
+	}
+
+  fixTime(time) {
+		var tester = parseInt(time.substring(0,2))
+		var half = " AM"
+		if (tester >= 12) {
+			half = " PM"
+			if (tester > 12) {
+				tester = tester - 12
+			}
+		}
+		var output = tester + ":" + time.substring(3,5) + half
+		return output
 	}
 
     render(){
@@ -85,7 +83,7 @@ class HomeScreen extends React.Component {
                             </View>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ flexDirection: "column" }}>
-                                <Text style={{ fontSize: 10 }}> Time: {item.start} - {item.end}</Text>
+                                <Text style={{ fontSize: 10 }}> Time: {this.fixTime(item.start)} - {this.fixTime(item.end)}</Text>
                               </View>
                             </View>
                           </Card>                      

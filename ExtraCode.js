@@ -27,9 +27,23 @@
   
   export default function populateClass(course,semesterMap, testEvents){
     var testDates = testEvents
+    if(course.days == ''){
+      console.log("ExtraCode.js: populateClass - class is online")
+      for(var date of semesterMap['Sunday']){
+        if(testEvents[`${date}`]){
+          var temp = testEvents[`${date}`]
+          temp.push(course)
+          testEvents[`${date}`] = temp
+        }
+        else{
+          testEvents[`${date}`] = [course]
+        }       
+      }   
+    }
 
     for(var ind of course.days){
       switch(ind){
+
         case 'M': // Monday
           for(var date of semesterMap['M']){
             if(testEvents[`${date}`]){
@@ -96,11 +110,29 @@
     return testEvents;
   }
   
-export function depopulateClass(course,semesterMap, testEvents){
-    var testDates = testEvents
+export function depopulateClass(course,semesterMap, testDates){
+    var testEvents = testDates
     // console.log("ExtraCode.js: initial testDates", testDates)
     // Each letter in course.days corresponds to another day
     // console.log(`${course.subject}${course.mnemonic}: ${course.days}`)
+    console.log("DePop -- Course Number we are trying to remove", course, course.number)
+    if(course.days == ''){
+      // console.log("ExtraCode.js: depopulateClass - class is online")
+      for(var date of semesterMap['Sunday']){
+        if(testEvents[`${date}`]){
+          var list = testEvents[`${date}`]
+          // console.log("List in depop", list)
+          for ( var classObj of list){
+            console.log("classObj", classObj)
+            if(classObj.number == course.number){
+              list.splice(list.indexOf(classObj,1))
+              // console.log("ExtraCode.js: depopulate -- found online class -- removing it", classObj)
+            }
+          }
+          testEvents[`${date}`] = list     
+        }   
+      }
+    }
     for(var ind of course.days){
       // console.log("Day of the week", ind)
       switch(ind){
@@ -110,7 +142,7 @@ export function depopulateClass(course,semesterMap, testEvents){
             if(testEvents[`${date}`]){ // If the date exists -- which it always should 
               var list = testEvents[`${date}`] // Grabs the list of classes that are in it
               for ( var classObj of list){ // Searches through the list for the current class and then breaks the for loop
-                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
+                if(classObj.number == course.number){
                   list.splice(list.indexOf(classObj,1))
                   break
                 }
@@ -125,9 +157,12 @@ export function depopulateClass(course,semesterMap, testEvents){
             // console.log("Tuesday dates",date)
             if(testEvents[`${date}`]){
               var list = testEvents[`${date}`]
+              // console.log("List in depop tuesday", list)
               for ( var classObj of list){
-                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
+                if(classObj.number == course.number){
                   list.splice(list.indexOf(classObj,1))
+                  // console.log("post List in depop tuesday", list)
+
                 }
               }
               testEvents[`${date}`] = list
@@ -141,7 +176,7 @@ export function depopulateClass(course,semesterMap, testEvents){
             if(testEvents[`${date}`]){
               var list = testEvents[`${date}`]
               for ( var classObj of list){
-                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
+                if(classObj.number == course.number){
                   list.splice(list.indexOf(classObj,1))
                 }
               }
@@ -155,8 +190,9 @@ export function depopulateClass(course,semesterMap, testEvents){
             // console.log("Thursday dates",date)
             if(testEvents[`${date}`]){
               var list = testEvents[`${date}`]
+              // console.log("List in depop thurs", list)
               for ( var classObj of list){
-                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
+                if(classObj.number == course.number){
                   list.splice(list.indexOf(classObj,1))
                 }
               }
@@ -171,7 +207,7 @@ export function depopulateClass(course,semesterMap, testEvents){
             if(testEvents[`${date}`]){
               var list = testEvents[`${date}`]
               for ( var classObj of list){
-                if(classObj.subject == course.subject || classObj.mnemonic == course.mnemonic || classObj.section == course.subject){
+                if(classObj.number == course.number){
                   list.splice(list.indexOf(classObj,1))
                 }
               }
