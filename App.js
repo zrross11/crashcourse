@@ -87,6 +87,20 @@ export default function App() {
 
   );
 }
+
+function fixTime(time) {
+  var tester = parseInt(time.substring(0,2))
+  var half = " AM"
+  if (tester >= 12) {
+    half = " PM"
+    if (tester > 12) {
+      tester = tester - 12
+    }
+  }
+  var output = tester + ":" + time.substring(3,5) + half
+  return output
+}
+
 function fillClass() {
   var datad = require('./api.json')
   datad = datad.class_schedules.records
@@ -163,5 +177,10 @@ function fillClass() {
   profs.sort()
   profs.shift()
   times.sort()
+  for(var index in times) {
+    var endtime = fixTime(times[index].substring(11,19))
+    var begintime = fixTime(times[index].substring(0,8))
+    times[index] = begintime + " - " + endtime
+  }
   return { classList, dept, profs, times };
 }

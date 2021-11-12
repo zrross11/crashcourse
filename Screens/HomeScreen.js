@@ -30,6 +30,19 @@ class HomeScreen extends React.Component {
         }
 	}
 
+  fixTime(time) {
+		var tester = parseInt(time.substring(0,2))
+		var half = " AM"
+		if (tester >= 12) {
+			half = " PM"
+			if (tester > 12) {
+				tester = tester - 12
+			}
+		}
+		var output = tester + ":" + time.substring(3,5) + half
+		return output
+	}
+
     render(){
         return (
             <ImageBackground source={require('../assets/images/background.jpg')} style={styles.backgroundImage}> 
@@ -70,7 +83,7 @@ class HomeScreen extends React.Component {
                             </View>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ flexDirection: "column" }}>
-                                <Text style={{ fontSize: 10 }}> Time: {item.start} - {item.end}</Text>
+                                <Text style={{ fontSize: 10 }}> Time: {this.fixTime(item.start)} - {this.fixTime(item.end)}</Text>
                               </View>
                             </View>
                           </Card>                      

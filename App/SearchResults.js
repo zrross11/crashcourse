@@ -46,6 +46,18 @@ class SearchResults extends React.Component {
 		this.props.navigation.pop()
 	}
 
+	fixTime(time) {
+		var tester = parseInt(time.substring(0,2))
+		var half = " AM"
+		if (tester >= 12) {
+			half = " PM"
+			if (tester > 12) {
+				tester = tester - 12
+			}
+		}
+		var output = tester + ":" + time.substring(3,5) + half
+		return output
+	}
 	// Was used to return back to the Filters page, corresponding button is commented out of render -- may be reimplemented.
 	// confirm() {
 	// 	this.props.navigation.pop()
@@ -65,6 +77,51 @@ class SearchResults extends React.Component {
 
 	render() {
 		var grab = this.state.filterResults
+		if (grab.length < 1) {
+			return (<View
+				style={styles.searchResultsView}>
+				<View
+					pointerEvents="box-none"
+					style={{
+						position: "absolute",
+						left: 0,
+						right: 0,
+						top: 0,
+						bottom: 0,
+						justifyContent: "center",
+					}}>
+					<Image
+						source={require("./../assets/images/background.jpg")}
+						style={styles.searchResultsBackgroundMaskImage} />
+				</View>
+				<View
+					pointerEvents="box-none"
+					style={{
+						position: "absolute",
+						left: "10%",
+						width: "80%",
+						top: "12%",
+						bottom: "15%",
+						alignItems: "flex-start",
+					}}>
+					<View
+						style={{
+							flex: 0.1,
+						}} />
+					<Text style={styles.titleText}>  No Results Found</Text>
+					<View style={{ backgroundColor: "black", width: "30%", left: "35%", top: "20%", position: "absolute" }}>
+				<Button
+					type="clear"
+					title="Go back"
+					color="#FFFF"
+					onPress={this.goBack}
+				/>
+			</View>
+				</View>
+
+			</View>
+			)
+		}
 		return (
 		<View
 			style={styles.searchResultsView}>
@@ -114,7 +171,7 @@ class SearchResults extends React.Component {
 								/>
 							</View>
 							<Text style={styles.details}>{daymap[item.days]}</Text>
-							<Text style={styles.details}>{item.start +  " - " +item.end}</Text>
+							<Text style={styles.details}>{this.fixTime(item.start) +  " - " +this.fixTime(item.end)}</Text>
 							<View
 								style={{
 									borderBottomColor: 'black',
@@ -204,5 +261,9 @@ const styles = StyleSheet.create({
 	details: {
 		fontSize: 13,
 		marginLeft: "2%"
-	}
+	},
+	titleText: {
+		fontSize: 34,
+		fontWeight: "bold",
+	},
 })
