@@ -357,14 +357,14 @@ class Filters extends React.Component {
 
 		//text input stuff... if there are elements in k, filter from box
 		if (this.state.className != null && k.length > 0) {
-			k = k.filter(data => data.title.includes(this.state.className));
+			k = k.filter(data => data.title.toLowerCase().includes(this.state.className.toLowerCase()));
 		}
 		//if no elements in k, search for filterResults with said name
 		else if (this.state.className != null) {
 			console.log(this.state.className)
 			for (var key of Object.values(this.state.classPool)) {
 				for (var j = 0; j < key.length; j++) {
-					if (key[j].title.includes(this.state.className)) {
+					if (key[j].title.toLowerCase().includes(this.state.className.toLowerCase())) {
 						k.push(key[j]);
 					}
 				}
@@ -524,7 +524,7 @@ class Filters extends React.Component {
 								flex: 0.3,
 							}} />
 						<Text style={styles.titleText2}>Search By Class Name:</Text>
-						<TextInput style={styles.input} placeholder="Type here... (case-sensitive)" onChangeText={(text) => {
+						<TextInput style={styles.input} placeholder="Type here..." onChangeText={(text) => {
 							this.setState((state, props) => ({ ...state, className: text }))
 						}} />
 

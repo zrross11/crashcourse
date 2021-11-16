@@ -65,7 +65,9 @@ class HomeScreen extends React.Component {
                     // Max amount of months allowed to scroll to the future. Default = 50
                     futureScrollRange={5}
                     // onDayPress={(day)=>{console.log(`day pressed: ${day.month}/${day.day}/${day.year}`)}}
-                    renderItem={(item, firstItemInDay) => { return (
+                    renderItem={(item, firstItemInDay) => { 
+                      if (item.days != "") {
+                        return (
                       // courses.map((item) => {
                         // console.log("List of classes?",obj)
                         // return (
@@ -89,7 +91,25 @@ class HomeScreen extends React.Component {
                           </Card>                      
                         // );
                       // })
-                    )}}
+                    )} else {
+                      return (
+                        <Card>
+                        <View style={{ flexDirection: "row" }}>
+                          <View style={{ flexDirection: "column", margin: "1%" }}>
+                            <Text>{item.subject}{item.mnemonic}: {item.title}</Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                          <Text style={{ fontSize: 10 }}> Professor: {item.instructor}</Text>
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={{ fontSize: 10 }}>Time: Online</Text>
+                          </View>
+                        </View>
+                      </Card> 
+                      )
+                    }}}
                     renderEmptyDate={() => {return (<View/>);}}
                     // minDate={'2021-09-22'}
                     firstDay={1}
