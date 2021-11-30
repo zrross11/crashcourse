@@ -74,7 +74,7 @@ class HomeScreen extends React.Component {
                           <Card>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ flexDirection: "column", margin: "1%" }}>
-                                <Text>{item.subject}{item.mnemonic}: {item.title}</Text>
+                                <Text>{item.subject}{item.mnemonic}: {item.title} <Text style={{fontSize: 6}}> {item.number}</Text></Text>
                               </View>
                             </View>
                             <View style={{ flexDirection: "row" }}>

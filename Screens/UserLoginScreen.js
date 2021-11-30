@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity, Button, ImageBackground, SafeAreaView } from 'react-native';
+import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity, Button, ImageBackground, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import Parse from 'parse/react-native';
 import '../App/CourseRoster'
 import { classExtractor } from '../App/CourseRoster';
@@ -149,6 +149,7 @@ class LoginScreen extends React.Component {
       <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
         <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center' }}>
           <SafeAreaView >
+          {/* <KeyboardAvoidingView style={{flex: 1, padding: 0, margin: 0}} behavior={Platform.OS === "ios" ? "padding" : "height"}> */}
             <View style={{ marginTop: "-10%" }}>
               <Image
                 resizeMode='contain'
@@ -183,6 +184,7 @@ class LoginScreen extends React.Component {
                   />
                 </View>
             </View>
+            {/* </KeyboardAvoidingView> */}
           </SafeAreaView>
         </View>
       </ImageBackground>
@@ -231,6 +233,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 25,
     fontWeight: "bold",
-    marginTop: "-10%"
+    marginTop: "-8%"
   },
 });
