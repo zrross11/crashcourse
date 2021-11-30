@@ -113,7 +113,7 @@ class LoginScreen extends React.Component {
               // console.log("UserLoginScreen.js : state",this.state)
               if(k.retrievedSchedule == undefined){
                 this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
-                  email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: {}})                
+                  email: currentUser.getEmail(), schedule: k.schedule, retrievedSchedule: SemesterDays})                
               }
               else{
                 this.setState({loggedIn: true, firstName: k.firstName, lastName: k.lastName, username: usernameValue, password: k.password, 
