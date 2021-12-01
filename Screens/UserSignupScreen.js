@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity, Button, ImageBackground, SafeAreaView } from 'react-native';
+import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity, Button, ImageBackground, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import Parse from 'parse/react-native';
 import '../App/CourseRoster'
 import SemesterMapper from '../App/Semester'
@@ -66,8 +66,9 @@ class SignUpScreen extends React.Component {
     return (
       <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
         <View style={{ flex: 20, justifyContent: 'center', alignItems: 'center' }}>
+              <KeyboardAvoidingView style={{flex: 1, padding: 0, margin: 0}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
           <SafeAreaView >
-            <View style={{ marginTop: "-10%" }}>
+            <View style={{ marginTop: "-15%" }}>
               <Image
                 resizeMode='contain'
                 style={{ alignContent: 'center', width: "70%", height: "70%", marginLeft: "15%", marginTop: "-5%" }}
@@ -136,6 +137,7 @@ class SignUpScreen extends React.Component {
               </View>
             </View>
           </SafeAreaView>
+            </KeyboardAvoidingView>
         </View>
       </ImageBackground>
     )
@@ -182,6 +184,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 25,
     fontWeight: "bold",
-    marginTop: "-25%"
+    marginTop: "-25%",
+    marginBottom: 0,
   },
 });
