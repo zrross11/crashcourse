@@ -3,7 +3,29 @@ import { Image, StyleSheet, Text, View, Button, TextInput, ImageBackground } fro
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from 'react-redux'
- 
+import * as firebase from 'firebase'
+import { query, where } from "firebase/firestore";  
+
+
+const firebaseConfig = {
+	apiKey: "AIzaSyDgoN3UkyY6sOdbiG6xUCmob8LOJMnSilI",
+	authDomain: "crashcourse-fbe28.firebaseapp.com",
+	projectId: "crashcourse-fbe28",
+	storageBucket: "crashcourse-fbe28.appspot.com",
+	messagingSenderId: "426889603056",
+	appId: "1:426889603056:web:8fd59c3dd588c61d79df35",
+	measurementId: "G-X668CGVTHD"
+  };
+  
+  
+  if (!firebase.apps.length) {
+	firebase.initializeApp(firebaseConfig);
+  }else {
+	firebase.app(); // if already initialized, use that one
+  }
+
+const db = firebase.firestore()
+
 const daymap = {
 	'Monday': 'M',
 	'Tuesday': 'T',
@@ -161,224 +183,22 @@ class Filters extends React.Component {
 		this.filterCourses = this.filterCourses.bind(this)
 	}
 
-	filterCourses() {
-		
-		var k = []
-		//all filters on
-		if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
-			if (this.state.selectedDay == " ") {
-				this.state.selectedDay = ""
-			}
-			for (var key of Object.values(this.state.classPool)) {
-				if (key[0].subject == this.state.selectedDepartment) {
-					for (var j = 0; j < key.length; j++) {
-						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
-							k.push(key[j]);
-						}
-					}
-				}
-			}
-		}
-		//department, professor, day
-		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedDay != '') {
-			if (this.state.selectedDay == " ") {
-				this.state.selectedDay = ""
-			}
-			for (var key of Object.values(this.state.classPool)) {
-				if (key[0].subject == this.state.selectedDepartment) {
-					for (var j = 0; j < key.length; j++) {
-						if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay) {
-							k.push(key[j]);
-						}
-					}
-				}
-			}
-		}
-		//department, professor, time
-		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '' && this.state.selectedTime != '') {
-			for (var key of Object.values(this.state.classPool)) {
-				if (key[0].subject == this.state.selectedDepartment) {
-					for (var j = 0; j < key.length; j++) {
-						if (key[j].instructor == this.state.selectedProfessor && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
-							k.push(key[j]);
-						}
-					}
-				}
-			}
-		}
-		//department, day, time
-		else if (this.state.selectedDepartment != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
-			if (this.state.selectedDay == " ") {
-				this.state.selectedDay = ""
-			}
-			for (var key of Object.values(this.state.classPool)) {
-				if (key[0].subject == this.state.selectedDepartment) {
-					for (var j = 0; j < key.length; j++) {
-						if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
-							k.push(key[j]);
-						}
-					}
-				}
-			}
-		}
-		//professor, day, time
-		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '' && this.state.selectedTime != '') {
-			if (this.state.selectedDay == " ") {
-				this.state.selectedDay = ""
-			}
-			for (var key of Object.values(this.state.classPool)) {
-				for (var j = 0; j < key.length; j++) {
-					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
-		//department, professor
-		else if (this.state.selectedDepartment != '' && this.state.selectedProfessor != '') {
-			for (var key of Object.values(this.state.classPool)) {
-				if (key[0].subject == this.state.selectedDepartment) {
-					for (var j = 0; j < key.length; j++) {
-						if (key[j].instructor == this.state.selectedProfessor) {
-							k.push(key[j]);
-						}
-					}
-				}
-			}
-		}
-		//department, day
-		else if (this.state.selectedDepartment != '' && this.state.selectedDay != '') {
-			if (this.state.selectedDay == " ") {
-				this.state.selectedDay = ""
-			}
-			for (var key of Object.values(this.state.classPool)) {
-				if (key[0].subject == this.state.selectedDepartment) {
-					for (var j = 0; j < key.length; j++) {
-						if (key[j].days == this.state.selectedDay) {
-							k.push(key[j]);
-						}
-					}
-				}
-			}
-		}
-		//department, time
-		else if (this.state.selectedDepartment != '' && this.state.selectedTime != '') {
-			for (var key of Object.values(this.state.classPool)) {
-				if (key[0].subject == this.state.selectedDepartment) {
-					for (var j = 0; j < key.length; j++) {
-						if ((key[j].start + " - " + key[j].end) == this.state.selectedTime) {
-							k.push(key[j]);
-						}
-					}
-				}
-			}
-		}
-		//professor, day
-		else if (this.state.selectedProfessor != '' && this.state.selectedDay != '') {
-			if (this.state.selectedDay == " ") {
-				this.state.selectedDay = ""
-			}
-			for (var key of Object.values(this.state.classPool)) {
-				for (var j = 0; j < key.length; j++) {
-					if (key[j].instructor == this.state.selectedProfessor && key[j].days == this.state.selectedDay) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
-		//professor, time
-		else if (this.state.selectedProfessor != '' && this.state.selectedTime != '') {
-			for (var key of Object.values(this.state.classPool)) {
-				for (var j = 0; j < key.length; j++) {
-					if (key[j].instructor == this.state.selectedProfessor && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
-		//day, time
-		else if (this.state.selectedDay != '' && this.state.selectedTime != '') {
-			if (this.state.selectedDay == " ") {
-				this.state.selectedDay = ""
-			}
-			for (var key of Object.values(this.state.classPool)) {
-				for (var j = 0; j < key.length; j++) {
-					if (key[j].days == this.state.selectedDay && (key[j].start + " - " + key[j].end) == this.state.selectedTime) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
-		//department
-		else if (this.state.selectedDepartment != '') {
-			for (var key of Object.values(this.state.classPool)) {
-				if (key[0].subject == this.state.selectedDepartment) {
-					for (var j = 0; j < key.length; j++) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
-		//professor
-		else if (this.state.selectedProfessor != '') {
-			for (var key of Object.values(this.state.classPool)) {
-				for (var j = 0; j < key.length; j++) {
-					if (key[j].instructor == this.state.selectedProfessor) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
-		//day
-		else if (this.state.selectedDay != '') {
-			if (this.state.selectedDay == " ") {
-				this.state.selectedDay = ""
-			}
-			for (var key of Object.values(this.state.classPool)) {
-				for (var j = 0; j < key.length; j++) {
-					if (key[j].days == this.state.selectedDay) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
-		//time
-		else {
-			for (var key of Object.values(this.state.classPool)) {
-				for (var j = 0; j < key.length; j++) {
-					if ((key[j].start + " - " + key[j].end) == timeReset[this.state.selectedTime]) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
+	async filterCourses() {
+		var results = db.collection('Courses');
+		if(this.state.selectedProfessor)
+			results = results.where('instructor','==',this.state.selectedProfessor)
+		if(this.state.selectedDepartment)
+			results = results.where('subject','==',this.state.selectedDepartment)
+		if(this.state.selectedDay)
+			results = results.where('days','==',this.state.selectedDay)
+		if(this.state.selectedTime)	
+			results = results.where('times','==',timeReset[this.state.selectedTime])
+		results = await results.get().then((res) => {return res.docs.map(doc => doc.data())});
 
-		k = k.sort()
-
-		//text input stuff... if there are elements in k, filter from box
-		if (this.state.className != null && k.length > 0) {
-			k = k.filter(data => data.title.toLowerCase().includes(this.state.className.toLowerCase()));
-		}
-		//if no elements in k, search for filterResults with said name
-		else if (this.state.className != null) {
-			console.log(this.state.className)
-			for (var key of Object.values(this.state.classPool)) {
-				for (var j = 0; j < key.length; j++) {
-					if (key[j].title.toLowerCase().includes(this.state.className.toLowerCase())) {
-						k.push(key[j]);
-					}
-				}
-			}
-		}
-
-		for (var i=0; i<k.length; i++) {
-			if (k[i].instructor.length < 1) {
-				k[i].instructor = "Staff"
-			}
-		}
-
-		this.props.loadClasses({filterResults: k})
+		this.props.loadClasses({filterResults: results})
 		this.props.navigation.navigate("Search Results")
+
+		// Resets search filters after screen navigates to results
 		drop.current.reset()
 		drop2.current.reset()
 		drop3.current.reset()

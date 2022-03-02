@@ -2,7 +2,9 @@ import React from "react"
 import { Image, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, SectionList } from "react-native"
 import { connect } from 'react-redux';
 import Parse from 'parse/react-native';
+import * as firebase from 'firebase'
 
+const db = firebase.firestore();
 export class ProfileScreen extends React.Component {
 
 	constructor(props) {
@@ -16,7 +18,7 @@ export class ProfileScreen extends React.Component {
 			loggedIn: this.props.loggedIn,
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
-			courses: this.props.courses,
+			uid: this.props.uid,
 		}
 		this.logout = this.logout.bind(this)
 	}
@@ -28,8 +30,7 @@ export class ProfileScreen extends React.Component {
 
 
 	async logout(){
-		// this.setState({loggedIn: !this.state.loggedIn})
-		// this.props.updateUser(this.state)
+/*** 	BACK4APP LOGOUT
 		const User = Parse.User.current(); 
 		const query = new Parse.Query(User);
 
@@ -42,11 +43,11 @@ export class ProfileScreen extends React.Component {
 		catch(error){
 			console.log("Could not set and save the new schedule stuff",error)
 		}
+***/
+		const usersRes = await db.collection('Users').doc(`${this.props.uid}`).set({...this.state});
+		firebase.auth().signOut();
+		this.props.LOGOUT()
 	}
-
-	// logout() {
-	// 	this.props.LOGIN({ loggedIn: 0 })
-	// }
 
 	render() {
 		return (<View
@@ -126,7 +127,8 @@ function mapStateToProps(state) {
 	  departments: state.departments,
 	  professors: state.professors,
 	  meetingTimes: state.meetingTimes,
-	  className: state.className
+	  className: state.className,
+	  uid: state.uid,
     };
   }
   

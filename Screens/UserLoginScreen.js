@@ -5,7 +5,25 @@ import '../App/CourseRoster'
 import { classExtractor } from '../App/CourseRoster';
 import SemesterMapper from '../App/Semester';
 import { connect } from 'react-redux';
+import * as firebase from 'firebase'
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDgoN3UkyY6sOdbiG6xUCmob8LOJMnSilI",
+  authDomain: "crashcourse-fbe28.firebaseapp.com",
+  projectId: "crashcourse-fbe28",
+  storageBucket: "crashcourse-fbe28.appspot.com",
+  messagingSenderId: "426889603056",
+  appId: "1:426889603056:web:8fd59c3dd588c61d79df35",
+  measurementId: "G-X668CGVTHD"
+};
+
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}else {
+  firebase.app(); // if already initialized, use that one
+}
+const db = firebase.firestore();
 
 class LoginScreen extends React.Component {
 
@@ -23,77 +41,153 @@ class LoginScreen extends React.Component {
       retrievedSchedule: {},
     }
     this.doUserLogIn = this.doUserLogIn.bind(this)
+    this.fillClass = this.fillClass.bind(this)
   }
 
-
-  // SecureStore.deleteItemAsync('token')
-  async getSchedule() {
-    const schedules = new Parse.Query(Parse.Object.extend('Schedule'))
-
-    // Update Class Schedule 
-    var savedSched = await schedules.get(`${this.props.schedule}`)
-    this.setState((state, props) => ({ ...state, schedule: savedSched }))
-    return savedSched;
-    // .then((sched) => {
-    //     // The object was retrieved successfully and it is ready to update.
-    //     // sched.set('Classes', [courses['CS4740'][0],courses['APMA3080'][2],courses['AAS150'][0]])
-    //     // populateClass()
-    // },
-    //  (error) => {
-    //     // The object was not retrieved successfully.
-    //     console.log('Failed to update ?')
-    // });
-    // console.log('Schedule Link',savedSched) 
+  componentDidMount(){
+    this.fillClass()
   }
 
-  async updateSchedule() {
-    console.log("updateSchedule was called!")
-    const schedules = new Parse.Query(Parse.Object.extend('Schedule'))
-    var courses = await classExtractor();
-    const { Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // returns a mapping of each date to the day AND a map of empty arrays for each date
-    // console.log("semestermapper 1",SemesterDays)
+  async fillClass() {
+    var datad = require('../api.json')
+    datad = datad.class_schedules.records
+    // console.log("headers", datad.class_schedules.columns)
+    var map = {}
+    var customMap = {} // only tracks some choice classes
 
-    // Update Class Schedule 
-    var savedSched = await schedules.get(`${this.state.schedule}`)
-    // .then((sched) => {
-    // //     // The object was retrieved successfully and it is ready to update.
-    // // var test = [courses['CS4740'][0],courses['APMA3080'][2],courses['AAS150'][0]]
-    // var currentSched = this.state.retrievedSchedule
-    // // populateClass()
-    // console.log("semestermapper ",semesterDays)
-    //     sched.set('Classes', semesterDays)
-    //     // sched.set('Classes', [courses['CS4740'][0],courses['APMA3080'][2],courses['AAS150'][0]])
-    //     sched.save()
-    // //     console.log("parse.object",Parse.Object(sched))
-    // //     var k = JSON.parse(JSON.stringify(sched))
-    // //     console.log("k after parse string",k)
-    // //     // populateClass(courses['CS4740'][0],semesterDays,k)
-    // //     // populateClass(courses['APMA3080'][2],semesterDays,k)
-    // //     // populateClass(courses['CS2150'][0],semesterDays,k)
-    // //     console.log("K after populateClass", k)
-    // this.setState({retrievedSchedule: semesterDays})
-    // },
-    //  (error) => {
-    //     // The object was not retrieved successfully.
-    //     console.log('Failed to update ?')
-    // });
-    this.setState({ retrievedSchedule: SemesterDays })
+    var course;
+  
+    // FireBase Testing --- less than 10000 for it to update
+    var count = 10001
+  
+    // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
+    // var free = ['AFFL', 'CE']
+    var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL', 'PHYS', 'CE', 'MAE', 'STS',]
+  
+    for (var index = 0; index < datad.length; index++) {
+      course = datad[index];
+      var name = `${course[0]}${course[1]}`
+      // if(index === 15000)
+      //   console.log("Checking parse length",  name)
+      // console.log(course)
+      var classObject = {
+        subject: course[0],
+        mnemonic: course[1],
+        section: course[2],
+        number: course[3],
+        title: course[4],
+        desc: course[5],
+        instructor: course[6],
+        capacity: course[7],
+        days: course[8], // 'MTWRF'
+        start: course[9],
+        end: course[10], // 'HH:MM:SS' 24hr
+        term: course[11], // '1216
+        termdesc: course[12], // '2021 Summer'
+      }
+      // await saveCourse(classObject)
+  
+      // ----   UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
+      // console.log(`Name: ${classObject.subject}`)
+      if (free.includes(`${classObject.subject}`)) {
+        // console.log("e school course!",classObject)
+        if (name in customMap) {
+          var sectionArray = customMap[name]
+          sectionArray.push(classObject)
+          customMap[name] = sectionArray
+          if(count < 10000 && course[3] > 21370){
+            // Add a new document in collection "Courses"
+            let data = {
+              subject: course[0],
+              mnemonic: course[1],
+              section: course[2],
+              number: course[3],
+              title: course[4],
+              desc: course[5],
+              instructor: course[6],
+              capacity: course[7],
+              days: course[8], // 'MTWRF'
+              start: course[9],
+              end: course[10], // 'HH:MM:SS' 24hr
+              term: course[11], // '1216
+              termdesc: course[12], // '2021 Summer'
+            }
+            const res = await db.collection('Courses').doc(`${course[3]}`).set(data);
+            console.log("Should have logged a course")
+            count++
+          }
+        }
+        else {
+          // console.log("E school new course found") // It does find all the e school courses
+          customMap[name] = [classObject]
+          if(count < 10000 && course[3] > 21370){
+            // Add a new document in collection "Courses"
+            let data = {
+              subject: course[0],
+              mnemonic: course[1],
+              section: course[2],
+              number: course[3],
+              title: course[4],
+              desc: course[5],
+              instructor: course[6],
+              capacity: course[7],
+              days: course[8], // 'MTWRF'
+              start: course[9],
+              end: course[10], // 'HH:MM:SS' 24hr
+              term: course[11], // '1216
+              termdesc: course[12], // '2021 Summer'
+            }
+            const res = await db.collection('Courses').doc(`${course[3]}`).set(data);
+            console.log("Should have logged a course")
+            count++
+          }
+        }
+      }
+    }
+    var classList = customMap;
+    var dept = []
+    var profs = []
+    var times = []
+  
+    for (var key of Object.values(classList)) {
+      for (var j = 0; j < key.length; j++) {
+        if (!dept.includes(key[j].subject)) {
+          dept.push(key[j].subject)
+        }
+        if (!profs.includes(key[j].instructor)) {
+          profs.push(key[j].instructor)
+        }
+        if (!times.includes(key[j].start + " - " + key[j].end)) {
+          times.push(key[j].start + " - " + key[j].end)
+        }
+      }
+  
+    }
+    dept.sort()
+    profs.sort()
+    profs.shift()
+    times.sort()
 
-    console.log("savedSched", savedSched)
-    // console.log('Schedule Link',savedSched) 
+    for(var index in times) {
+      var endtime = fixTime(times[index].substring(11,19))
+      var begintime = fixTime(times[index].substring(0,8))
+      times[index] = begintime + " - " + endtime
+    }
+    
+    var ret = {
+    departments: dept,
+    professors: profs,
+    classPool: classList,
+    meetingTimes: times,
+    }
+    this.props.populate(ret)
   }
 
-  // console.log("Login??",props)
   async doUserLogIn() {
-    // console.log("THIS",this)
-    // console.log("State",this.props.navigation.getState())
-    // console.log("the props",this.props)
-    // Note that these values come from state variables that we've declared before
-    const { Semester, SemesterDays } = await SemesterMapper(new Date(2021, 7, 24), new Date(2021, 12, 7)); // returns a mapping of each date to the day AND a map of empty arrays for each date
 
-    const usernameValue = this.state.username;
-    const passwordValue = this.state.password;
-    // console.log("Inside of doUserLogIn")
+    // Note that these values come from state variables that we've declared before
+
+/***  BACK4APP LOGIN
     const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue)
       .then(async (loggedInUser) => {
         // logIn returns the corresponding ParseUser object
@@ -138,12 +232,37 @@ class LoginScreen extends React.Component {
         //   Alert.alert('Error!', error.message);
         return false;
       });
+***/
+
+      const user = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then((userCredential) => {
+        // Signed in 
+        const users = userCredential.user;
+        // console.log("Firebase User Account object",users)
+        return users
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Error w user login", error)
+        // ..
+      });
+      console.log(user)
+      const userRef = db.collection('Users').doc(`${user.uid}`);
+      const doc = await userRef.get();
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        // console.log('Document data:', doc.data());
+        this.props.LOGIN(doc.data())
+      }
+      
   }
 
   render() {
-    // if(this.state.loggedIn)
     const { loggingIn } = this.props;
-    const { username, password } = this.state;
+    const { email, password } = this.state;
 
     return (
       <ImageBackground source={require('../assets/images/background.jpg')} resizeMode='cover' style={styles.backgroundImage}>
@@ -163,9 +282,9 @@ class LoginScreen extends React.Component {
             <View style={{ margin: "0%", padding: "0%", marginTop: "-35%" }}>
               <TextInput
                 style={styles.input}
-                value={username}
-                placeholder={'Username'}
-                onChangeText={(text) => this.setState((state, props) => ({ ...state, username: text }))}
+                value={email}
+                placeholder={'Email'}
+                onChangeText={(text) => this.setState((state, props) => ({ ...state, email: text }))}
                 autoCapitalize={'none'}
               />
               <TextInput
@@ -192,6 +311,19 @@ class LoginScreen extends React.Component {
   }
 }
 
+function fixTime(time) {
+  var tester = parseInt(time.substring(0,2))
+  var half = " AM"
+  if (tester >= 12) {
+    half = " PM"
+    if (tester > 12) {
+      tester = tester - 12
+    }
+  }
+  var output = tester + ":" + time.substring(3,5) + half
+  return output
+}
+
 function mapStateToProps(state) {
   return {
     username: state.username,
@@ -209,6 +341,8 @@ function mapDispatchToProps(dispatch) {
   return {
     LOGIN: (item) => dispatch({ type: 'LOGIN', payload: item }),
     decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
+    populate: (item) => dispatch({ type: 'POPULATE_FILTERS', payload: item }),
+
   };
 }
 

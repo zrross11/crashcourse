@@ -7,26 +7,55 @@ import './App/CourseRoster'
 import MyDrawer from './myDrawer'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
+// import { doc, setDoc, updateDoc } from "@react-native-firebase/firestore"; 
+// import { initializeApp } from 'firebase/app';
+// import db from './FirebaseStore'
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+
+// import '@firebase/firestore';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDgoN3UkyY6sOdbiG6xUCmob8LOJMnSilI",
+  authDomain: "crashcourse-fbe28.firebaseapp.com",
+  projectId: "crashcourse-fbe28",
+  storageBucket: "crashcourse-fbe28.appspot.com",
+  messagingSenderId: "426889603056",
+  appId: "1:426889603056:web:8fd59c3dd588c61d79df35",
+  measurementId: "G-X668CGVTHD"
+};
+
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}else {
+  firebase.app(); // if already initialized, use that one
+}
+const db = firebase.firestore();
+
 
 Parse.setAsyncStorage(AsyncStorage);
 
 Parse.initialize("xMmrJFN7JLMXS1OvngDZsKisDGA3yff56HQI0Kv2", "5jpYBbBMdI4FIcvtxYlgekUeeeR4AoMVK69SfkfF"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
-const { classList, dept, profs, times } = fillClass();
-// console.log("App.js: classList const", classList)
+let classList, dept, profs, times;
+console.log("App.js: classList const", classList)
 // Initial User Account state 
-const initialState = {
+var initialState = {
   // State elements that are stored in our database to be reloaded and updated by the currently logged in user
   username: '',
   password: '',
   email: '',
   firstName: '',
   lastName: '',
-  schedule: {}, // Stores the object key for user's schedule item
+  schedule: {}, // Stores the object key for user's schedule item -- W/ firebase, this is the user uid -- deprecated
   retrievedSchedule: {}, // Stores the schedule of all semester days in array
 
- 
+  // Firebase Backend Attributes that must follow
+  uid: '', // Unique ID for every User on app
+
   courses: [],
 
   // State attributes that are used for the class search feature
@@ -40,6 +69,7 @@ const initialState = {
   professors: profs,
   meetingTimes: times,
   classPool: classList, // Holds the list of all classes
+
 }
 
 const reducer = (state = initialState, action) => {
@@ -57,6 +87,8 @@ const reducer = (state = initialState, action) => {
       return { counter: state.counter - 1 }
     case 'REMOVE_CLASSES':
       console.log("App.js: Removing a class from schedule")
+      return { ...state, ...action.payload }
+    case 'POPULATE_FILTERS':
       return { ...state, ...action.payload }
     case 'LOGOUT':
       console.log("App.js: Logging out of account. Saving state of store")
@@ -88,99 +120,4 @@ export default function App() {
   );
 }
 
-function fixTime(time) {
-  var tester = parseInt(time.substring(0,2))
-  var half = " AM"
-  if (tester >= 12) {
-    half = " PM"
-    if (tester > 12) {
-      tester = tester - 12
-    }
-  }
-  var output = tester + ":" + time.substring(3,5) + half
-  return output
-}
 
-function fillClass() {
-  var datad = require('./api.json')
-  datad = datad.class_schedules.records
-  // console.log("headers", datad.class_schedules.columns)
-  var map = {}
-  var customMap = {} // only tracks some choice classes
-  //console.log(datad[0])
-  // console.log(datad);
-  var course;
-
-  // ---- UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
-  // var free = ['AFFL', 'CE']
-  var free = ['APMA', 'CS', 'BME', 'CHEM', 'AFFL', 'PHYS', 'CE', 'MAE', 'STS',]
-
-  for (var index = 0; index < datad.length; index++) {
-    course = datad[index];
-    var name = `${course[0]}${course[1]}`
-    // if(index === 15000)
-    //   console.log("Checking parse length",  name)
-    // console.log(course)
-    var classObject = {
-      subject: course[0],
-      mnemonic: course[1],
-      section: course[2],
-      number: course[3],
-      title: course[4],
-      desc: course[5],
-      instructor: course[6],
-      capacity: course[7],
-      days: course[8], // 'MTWRF'
-      start: course[9],
-      end: course[10], // 'HH:MM:SS' 24hr
-      term: course[11], // '1216
-      termdesc: course[12], // '2021 Summer'
-    }
-    // await saveCourse(classObject)
-
-    // ----   UNCOMMENT THIS FOR ONLY E SCHOOL TEST  -----
-    // console.log(`Name: ${classObject.subject}`)
-    if (free.includes(`${classObject.subject}`)) {
-      // console.log("e school course!",classObject)
-      if (name in customMap) {
-        var sectionArray = customMap[name]
-        sectionArray.push(classObject)
-        customMap[name] = sectionArray
-      }
-      else {
-        // console.log("E school new course found") // It does find all the e school courses
-        customMap[name] = [classObject]
-      }
-    }
-  }
-  var classList = customMap;
-  var dept = []
-  var profs = []
-  var times = []
-
-  console.log("myDrawer.js: Classes were just populated into the pool")
-  for (var key of Object.values(classList)) {
-    for (var j = 0; j < key.length; j++) {
-      if (!dept.includes(key[j].subject)) {
-        dept.push(key[j].subject)
-      }
-      if (!profs.includes(key[j].instructor)) {
-        profs.push(key[j].instructor)
-      }
-      if (!times.includes(key[j].start + " - " + key[j].end)) {
-        times.push(key[j].start + " - " + key[j].end)
-      }
-    }
-
-  }
-  dept.sort()
-  profs.sort()
-  profs.shift()
-  times.sort()
-  for(var index in times) {
-    var endtime = fixTime(times[index].substring(11,19))
-    var begintime = fixTime(times[index].substring(0,8))
-    times[index] = begintime + " - " + endtime
-  }
-  return { classList, dept, profs, times };
-}

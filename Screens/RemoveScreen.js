@@ -33,7 +33,6 @@ export class RemoveClasses extends React.Component {
 			loggedIn: this.props.loggedIn,
 			schedule: this.props.schedule,
 			retrievedSchedule: this.props.retrievedSchedule,
-			courses: this.props.courses,
 		}
 		this.removeAClass = this.removeAClass.bind(this)
 	}

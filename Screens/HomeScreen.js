@@ -132,6 +132,7 @@ function mapStateToProps(state) {
     loggedIn: state.loggedIn,
     schedule: state.schedule,
     retrievedSchedule: state.retrievedSchedule,
+    professors: state.professors,
   };
 }
 
